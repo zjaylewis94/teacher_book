@@ -26,7 +26,13 @@ Wild cards include Tunnel Book, Food Truck, Inktober Sketchbook, Halloween Masks
 Most Semester 2 units list only a T1 intro worksheet so far.
 
 ## The app
-- `index.html` is the book (uploaded as `teacher_book.html` on Sep 27, 2026). Saved data: localStorage `teacher_book_v1`.
+- `index.html` is the book (uploaded as `teacher_book.html` on Sep 27, 2026). Saved data: localStorage `teacher_book_v2`
+  (v1 until Sep 28; on first load a v1 book is copied forward once and v1 is left in place as a fallback).
+- **A saved book keeps its own copy of the curriculum**, so editing `SEED`/`CURRICULUM` alone never reaches Zach's
+  devices. To ship new seeded content: raise `SEED.contentVersion` and add the step to `migrateContent()`, which runs
+  at the top of `hydrateState()`. Move old material to the **Old Drafts** sidebar group (`parent:'archive'`); don't delete it.
+- `hydrateState()` stops partway on every load (it throws at `dc(SEED.boxes.finance)`, which this book doesn't have), so
+  nothing after that line runs. The migration sits above it on purpose. Fixing that is a separate change.
 - GitHub Sync saves `teacher_book_data.json` to the **private `subroutine-data` repo**, which is the default. Any device still set to the
   public `SUBROUTINE` repo gets switched automatically. Its settings slot is `teacher_book_gh_cfg`.
 - Every book shares one address (zjaylewis94.github.io), so they share one browser storage space of about 5 MB.
@@ -50,11 +56,18 @@ the book actually displays go in this repo.
 - Before opening a PR, check the page in headless Chromium (Playwright is installed) at 390px and 1280px
   wide, with no page errors.
 - If a change alters the shape of the book's saved data, bump its localStorage key version.
-- **Not yet synced with the UNIT GUIDES doc:** the app still gives Tier 2 projects 3 pts (the `pts:3` entries and the
-  "3 pts each" lines in `index.html`), where the doc uses 4. It also still lists master studies (search "master study",
-  "Master Study Painting") and more than one Tier 3 in places, where the doc has one Tier 3 per unit and no master studies.
-  Zach wants the app to match eventually; do it as its own change. The "MASTER ARTIST REFERENCE" lists are artist
-  examples, not master-study projects. Ask Zach before cutting them.
+- **Synced with the UNIT GUIDES doc on Sep 28, 2026** (content version 2):
+  - The **Curriculum** tab (`CURRICULUM`) holds Draw + Paint 1–4, Units 1–20. Each project has its name, description,
+    points and `suggested:true` where the doc says "(suggested)". Tier 2 is 4 pts, there's one Tier 3, and wild cards show as `WILD CARD`.
+  - Carried-over write-ups: U1 Value Practice, Shading with Forms and 1 Point Perspective Room (from the old Ramhaus Unit 1),
+    and U5 Koons Dog (from last year). Every other project says "Not written yet".
+  - Last year's Draw & Paint 2 and 4 stay at the bottom of the Curriculum tab (`archived:true`, ids `ly-…`), with their master studies.
+  - Syllabus → Project Overview and Year at a Glance were rewritten from the doc. The Sub Guide and Official Syllabus now say Tier 2 = 4 pts.
+  - The old medium-by-medium unit chapters, the old syllabus pages and the old Ramhaus Unit 1 are under **Old Drafts**.
+  - **Open question for Zach:** the syllabus letter grades (A = 15–20) assume a 20-point unit. Doc units now total
+    20–28 points (e.g. Unit 3 is 2×2 + 4×4 + 8 = 28). Don't change the scale without him.
+  - When the doc changes, re-read it and regenerate `CURRICULUM` from it rather than hand-editing (the Sep 28 build
+    parsed the doc tabs and wrote the block programmatically), then bump the content version.
 
 ## UNIT GUIDES Google Doc (filled Sep 28, 2026)
 Google Doc **UNIT GUIDES** (Drive: `The Library/Educator/teacher_book/ramhaus/`,
@@ -117,7 +130,7 @@ Koons Dog → U5 · Candy Drawing → U15 · Burton Morris → U3 T3 · 3D Mecca
 Tier 3 picks for units the snapshot left empty (all still labeled suggested): U7 Bold Still Life · U17 Expressive Color
 Composition · U9 10-Second Short · U19 Animated Short · U10 and U20 Final Masterpiece. The master-study T2s were swapped
 for Composition Study (U10) and Layered Stroke Study (U17).
-Useful detail lives in `index.html` (search "UNIT 1: PENCIL", "3 N's ARC", "PROJECT BANK"): Unit 1 project
-steps and materials, plus a project bank from old boards.
+Useful detail lives in `index.html` under Old Drafts (search "PROJECT BANK", "3 N's ARC"): project banks from old
+boards, and the old Unit 1 steps and materials.
 When editing later, re-read the doc and check every unit keeps its three tiers plus wild card, exactly one Tier 3, and each suggestion stays labeled.
 `SAMPLE ONE` is last year's page and still shows the old rules (MASTER STUDY [BANKSY], Tier 2 at 3 pts); leave it unless Zach asks.
