@@ -55,13 +55,23 @@ Most Semester 2 units list only a T1 intro worksheet so far.
   Keys must be unique per book, and big attachments in one book eat into the others' room.
 
 ## Reference material (Google Drive)
-`The Library/Educator/teacher_book/`
-- **`ramhaus/` is this school year's curriculum: everything Zach uses as an art teacher.**
-- `ramhaus/UNIT 1 PENCIL/`, `ramhaus/UNIT 11 ADV PENCIL/`: worksheets, how-to images, source PSDs.
-- `ramhaus/VISCOM 1.pdf`
-- `MrLewis-Regular.ttf` / `.otf` and `Mr_Lewis_Font.png`: Zach's own handwriting font. It's the candidate
-  for the shared library theme and cover pages.
-- The plan snapshot screenshot.
+`The Library/Educator/teacher_book/` (reorganized Sep 28, 2026; each file lives in one place, so don't copy
+files between folders). Look up IDs with Drive search by title, because folder names are stable.
+- `01 BOOKS/`: book-length references: the 7 21-Draw ebooks, Bargue drawing course, Loomis *Fun With a Pencil*,
+  *The TextBook*, `VISCOM 1.pdf`. Read these for technique and project ideas.
+- `02 CLASS DOCS/`: syllabi (D&P, AVID 2) and sub notes. Zach adds new syllabi and sub notes here.
+- `03 IMAGE REFERENCES/`: artist references, pose and figure refs, lighting chart, creative-process
+  diagrams, and `ART WORKFLOW.png` (Zach's own studio workflow).
+- `04 HTML/`: standalone HTML exports (`teacher_book.html` is the Sep 27 upload of this repo's `index.html`).
+- `05 FONTS & BRANDING/`: `MrLewis-Regular.ttf` / `.otf` and `Mr_Lewis_Font.png`, Zach's handwriting font.
+  It's the candidate for the shared library theme and cover pages.
+- **`ramhaus/` is this school year's curriculum: everything Zach uses as an art teacher.** It holds the
+  UNIT GUIDES doc, `UNIT SNAPSHOT` (the Aug 26 plan screenshot), `RAMHAUS WHEEL.png`,
+  `BAUHAUS CURRICULUM (Ramhaus inspiration).png`, and one folder per unit: `UNIT 01 PENCIL` … `UNIT 20 MASTERPIECE`
+  (zero-padded, names match the curriculum). Units 01 and 11 hold worksheets, how-to images and source PSDs;
+  the other 18 were created empty for Zach to fill. Use a unit folder's files when writing that unit's projects.
+- `ramination/`: separate project; leave it alone unless asked.
+- Head-coach files live in `The Library/Educator/coaching_book/head_coach/`, not here.
 
 PSDs and full-resolution PNGs stay in Drive. GitHub rejects files over 100 MB, so only web-size exports
 the book actually displays go in this repo.
