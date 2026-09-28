@@ -51,7 +51,10 @@ the book actually displays go in this repo.
   wide, with no page errors.
 - If a change alters the shape of the book's saved data, bump its localStorage key version.
 - **Not yet synced with the UNIT GUIDES doc:** the app still gives Tier 2 projects 3 pts (the `pts:3` entries and the
-  "3 pts each" lines in `index.html`). The doc uses 4. Zach wants the app to match eventually; do it as its own change.
+  "3 pts each" lines in `index.html`), where the doc uses 4. It also still lists master studies (search "master study",
+  "Master Study Painting") and more than one Tier 3 in places, where the doc has one Tier 3 per unit and no master studies.
+  Zach wants the app to match eventually; do it as its own change. The "MASTER ARTIST REFERENCE" lists are artist
+  examples, not master-study projects. Ask Zach before cutting them.
 
 ## UNIT GUIDES Google Doc (filled Sep 28, 2026)
 Google Doc **UNIT GUIDES** (Drive: `The Library/Educator/teacher_book/ramhaus/`,
@@ -77,13 +80,14 @@ Each section starts with a project overview (every unit's T1/T2/T3/Wild Card at 
 **Every unit guide copies the sample's format exactly:** `UNIT n: NAME` · **OVERVIEW** (3–4 sentences, second
 person, ending on what the student will be able to do) · **PROJECT LIST** table:
 Tier 1 – Skill Builders (1–2 days each · 2 pts each) · Tier 2 – Practice Projects (4–6 days · **4 pts each**, raised from 3 on Sep 28) ·
-Tier 3 – Major Project (1–2 weeks · 8 pts each). Each project gets a **BOLD CAPS NAME** plus a one-sentence description.
+Tier 3 – Major Project (1–2 weeks · 8 pts; **exactly one per unit**, and **no master studies** anywhere, Zach's rule
+for this school year, set Sep 28). Each project gets a **BOLD CAPS NAME** plus a one-sentence description.
 Add a Wild Card line per unit. **Deadlines: TBD** (Zach's call, for now).
 Advanced units (11–20) push harder than their intro partners (the "+" worksheets); their T3 is more open-ended.
 Zach's 3 N's arc (Teacher Book syllabus): T1 Narrative, T2 Novelty, T3 Nuance.
 
 **Rule for empty slots:** fill them with suggested projects that fit the medium and level, and **label each
-one "(suggested)"** so Zach can tell them from his own plan. Every tier gets 2–4 projects.
+one "(suggested)"** so Zach can tell them from his own plan. Tiers 1 and 2 get 2–4 projects each; Tier 3 gets one.
 
 **Zach's plan** (from his Aug 26 snapshot; Claude settled the lines the screenshot scrambled, and Zach approved):
 
@@ -93,7 +97,7 @@ one "(suggested)"** so Zach can tell them from his own plan. Every tier gets 2�
 | 11 Adv Pencil | Pencil Intro Worksheet+ · Advanced Gradients | Fruit Studies · Constructing + Editing Form · Cast Shadow Studies | Surrealist Forms Landscape | Tunnel Book · Food Truck |
 | 2 Pen & Ink | Pen + Ink Intro Worksheet · Pen Shading Techniques · Line Quality + Line Weights | Contour Line Hands · Zen Doodle w/ Emphasis | Weighted Contour Line Still Life Drawing | Inktober Sketchbook · Halloween Masks |
 | 12 Adv Pen & Ink | Pen + Ink Intro Worksheet+ · Pen Shading Techniques · Line Quality + Line Weights | Contour Line Forms/Objects · Ink Wash Blockout / Pen Texture | Ink Wash (Sumi-e) | Inktober Sketchbook · Halloween Masks |
-| 3 Tempera | Tempera Intro Worksheet · Color Theory Worksheet | Blending Tubes (Smooth + Segmented) · Sparkmatik Blobs · Impossible Shape Painting | 2D Mecca Chameleon · Burton Morris Product Painting | Digital Painting (TBD) · Disco Ball Painting |
+| 3 Tempera | Tempera Intro Worksheet · Color Theory Worksheet | Blending Tubes (Smooth + Segmented) · Sparkmatik Blobs · Impossible Shape Painting · 2D Mecca Chameleon | Burton Morris Product Painting | Digital Painting (TBD) · Disco Ball Painting |
 | 13 Acrylic | Acrylic Intro Worksheet · Color Theory / Value Scales Worksheet+ | That's a Wrap! · Sparkmatik Blobs · 3D Mecca Chameleon | Candy Box | Digital Painting (TBD) · Vector Painting |
 | 4 Water Color | Water Color Worksheet | Object Study Painting | Urban Sketching Final | Holiday Project (TBD) |
 | 14 Adv Water Color | Water Color Worksheet+ | Sweet Treats Painting (layered watercolor + colored pencil details) · Still Life Practice | Urban Sketching Final | Holiday Project (TBD) |
@@ -108,7 +112,12 @@ one "(suggested)"** so Zach can tell them from his own plan. Every tier gets 2�
 
 "—" means empty, so fill it with suggestions. Animation (9/19) can tie into Raminations (Rammy, short animated lessons).
 Tie-breaks Claude made (Zach can override): Tim Burton Portrait → U16 T2 · Sweet Treats → U14 T2 ·
-Koons Dog → U5 · Candy Drawing → U15 · Burton Morris → U3 T3 · 3D Mecca Chameleon → U13 T2.
+Koons Dog → U5 · Candy Drawing → U15 · Burton Morris → U3 T3 · 3D Mecca Chameleon → U13 T2 ·
+2D Mecca Chameleon → U3 T2 (moved from T3 to keep one T3; it mirrors the 3D chameleon, a T2 in U13).
+Tier 3 picks for units the snapshot left empty (all still labeled suggested): U7 Bold Still Life · U17 Expressive Color
+Composition · U9 10-Second Short · U19 Animated Short · U10 and U20 Final Masterpiece. The master-study T2s were swapped
+for Composition Study (U10) and Layered Stroke Study (U17).
 Useful detail lives in `index.html` (search "UNIT 1: PENCIL", "3 N's ARC", "PROJECT BANK"): Unit 1 project
 steps and materials, plus a project bank from old boards.
-When editing later, re-read the doc and check every unit keeps its three tiers plus wild card and each suggestion stays labeled.
+When editing later, re-read the doc and check every unit keeps its three tiers plus wild card, exactly one Tier 3, and each suggestion stays labeled.
+`SAMPLE ONE` is last year's page and still shows the old rules (MASTER STUDY [BANKSY], Tier 2 at 3 pts); leave it unless Zach asks.
