@@ -29,16 +29,24 @@ Most Semester 2 units list only a T1 intro worksheet so far.
 - `index.html` is the book (uploaded as `teacher_book.html` on Sep 27, 2026). Saved data: localStorage `teacher_book_v2`
   (v1 until Sep 28; on first load a v1 book is copied forward once and v1 is left in place as a fallback).
 - **A saved book keeps its own copy of the curriculum**, so editing `SEED`/`CURRICULUM` alone never reaches Zach's
-  devices. To ship new seeded content: raise `SEED.contentVersion` (now 3) and add a `migrateToVn()` step that
-  `migrateContent()` calls; it runs first in `hydrateState()`. Move old material to **Old Drafts** (sidebar group
-  `parent:'archive'`, or the Curriculum tab's `old-drafts` course); don't delete it.
+  devices. To ship new seeded content: raise `SEED.contentVersion` (now 4) and add a `migrateToVn()` step that
+  `migrateContent()` calls; it runs first in `hydrateState()`. Zach asked (Sep 28) for old drafts and last year's
+  courses to be deleted rather than archived; git history keeps them (e.g. `git show a44fbfd:index.html`).
 - Loading (`initState`): a fresh device starts from `SEED` with `_ts: 0` and stores nothing until the first edit. An upgraded
   book is stored **without** bumping `_ts`. Both keep a newer copy on GitHub winning when Sync compares timestamps.
 - The file was forked from a life-planner app. On Sep 28, 2026 the unreachable leftovers were removed: the home tab,
   calendar, brain dump and auto-sort, fitness, cookbook, lists, tasks and projects, the retired right sidebar, and a
   second structured unit viewer. The Teacher Book has one box (`teaching`). Don't bring those back by copying code
   from the other books.
-- Navigation: `openChapter()`, `openSection('notes'|'curriculum')` and `findChapter()`. Sidebar groups live in `CHAPTER_GROUPS`.
+- Navigation: `openChapter()`, `openUnit(courseId, unitId, projId)`, `openSection('notes')` and `findChapter()`.
+  Sidebar groups live in `CHAPTER_GROUPS`. **Art Curriculum** holds Ramhaus (first), Intro, then the Draw + Paint
+  courses from `S.curriculum`, each expanding to its units (`+ Add unit` shows in Edit mode). There's no Curriculum tab.
+  On phones a project opens as a full-screen sheet with a Back button.
+- **Ramhaus = the wheel**, the overview of what the curriculum offers. Clicking a segment opens its page: an
+  "In the Curriculum" list, then its goals/lessons/notes. Mediums link to their units (`RAMHAUS_UNIT_LINKS`: intro unit +
+  advanced partner; the core links to the Masterpiece units). The other rings list projects matched by keyword
+  (`RAMHAUS_KEYWORDS`), so they update as projects change; tune the keywords there. The Mediums ring doesn't match the
+  units yet: it has Markers (no unit) and no Animation, Acrylic or Lino (13 and 18 only appear as advanced partners).
   Page tools (rename, move, delete) are the ⋮ after the page tabs; chapter tools are the ⋮ on each sidebar row.
 - GitHub Sync saves `teacher_book_data.json` to the **private `subroutine-data` repo**, which is the default. Any device still set to the
   public `SUBROUTINE` repo gets switched automatically. Its settings slot is `teacher_book_gh_cfg`.
@@ -64,14 +72,13 @@ the book actually displays go in this repo.
   wide, with no page errors.
 - If a change alters the shape of the book's saved data, bump its localStorage key version.
 - **Synced with the UNIT GUIDES doc on Sep 28, 2026** (content version 2):
-  - The **Curriculum** tab (`CURRICULUM`) holds Draw + Paint 1–4, Units 1–20. Each project has its name, description,
+  - Art Curriculum in the sidebar (`CURRICULUM` data) holds Draw + Paint 1–4, Units 1–20. Each project has its name, description,
     points and `suggested:true` where the doc says "(suggested)". Tier 2 is 4 pts, there's one Tier 3, and wild cards show as `WILD CARD`.
   - Carried-over write-ups: U1 Value Practice, Shading with Forms and 1 Point Perspective Room (from the old Ramhaus Unit 1),
     and U5 Koons Dog (from last year). Every other project says "Not written yet".
-  - Last year's Draw & Paint 2 and 4 stay at the bottom of the Curriculum tab (`archived:true`, ids `ly-…`), with their master studies.
   - Syllabus → Project Overview and Year at a Glance were rewritten from the doc. The Sub Guide and Official Syllabus now say Tier 2 = 4 pts.
-  - The old medium-by-medium unit chapters and the old syllabus pages are under the **Old Drafts** sidebar group.
-    The old Ramhaus Unit 1 (with its steps and rubrics) is the **Old Drafts** course at the bottom of the Curriculum tab.
+  - The old medium-by-medium unit chapters, old syllabus pages, old Ramhaus Unit 1 and last year's courses were deleted
+    on Sep 28 at Zach's request (content version 4).
   - **Open question for Zach:** the syllabus letter grades (A = 15–20) assume a 20-point unit. Doc units now total
     20–28 points (e.g. Unit 3 is 2×2 + 4×4 + 8 = 28). Don't change the scale without him.
   - When the doc changes, re-read it and regenerate `CURRICULUM` from it rather than hand-editing (the Sep 28 build
@@ -138,7 +145,7 @@ Koons Dog → U5 · Candy Drawing → U15 · Burton Morris → U3 T3 · 3D Mecca
 Tier 3 picks for units the snapshot left empty (all still labeled suggested): U7 Bold Still Life · U17 Expressive Color
 Composition · U9 10-Second Short · U19 Animated Short · U10 and U20 Final Masterpiece. The master-study T2s were swapped
 for Composition Study (U10) and Layered Stroke Study (U17).
-Useful detail lives in `index.html` under Old Drafts (search "PROJECT BANK", "3 N's ARC"): project banks from old
-boards, and the old Unit 1 steps and materials.
+The old project banks (from old boards) and the old Unit 1 steps were deleted from the app on Sep 28; they're in git
+history (`git show a44fbfd:index.html`, search "PROJECT BANK").
 When editing later, re-read the doc and check every unit keeps its three tiers plus wild card, exactly one Tier 3, and each suggestion stays labeled.
 `SAMPLE ONE` is last year's page and still shows the old rules (MASTER STUDY [BANKSY], Tier 2 at 3 pts); leave it unless Zach asks.
