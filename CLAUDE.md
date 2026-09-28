@@ -50,6 +50,8 @@ the book actually displays go in this repo.
 - Before opening a PR, check the page in headless Chromium (Playwright is installed) at 390px and 1280px
   wide, with no page errors.
 - If a change alters the shape of the book's saved data, bump its localStorage key version.
+- **Not yet synced with the UNIT GUIDES doc:** the app still gives Tier 2 projects 3 pts (the `pts:3` entries and the
+  "3 pts each" lines in `index.html`). The doc uses 4. Zach wants the app to match eventually; do it as its own change.
 
 ## UNIT GUIDES Google Doc (filled Sep 28, 2026)
 Google Doc **UNIT GUIDES** (Drive: `The Library/Educator/teacher_book/ramhaus/`,
@@ -74,7 +76,7 @@ Each section starts with a project overview (every unit's T1/T2/T3/Wild Card at 
 
 **Every unit guide copies the sample's format exactly:** `UNIT n: NAME` · **OVERVIEW** (3–4 sentences, second
 person, ending on what the student will be able to do) · **PROJECT LIST** table:
-Tier 1 – Skill Builders (1–2 days each · 2 pts each) · Tier 2 – Practice Projects (4–6 days · 3 pts each) ·
+Tier 1 – Skill Builders (1–2 days each · 2 pts each) · Tier 2 – Practice Projects (4–6 days · **4 pts each**, raised from 3 on Sep 28) ·
 Tier 3 – Major Project (1–2 weeks · 8 pts each). Each project gets a **BOLD CAPS NAME** plus a one-sentence description.
 Add a Wild Card line per unit. **Deadlines: TBD** (Zach's call, for now).
 Advanced units (11–20) push harder than their intro partners (the "+" worksheets); their T3 is more open-ended.
