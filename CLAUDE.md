@@ -40,7 +40,8 @@ Most Semester 2 units list only a T1 intro worksheet so far.
   from the other books.
 - Navigation: `openChapter()`, `openUnit(courseId, unitId, projId)`, `openSection('notes')` and `findChapter()`.
   Sidebar groups live in `CHAPTER_GROUPS`. **Art Curriculum** holds Ramhaus (first), Intro, then the Draw + Paint
-  courses from `S.curriculum`, each expanding to its units (`+ Add unit` shows in Edit mode). There's no Curriculum tab.
+  courses from `S.curriculum`. Every unit is its own row, shown by default (tap a course header to fold it;
+  `+ Add unit` shows in Edit mode). There's no Curriculum tab.
   On phones a project opens as a full-screen sheet with a Back button.
 - **Ramhaus = the wheel**, the overview of what the curriculum offers. Clicking a segment opens its page: an
   "In the Curriculum" list, then its goals/lessons/notes. Mediums link to their units (`RAMHAUS_UNIT_LINKS`: intro unit +

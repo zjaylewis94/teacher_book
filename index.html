@@ -826,6 +826,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .sb-unit-row .sb-lbl{font-size:.73rem;letter-spacing:.5px}
 .sb-unit-row .sb-dot{width:5px;height:5px}
 .sb-add-unit{padding:4px 14px 8px 38px}
+/* Phones: the slide-out menu gets real width (an older tablet rule squeezed it to 150px) */
+@media(max-width:680px){#sb:not(.collapsed){width:min(86vw,320px)!important}}
 .curr-detail-close{display:none}
 @media(max-width:900px){
   #curr-detail.open{display:flex;position:fixed;top:0;left:0;right:0;bottom:0;z-index:95;width:auto!important;border-left:none;overflow-y:auto}
@@ -2408,7 +2410,8 @@ function buildSB() {
     if (parent.id === 'curriculum') {
       (S.curriculum || []).forEach(function(course) {
         var key = 'course:' + course.id;
-        if (window._sbExpanded[key] === undefined) window._sbExpanded[key] = (curSec === 'curriculum' && currCourseId === course.id);
+        // every unit shows as its own row; tapping a course header folds it
+        if (window._sbExpanded[key] === undefined) window._sbExpanded[key] = true;
         var open = window._sbExpanded[key];
         var cRow = el('div','sb-course-row');
         var cCaret = el('span','sb-caret'); cCaret.textContent = open ? '▾' : '▸';
