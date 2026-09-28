@@ -8850,7 +8850,14 @@ initSidebarControls();
 (function(){
   // Config persisted locally (never leaves your browser except to call GitHub)
   var CFG_KEY = 'teacher_book_gh_cfg';
-  function getCfg(){ try{ return JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ return {}; } }
+  function getCfg(){
+    var c; try{ c = JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ return {}; }
+    // Teaching data belongs in the private repo, never the public SUBROUTINE one
+    if(String(c.owner||'').toLowerCase()==='zjaylewis94' && String(c.repo||'').toLowerCase()==='subroutine'){
+      c.repo = 'subroutine-data'; delete c._sha; setCfg(c);
+    }
+    return c;
+  }
   function setCfg(c){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(c)); }catch(e){} }
 
   function ghHeaders(token){
@@ -8932,7 +8939,7 @@ initSidebarControls();
       '<div style="font-family:Rajdhani,sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;color:var(--text);margin-bottom:4px">GITHUB SYNC</div>'+
       '<div style="font-size:.72rem;color:var(--dim);margin-bottom:18px;line-height:1.5">Edits save to a JSON file in your repo. Create a <b>fine-grained token</b> with Contents read/write on the repo, then paste below.</div>'+
       fld('Owner (username)','gh-owner',c.owner||'zjaylewis94')+
-      fld('Repo','gh-repo',c.repo||'SUBROUTINE')+
+      fld('Repo','gh-repo',c.repo||'subroutine-data')+
       fld('Branch (optional)','gh-branch',c.branch||'')+
       fld('File path','gh-path',c.path||'teacher_book_data.json')+
       fld('Token','gh-token',c.token||'','password')+
