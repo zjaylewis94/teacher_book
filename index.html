@@ -828,6 +828,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .sb-add-unit{padding:4px 14px 8px 38px}
 /* Phones: the slide-out menu gets real width (an older tablet rule squeezed it to 150px) */
 @media(max-width:680px){#sb:not(.collapsed){width:min(86vw,320px)!important}}
+/* Tablets (iPad portrait and small landscape): wide enough that course and unit names fit */
+@media(min-width:681px) and (max-width:1024px){#sb:not(.collapsed){width:210px!important}}
+/* Tablets: top bar on one row too (logo, date, then the file buttons on the right) */
+@media(min-width:681px) and (max-width:900px){
+  #topbar{flex-wrap:nowrap;height:52px;min-height:52px;padding:0 14px;gap:10px}
+  #logo{order:0;flex:0 0 auto}
+  #tb-date,#sync-status{order:0;width:auto}
+  #tb-right{order:0;width:auto;margin-left:auto;flex-wrap:nowrap;overflow:visible;padding:0}
+}
 .curr-detail-close{display:none}
 @media(max-width:900px){
   #curr-detail.open{display:flex;position:fixed;top:0;left:0;right:0;bottom:0;z-index:95;width:auto!important;border-left:none;overflow-y:auto}
