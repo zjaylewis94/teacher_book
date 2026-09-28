@@ -29,10 +29,17 @@ Most Semester 2 units list only a T1 intro worksheet so far.
 - `index.html` is the book (uploaded as `teacher_book.html` on Sep 27, 2026). Saved data: localStorage `teacher_book_v2`
   (v1 until Sep 28; on first load a v1 book is copied forward once and v1 is left in place as a fallback).
 - **A saved book keeps its own copy of the curriculum**, so editing `SEED`/`CURRICULUM` alone never reaches Zach's
-  devices. To ship new seeded content: raise `SEED.contentVersion` and add the step to `migrateContent()`, which runs
-  at the top of `hydrateState()`. Move old material to the **Old Drafts** sidebar group (`parent:'archive'`); don't delete it.
-- `hydrateState()` stops partway on every load (it throws at `dc(SEED.boxes.finance)`, which this book doesn't have), so
-  nothing after that line runs. The migration sits above it on purpose. Fixing that is a separate change.
+  devices. To ship new seeded content: raise `SEED.contentVersion` (now 3) and add a `migrateToVn()` step that
+  `migrateContent()` calls; it runs first in `hydrateState()`. Move old material to **Old Drafts** (sidebar group
+  `parent:'archive'`, or the Curriculum tab's `old-drafts` course); don't delete it.
+- Loading (`initState`): a fresh device starts from `SEED` with `_ts: 0` and stores nothing until the first edit. An upgraded
+  book is stored **without** bumping `_ts`. Both keep a newer copy on GitHub winning when Sync compares timestamps.
+- The file was forked from a life-planner app. On Sep 28, 2026 the unreachable leftovers were removed: the home tab,
+  calendar, brain dump and auto-sort, fitness, cookbook, lists, tasks and projects, the retired right sidebar, and a
+  second structured unit viewer. The Teacher Book has one box (`teaching`). Don't bring those back by copying code
+  from the other books.
+- Navigation: `openChapter()`, `openSection('notes'|'curriculum')` and `findChapter()`. Sidebar groups live in `CHAPTER_GROUPS`.
+  Page tools (rename, move, delete) are the ⋮ after the page tabs; chapter tools are the ⋮ on each sidebar row.
 - GitHub Sync saves `teacher_book_data.json` to the **private `subroutine-data` repo**, which is the default. Any device still set to the
   public `SUBROUTINE` repo gets switched automatically. Its settings slot is `teacher_book_gh_cfg`.
 - Every book shares one address (zjaylewis94.github.io), so they share one browser storage space of about 5 MB.
@@ -63,7 +70,8 @@ the book actually displays go in this repo.
     and U5 Koons Dog (from last year). Every other project says "Not written yet".
   - Last year's Draw & Paint 2 and 4 stay at the bottom of the Curriculum tab (`archived:true`, ids `ly-…`), with their master studies.
   - Syllabus → Project Overview and Year at a Glance were rewritten from the doc. The Sub Guide and Official Syllabus now say Tier 2 = 4 pts.
-  - The old medium-by-medium unit chapters, the old syllabus pages and the old Ramhaus Unit 1 are under **Old Drafts**.
+  - The old medium-by-medium unit chapters and the old syllabus pages are under the **Old Drafts** sidebar group.
+    The old Ramhaus Unit 1 (with its steps and rubrics) is the **Old Drafts** course at the bottom of the Curriculum tab.
   - **Open question for Zach:** the syllabus letter grades (A = 15–20) assume a 20-point unit. Doc units now total
     20–28 points (e.g. Unit 3 is 2×2 + 4×4 + 8 = 28). Don't change the scale without him.
   - When the doc changes, re-read it and regenerate `CURRICULUM` from it rather than hand-editing (the Sep 28 build
