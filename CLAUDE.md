@@ -51,15 +51,22 @@ the book actually displays go in this repo.
   wide, with no page errors.
 - If a change alters the shape of the book's saved data, bump its localStorage key version.
 
-## Task in progress: fill out the UNIT GUIDES Google Doc
+## UNIT GUIDES Google Doc (filled Sep 28, 2026)
 Google Doc **UNIT GUIDES** (Drive: `The Library/Educator/teacher_book/ramhaus/`,
 id `1nRdwH9gzSa28y3aqIjDO2Qss1KrGboYcNqXNJF6yIXA`). Edit it **in place with the Google Docs connector**.
 Zach chose this over a second doc; if the connector is missing, stop and ask, and don't create a copy.
 
-**The doc now:** a "SAMPLE ONE" guide (Unit 5: Space + Texture, last year's format), then four sections:
-`---DRAW PAINT 1---` … `---DRAW PAINT 4---`, each with a placeholder line "LIST A PROJECT OVERVIEW OF ALL
-THINGS … SEMESTER HERE". Under DP1 there's a "UNIT 1: PENCIL" heading followed by a pasted copy of the sample.
-Replace that copy with the real Unit 1 guide. Leave SAMPLE ONE alone.
+**Structure: one tab per page, all top-level.** `SAMPLE ONE` (last year's Unit 5, left untouched), then
+`---DRAW PAINT 1---`, Units 1–4, `---DRAW PAINT 2---`, Units 5–10, `---DRAW PAINT 3---`, Units 11–14,
+`---DRAW PAINT 4---`, Units 15–20. Each DRAW PAINT tab has a title, a short semester overview, and a 5-column
+at-a-glance table (Unit · Tier 1 · Tier 2 · Tier 3 · Wild Card).
+Each unit tab copies the sample: TITLE heading, OVERVIEW, PROJECT LIST as a 6×2 zigzag table (merged description
+cells; tier colors yellow `#FFF2CC`, blue `#C9DAF8`, red `#F4CCCC`), checkbox project names (bold 10pt, indent 18/36),
+8pt descriptions (indent 36/36), then a WILD CARD list under the table. Deadlines read `DEADLINE: TBD`.
+Suggestions carry a small italic "(suggested)" after the name. Zach removes the label when he keeps one.
+API gotchas learned doing it: apply `namedStyleType` before run styles (it wipes them), and create checkbox bullets
+*before* indenting, because Docs reads an existing indent as a deeper list level.
+One correction to the snapshot: "Barton Morris" is written as **Burton Morris** (the Pop artist).
 
 **Section mapping:** DP1 = Units 1–4 (intro, semester 1) · DP2 = Units 5–10 (intro, semester 2) ·
 DP3 = Units 11–14 (advanced, semester 1) · DP4 = Units 15–20 (advanced, semester 2).
@@ -84,7 +91,7 @@ one "(suggested)"** so Zach can tell them from his own plan. Every tier gets 2�
 | 11 Adv Pencil | Pencil Intro Worksheet+ · Advanced Gradients | Fruit Studies · Constructing + Editing Form · Cast Shadow Studies | Surrealist Forms Landscape | Tunnel Book · Food Truck |
 | 2 Pen & Ink | Pen + Ink Intro Worksheet · Pen Shading Techniques · Line Quality + Line Weights | Contour Line Hands · Zen Doodle w/ Emphasis | Weighted Contour Line Still Life Drawing | Inktober Sketchbook · Halloween Masks |
 | 12 Adv Pen & Ink | Pen + Ink Intro Worksheet+ · Pen Shading Techniques · Line Quality + Line Weights | Contour Line Forms/Objects · Ink Wash Blockout / Pen Texture | Ink Wash (Sumi-e) | Inktober Sketchbook · Halloween Masks |
-| 3 Tempera | Tempera Intro Worksheet · Color Theory Worksheet | Blending Tubes (Smooth + Segmented) · Sparkmatik Blobs · Impossible Shape Painting | 2D Mecca Chameleon · Barton Morris Product Painting | Digital Painting (TBD) · Disco Ball Painting |
+| 3 Tempera | Tempera Intro Worksheet · Color Theory Worksheet | Blending Tubes (Smooth + Segmented) · Sparkmatik Blobs · Impossible Shape Painting | 2D Mecca Chameleon · Burton Morris Product Painting | Digital Painting (TBD) · Disco Ball Painting |
 | 13 Acrylic | Acrylic Intro Worksheet · Color Theory / Value Scales Worksheet+ | That's a Wrap! · Sparkmatik Blobs · 3D Mecca Chameleon | Candy Box | Digital Painting (TBD) · Vector Painting |
 | 4 Water Color | Water Color Worksheet | Object Study Painting | Urban Sketching Final | Holiday Project (TBD) |
 | 14 Adv Water Color | Water Color Worksheet+ | Sweet Treats Painting (layered watercolor + colored pencil details) · Still Life Practice | Urban Sketching Final | Holiday Project (TBD) |
@@ -99,7 +106,7 @@ one "(suggested)"** so Zach can tell them from his own plan. Every tier gets 2�
 
 "—" means empty, so fill it with suggestions. Animation (9/19) can tie into Raminations (Rammy, short animated lessons).
 Tie-breaks Claude made (Zach can override): Tim Burton Portrait → U16 T2 · Sweet Treats → U14 T2 ·
-Koons Dog → U5 · Candy Drawing → U15 · Barton Morris → U3 T3 · 3D Mecca Chameleon → U13 T2.
+Koons Dog → U5 · Candy Drawing → U15 · Burton Morris → U3 T3 · 3D Mecca Chameleon → U13 T2.
 Useful detail lives in `index.html` (search "UNIT 1: PENCIL", "3 N's ARC", "PROJECT BANK"): Unit 1 project
 steps and materials, plus a project bank from old boards.
-After writing, re-read the doc and check every unit has all four rows and each suggestion is labeled.
+When editing later, re-read the doc and check every unit keeps its three tiers plus wild card and each suggestion stays labeled.
