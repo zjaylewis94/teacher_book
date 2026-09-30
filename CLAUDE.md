@@ -107,8 +107,8 @@ Copy title / Copy description buttons that copy rich HTML so the bold survives p
   adding a unit needs no content-version bump or migration. **Zach's standing ask: when a unit's posts are finished
   in the doc, add them to `CLASSROOM_POSTS` in the same session** and open a PR.
 - Done so far: Units 1 and 2. Wild cards Zach offers in more than one unit (Tunnel Book, Food Truck) repeat in each
-  unit's list. Wild card tags use Zach's asterisk form (`[TIER 1*] Inktober`); the `[TIER 2*]`/`[TIER 3*]` tags and
-  points on other wild cards were Claude's guess and still need Zach's OK.
+  unit's list. Every wild card title reads `[WILD CARD] Project Name` (Zach's call, Sep 30). Points on wild cards
+  other than Inktober (1 point per 2 drawings) were Claude's guess and still need Zach's OK.
 - Known drift: Zach moved the Unit 1/11 wild cards (Tunnel Book, Food Truck) up into Units 2/12 in the UNIT GUIDES doc and
   added Festival of Arts Submission to Unit 2. `CURRICULUM` hasn't been regenerated for that yet.
 
