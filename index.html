@@ -404,6 +404,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
 .curr-proj-card.on{background:var(--s2);border-color:var(--tc);outline:1px solid var(--tc)}
 .curr-proj-name{font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.5px;color:var(--text);margin-bottom:3px}
 .curr-proj-meta{font-size:.68rem;color:var(--dim)}
+.curr-view-tabs{display:flex;gap:4px;border-bottom:1px solid var(--br);margin:0 0 14px}
+.curr-view-tab{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:8px 12px;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.curr-view-tab:hover{color:var(--text)}
+.curr-view-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.curr-cr-intro,.curr-cr-empty{font-size:.78rem;color:var(--dim);margin-bottom:10px}
+.curr-cr-empty{font-style:italic}
+.curr-cr-post{background:var(--s1);border:1px solid var(--br);border-left:3px solid var(--tc,var(--br));border-radius:10px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;max-width:760px}
+.curr-cr-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.curr-cr-title{flex:1;min-width:0;font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.5px;color:var(--text)}
+.curr-cr-body{background:var(--bg);border-radius:6px;padding:8px 12px;font-size:.8rem;line-height:1.5;color:var(--text);overflow-wrap:anywhere}
+.curr-cr-body div{min-height:1.2em}
+.curr-cr-attach{flex:1;min-width:0;font-size:.72rem;color:var(--dim);font-style:italic}
+.curr-cr-copy{background:var(--gg);color:var(--gold);border:1px solid var(--gd);border-radius:6px;padding:5px 10px;font-family:'Rajdhani',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap}
+.curr-cr-copy.done{color:var(--ok);border-color:var(--ok);background:none}
 #curr-detail{width:400px;flex-shrink:0;border-left:1px solid var(--br);overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow-x:visible}
 #curr-detail::-webkit-scrollbar{width:3px}
 #curr-detail::-webkit-scrollbar-thumb{background:var(--br2)}
@@ -2945,10 +2959,41 @@ var CURRICULUM = [
 
 ];
 
+// --- GOOGLE CLASSROOM POSTS --------------------------------------
+// Copy-ready Classroom posts per unit (the unit's Google Classroom tab). Source: the CLASSROOM POSTS Google Doc
+// in Drive ramhaus/ (id 1r_d4TpPSjpRgAIOJb6Z50NwND8gT_z2rbrFaTWqO_tY), one tab per unit. Read-only here: it isn't
+// saved to the book, so updating this block reaches every device with no migration. Keyed by unit id.
+var CLASSROOM_POSTS = {
+  u1: [
+    {"group": "TIER 1", "title": "[TIER 1] Pencil Intro Worksheet", "pts": "2 points", "attach": "the worksheet from UNIT 01 PENCIL / PENCIL INTRO WORKSHEET", "desc": "Meet your pencils. Learn what the numbers and letters on a pencil mean, practice the basic marks, and pick up the vocabulary you'll use all year: value, gradient, hatching, and contour.", "steps": ["Complete every section of the worksheet in pencil.", "Test each pencil grade you have (H, HB, 2B, 4B, 6B) and label each swatch.", "Practice each mark: hatching, crosshatching, stippling, blending, and contour line.", "Define each vocab word in your own words.", "Turn it in or just show me in class."], "focus": "Focus on neat, controlled marks and complete answers."},
+    {"group": "TIER 1", "title": "[TIER 1] Value Practice", "pts": "2 points", "attach": "a finished example (Drive folder: SHADING PRACTICE)", "desc": "Value is how light or dark something is, and every medium in this class runs on it. Build a 9-step value scale and a smooth gradient so you know your full range, from bright white to your darkest dark.", "steps": ["Draw a long rectangle and divide it into 9 equal boxes.", "Leave box 1 paper white. Make box 9 the darkest dark you can get. Fill boxes 2–8 so each one is a step darker than the last.", "Draw a second rectangle underneath. Shade it as one smooth gradient from white to darkest dark, with no steps or lines showing.", "Squint at your work. If two boxes look the same, fix them.", "Turn it in or just show me in class."], "focus": "Focus on even steps, smooth blending, and a true dark at the end."},
+    {"group": "TIER 1", "title": "[TIER 1] Shading with Forms", "pts": "2 points", "attach": "a five-value-zones diagram or demo video", "desc": "Almost everything you'll ever draw is built from four forms: sphere, cube, cylinder, and cone. Shade all four under one light source so they look solid.", "steps": ["Draw a sphere, cube, cylinder, and cone.", "Pick one light source and mark it with an arrow or small sun in the corner of your page. Every form is lit from that same spot.", "Shade each form with all five value zones: highlight, midtone, core shadow, reflected light, and cast shadow.", "Give each form a cast shadow on the ground, falling away from the light.", "Turn it in or just show me in class."], "focus": "Focus on one consistent light direction and smooth transitions."},
+    {"group": "TIER 2", "title": "[TIER 2] Mad Scientist Light Logic", "pts": "4 points", "attach": "an example or reference photo", "desc": "Every shadow has a reason. Play mad scientist: set up a group of forms under one dramatic light, then prove you know where every highlight and shadow comes from.", "steps": ["Draw a group of at least 3 forms that overlap (spheres, cubes, cylinders, cones, or lab gear built from them).", "Place one dramatic light source and mark it on your page.", "Shade every form with all five value zones. Draw each cast shadow falling away from the light, including shadows that land on other forms.", "Label your evidence. Use arrows and short notes to point out a highlight, a core shadow, reflected light, a cast shadow, and one shadow landing on another object. Explain why each one is where it is.", "Turn it in or just show me in class."], "focus": "Focus on logic: if the light moved, every shadow would have to move with it."},
+    {"group": "TIER 2", "title": "[TIER 2] Extruding 101", "pts": "4 points", "attach": "a step-by-step demo", "desc": "Push flat shapes and letters into solid 3D blocks using a vanishing point. It's how signs, logos, and block letters get their depth.", "steps": ["Draw a horizon line and put one vanishing point on it.", "Draw at least 5 flat shapes plus your name or initials in block letters. Place some above, some below, and some on the horizon line.", "From every corner of each shape, draw a light line back to the vanishing point.", "Decide how deep each block goes, then close off the back edges parallel to the front.", "Erase the extra guidelines and shade the sides with one light source so the blocks look solid.", "Turn it in or just show me in class."], "focus": "Focus on straight guidelines (use a ruler!) and consistent shading."},
+    {"group": "TIER 3", "title": "[TIER 3] 1 Point Perspective Room", "pts": "8 points", "attach": "1_Point_Perspective_Room.png (in UNIT 01 PENCIL)", "desc": "Design your own room in one-point perspective, then furnish it with solid, shaded objects that all share one light source. Everything from Unit 1 comes together here.", "steps": ["Draw the back wall. It's usually a rectangle.", "Draw the horizon line. This is eye level.", "Put your vanishing point anywhere on the horizon line.", "Connect lines from the vanishing point through the corners of the back wall and extend them to the edges of the page.", "Erase the lines inside the back wall.", "Draw at least 5 objects (bed, dresser, closet, windows, rug, shelves...). Every receding line goes to the same vanishing point.", "Pick one light source, like a window or lamp, and shade every object and its cast shadow from it.", "Erase extra lines, add detail, and make the room feel like it belongs to someone."], "focus": "Focus on accurate perspective, consistent shading, and effort."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Tunnel Book", "pts": "4 points", "attach": "a finished example or a how-to video", "desc": "Build a layered tunnel book where each cut paper layer steps back in space to create depth. Look through the front and the scene should feel like it keeps going.", "steps": ["Pick a scene with a clear foreground, middle ground, and background (forest, city street, underwater, a stage...).", "Plan at least 4 layers on scratch paper: a front frame, 2 or more middle layers, and a back wall.", "Draw each layer on cardstock and cut out an opening in each one so you can see through to the layers behind it.", "Add value in pencil or ink: darker and more detailed up front, lighter and simpler as the layers go back.", "Fold two accordion strips for the sides and glue each layer into its own fold.", "Turn it in or just show me in class."], "focus": "Focus on depth, clean cuts, and craftsmanship."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Food Truck", "pts": "4 points", "attach": "the fold-up food truck template", "desc": "Design your own food truck, then fold it into a 3D model. Invent the food, name the business, and make it look like somewhere people would line up.", "steps": ["Invent your business: a name, what you sell, and a logo.", "Sketch your design lightly on each flat panel of the template: windshield and wheels on the front and sides, a serving window and awning on one side.", "Add signage with your business name and a menu board with at least 5 items and prices.", "Finish it in pencil or ink with clean lines and at least 3 values of shading.", "Cut, fold, and glue it into its 3D shape.", "Turn it in or just show me in class."], "focus": "Focus on creativity, craftsmanship, and effort."},
+  ],
+  u2: [
+    {"group": "TIER 1", "title": "[TIER 1] Pen + Ink Intro Worksheet", "pts": "2 points", "attach": "the pen + ink intro worksheet", "desc": "Ink doesn't erase, so every mark is a decision. Learn the tools, the vocabulary, and the ground rules for working in a medium you can't take back.", "steps": ["Complete every section of the worksheet in ink. No pencil on this one.", "Test each pen you have (fine liner, marker, brush pen, ballpoint) and label each swatch with its name.", "Practice the four ink marks: hatching, crosshatching, stippling, and scribbling.", "Define each vocab word in your own words: line weight, contour, hatching, crosshatching, stippling, and texture.", "Turn it in or just show me in class."], "focus": "Focus on steady, confident lines and complete answers."},
+    {"group": "TIER 1", "title": "[TIER 1] Pen Shading Techniques", "pts": "2 points", "attach": "a finished example", "desc": "In ink, you can't smudge a shadow. You build value by stacking lines and dots. Practice four ways to shade with a pen and make a value scale with each one.", "steps": ["Draw 4 rows of 5 boxes. Label the rows hatching, crosshatching, stippling, and scribbling.", "In each row, leave box 1 white and make box 5 as dark as that technique can go.", "Fill boxes 2–4 so each one steps darker. Get darker by adding more lines or dots, not by pressing harder.", "Below the scales, shade one sphere with your favorite technique.", "Turn it in or just show me in class."], "focus": "Focus on even spacing, clean steps, and patience (stippling takes time!)."},
+    {"group": "TIER 1", "title": "[TIER 1] Line Quality + Line Weights", "pts": "2 points", "attach": "a line weight example", "desc": "A thick line pushes forward and a thin line falls back. Learn to control line weight so your drawings show depth without any shading.", "steps": ["Fill a row with lines from your thinnest pen to your thickest. Label each one.", "Draw one line that swells from thin to thick to thin without lifting your pen.", "Draw 3 simple objects that overlap (a mug, a book, an apple...).", "Go over the outside edges and the edges closest to you with a thick line. Use thin lines for inside details and edges farther away.", "Add thicker lines on the shadow side of each object, opposite your light source.", "Turn it in or just show me in class."], "focus": "Focus on confident strokes: one smooth line beats five sketchy ones."},
+    {"group": "TIER 2", "title": "[TIER 2] Contour Line Hands", "pts": "4 points", "attach": "blind, continuous, and cross-contour examples", "desc": "Your hand is the one model you always have with you. Draw it three ways (blind, continuous, and cross-contour) to train your eye to follow edges and surfaces.", "steps": ["Blind contour: look only at your hand, not the paper, and draw it slowly in one line. Do 2 of these.", "Continuous contour: now you can look at the paper, but don't lift your pen. Draw your hand in a new pose.", "Cross-contour: draw your hand in a third pose, then add lines that wrap across the fingers and palm to show their curve, like bands around a tube.", "Make your final drawing larger than your real hand and use at least 2 line weights.", "Turn it in or just show me in class."], "focus": "Focus on slow, careful looking. Weird-looking blind contours are part of the process."},
+    {"group": "TIER 2", "title": "[TIER 2] Zen Doodle w/ Emphasis", "pts": "4 points", "attach": "a finished example", "desc": "Fill a design with repeating ink patterns, then make one area the clear focal point through contrast. Every pattern on the page should support the star.", "steps": ["Lightly draw a large shape in pencil (an animal, your initial, an object...) and divide it into 8 or more sections.", "Fill each section with a different repeating pattern in ink.", "Pick one area to be the focal point. Make it stand out with contrast: the darkest darks, the boldest lines, or the most detail, next to calm, simple patterns.", "Use at least 3 line weights and at least one solid black area.", "Erase all pencil lines.", "Turn it in or just show me in class."], "focus": "Focus on pattern variety, clean line work, and one clear focal point."},
+    {"group": "TIER 3", "title": "[TIER 3] Weighted Contour Line Still Life Drawing", "pts": "8 points", "attach": "a still life reference photo, or set one up in class", "desc": "Draw a still life from observation using only line: thick and thin contours that show overlap, depth, and form. Everything from Unit 2 comes together here.", "steps": ["Set up or pick a still life of at least 5 overlapping objects with different sizes and textures.", "Sketch the layout lightly in pencil. Fill the page, and let some objects run off the edge.", "Ink every contour. Use thick lines for outside edges, the front objects, and the shadow side. Use thin lines for inside details and objects farther back.", "Add cross-contour lines or texture to at least 2 objects to show their surface.", "Add one area of value with a technique from Pen Shading Techniques.", "Erase all pencil lines and check that every edge shows a clear line weight choice."], "focus": "Focus on line weight, overlap, and careful observation."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Inktober", "pts": "1 point per 2 Drawings", "attach": "How To Do Inktober! (YouTube) and this year's prompt list image", "desc": "Challenge yourself with daily ink drawings based on fun prompts. It's all about creativity, consistency, and having fun with black ink (or digital \"ink\")", "steps": ["Use the prompt list to inspire each drawing. OR come up with your own prompt!", "You may start with a pencil sketch, but it has to be finished in black ink.", "Turn them in stapled together or just show me in class."], "focus": "Focus on line quality, creativity, and effort."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Halloween Masks", "pts": "4 points", "attach": "example masks or a paper mache how-to video", "desc": "Design and build your own paper mache Halloween mask, then paint a design on it. Scary, funny, or just strange: it's your call.", "steps": ["Sketch 3 mask ideas in your sketchbook and pick the strongest one.", "Build the base form (a balloon, a mask form, or cardboard) and cover it with 3 layers of paper mache. Let each layer dry.", "Add 3D features like horns, a nose, or ears with cardboard or rolled paper, then mache over them.", "Paint a base coat, then paint your design. Use at least 2 colors and one pattern.", "Add outlines and details with marker or ink.", "Turn it in or just show me in class."], "focus": "Focus on craftsmanship, creativity, and effort."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Tunnel Book", "pts": "4 points", "attach": "a finished example or a how-to video", "desc": "Build a layered tunnel book where each cut paper layer steps back in space to create depth. Look through the front and the scene should feel like it keeps going.", "steps": ["Pick a scene with a clear foreground, middle ground, and background (forest, city street, underwater, a stage...).", "Plan at least 4 layers on scratch paper: a front frame, 2 or more middle layers, and a back wall.", "Draw each layer on cardstock and cut out an opening in each one so you can see through to the layers behind it.", "Add value in pencil or ink: darker and more detailed up front, lighter and simpler as the layers go back.", "Fold two accordion strips for the sides and glue each layer into its own fold.", "Turn it in or just show me in class."], "focus": "Focus on depth, clean cuts, and craftsmanship."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Food Truck", "pts": "4 points", "attach": "the fold-up food truck template", "desc": "Design your own food truck, then fold it into a 3D model. Invent the food, name the business, and make it look like somewhere people would line up.", "steps": ["Invent your business: a name, what you sell, and a logo.", "Sketch your design lightly on each flat panel of the template: windshield and wheels on the front and sides, a serving window and awning on one side.", "Add signage with your business name and a menu board with at least 5 items and prices.", "Finish it in pencil or ink with clean lines and at least 3 values of shading.", "Cut, fold, and glue it into its 3D shape.", "Turn it in or just show me in class."], "focus": "Focus on creativity, craftsmanship, and effort."},
+    {"group": "WILD CARD", "title": "[WILD CARD] Festival of Arts Submission", "pts": "8 points", "attach": "the Festival of Arts entry rules and deadline", "desc": "Make one finished, original artwork to submit to the Festival of Arts. Any medium from this class works. This is your chance to have your art shown.", "steps": ["Brainstorm 3 ideas in your sketchbook. Pick one that says something about you or your world.", "Show me your plan before you start the final.", "Make your artwork in any medium we've learned. It has to be your own original idea, not copied from a photo or another artist.", "Give it a title and write a 2–3 sentence artist statement: what it is, what it means, and how you made it.", "Turn in the artwork and the statement together."], "focus": "Focus on craftsmanship, originality, and a finished, show-ready piece."},
+  ],
+};
+
 // curriculum state
 var currCourseId = 'draw1';
 var currUnitId   = 'u1';
 var currProjId   = null;
+var currUnitView = 'projects';   // 'projects' or 'classroom' (the unit's Google Classroom tab)
 
 
 
@@ -3003,6 +3048,85 @@ function currKeepScroll(fn) {
   window.scrollTo(0, y);
   if (cvEl) cvEl.scrollTop = cy;
   var m2 = document.getElementById('curr-main'); if (m2) m2.scrollTop = my;
+}
+
+// A unit's Google Classroom tab: each post with Copy title / Copy description, laid out like Zach's saved draft
+function classroomPostLines(p) {
+  return [['<b>Description:</b>','Description:'], [escHtml(p.desc), p.desc], ['',''], ['',''],
+    ['<b>INSTRUCTIONS:</b>','INSTRUCTIONS:']]
+    .concat(p.steps.map(function(s, i){ return [(i+1)+'. '+escHtml(s), (i+1)+'. '+s]; }))
+    .concat([['',''], ['&nbsp;&nbsp;&nbsp;&nbsp;- '+escHtml(p.focus), '    - '+p.focus], ['',''], ['',''],
+      ['This project is worth up to <b>['+escHtml(p.pts)+']</b>', 'This project is worth up to ['+p.pts+']']]);
+}
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function copyRich(btn, html, text, selectEl) {
+  var label = btn.textContent;
+  function done() {
+    btn.textContent = 'Copied'; btn.classList.add('done');
+    setTimeout(function(){ btn.textContent = label; btn.classList.remove('done'); }, 1600);
+  }
+  function fallback() {
+    // Select the rendered text so the browser copies it with its bold intact
+    var r = document.createRange(); r.selectNodeContents(selectEl);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    var ok = false; try { ok = document.execCommand('copy'); } catch(e) {}
+    if (ok) done(); else btn.textContent = 'Selected: copy it';
+  }
+  try {
+    if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], {type:'text/html'}),
+        'text/plain': new Blob([text], {type:'text/plain'})
+      })]).then(done, fallback);
+      return;
+    }
+  } catch(e) {}
+  fallback();
+}
+
+function renderClassroomPosts(main, posts) {
+  if (!posts.length) {
+    var none = el('div','curr-cr-empty');
+    none.textContent = 'No Classroom posts for this unit yet. They get added here once the unit is written in the CLASSROOM POSTS doc.';
+    main.appendChild(none);
+    return;
+  }
+  var intro = el('div','curr-cr-intro');
+  intro.textContent = 'Paste the title into Title and the description into Description. Bold carries over.';
+  main.appendChild(intro);
+  var groupColor = { 'TIER 1':CURR_TIER_COLORS['TIER 1'], 'TIER 2':CURR_TIER_COLORS['TIER 2'], 'TIER 3':CURR_TIER_COLORS['TIER 3'], 'WILD CARD':CURR_TIER_COLORS['WILD CARD'] };
+  var last = null;
+  posts.forEach(function(p) {
+    var tc = groupColor[p.group] || '#888';
+    if (p.group !== last) {
+      var gh = el('span','curr-tier-label'); gh.style.background = tc; gh.style.margin = '10px 0 8px'; gh.style.display = 'inline-block';
+      gh.textContent = p.group;
+      main.appendChild(gh);
+      last = p.group;
+    }
+    var card = el('div','curr-cr-post'); card.style.setProperty('--tc', tc);
+    var head = el('div','curr-cr-row');
+    var title = el('div','curr-cr-title'); title.textContent = p.title;
+    var bt = el('button','curr-cr-copy'); bt.type = 'button'; bt.textContent = 'Copy title';
+    bt.onclick = function(){ copyRich(bt, escHtml(p.title), p.title, title); };
+    head.appendChild(title); head.appendChild(bt);
+    card.appendChild(head);
+
+    var lines = classroomPostLines(p);
+    var html = lines.map(function(l){ return '<div>'+(l[0]||'<br>')+'</div>'; }).join('');
+    var text = lines.map(function(l){ return l[1]; }).join('\n');
+    var body = el('div','curr-cr-body'); body.innerHTML = html;
+    card.appendChild(body);
+
+    var foot = el('div','curr-cr-row');
+    var att = el('div','curr-cr-attach'); att.textContent = 'Attach: ' + p.attach;
+    var bd = el('button','curr-cr-copy'); bd.type = 'button'; bd.textContent = 'Copy description';
+    bd.onclick = function(){ copyRich(bd, html, text, body); };
+    foot.appendChild(att); foot.appendChild(bd);
+    card.appendChild(foot);
+    main.appendChild(card);
+  });
 }
 
 function renderCurriculum(cv) {
@@ -3183,6 +3307,18 @@ function renderCurriculum(cv) {
   scale.textContent='📊  20-15 = A  ·  14-10 = B  ·  9-8 = C  ·  7-5 = D  ·  4-0 = F';
   unitHdr.appendChild(scale);
   main.appendChild(unitHdr);
+
+  // Projects | Google Classroom tabs
+  var crPosts = CLASSROOM_POSTS[unit.id] || [];
+  var viewTabs = el('div','curr-view-tabs');
+  [['projects','Projects'],['classroom','Google Classroom'+(crPosts.length ? ' ('+crPosts.length+')' : '')]].forEach(function(v){
+    var b = el('button','curr-view-tab'+(currUnitView===v[0]?' on':''));
+    b.type='button'; b.textContent=v[1];
+    b.onclick=function(){ currKeepScroll(function(){ currUnitView=v[0]; renderCanvas(); }); };
+    viewTabs.appendChild(b);
+  });
+  main.appendChild(viewTabs);
+  if (currUnitView === 'classroom') { renderClassroomPosts(main, crPosts); return; }
 
   var tiers = CURR_TIERS;
   tiers.forEach(function(tier) {
