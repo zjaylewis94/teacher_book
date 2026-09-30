@@ -54,6 +54,14 @@ Most Semester 2 units list only a T1 intro worksheet so far.
 - Every book shares one address (zjaylewis94.github.io), so they share one browser storage space of about 5 MB.
   Keys must be unique per book, and big attachments in one book eat into the others' room.
 
+## Worksheets
+`worksheets/` holds printable handouts. They're separate from the app, and each is a letter-size HTML page on the shared
+theme `worksheets/worksheet.css` (Zach's MrLewis handwriting, black marker line art, thick frame, B&W-copier safe).
+`node worksheets/export.js <page>.html [--front img/x.webp] --out pdf/<name>` builds the PDF and fails on overflow.
+Read `worksheets/README.md` before making a new one, and extend the theme rather than starting a new look.
+First sheet (Sep 30, 2026): Tunnel Book. The front is Zach's hand-drawn how-to, the back is "Building your scene"
+(FG/MG/BG, depth tricks, scene ideas, planning boxes).
+
 ## Reference material (Google Drive)
 `The Library/Educator/teacher_book/` (reorganized Sep 28, 2026; each file lives in one place, so don't copy
 files between folders). Look up IDs with Drive search by title, because folder names are stable.
