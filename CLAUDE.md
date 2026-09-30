@@ -106,9 +106,12 @@ Copy title / Copy description buttons that copy rich HTML so the bold survives p
 - In the app the posts live in the `CLASSROOM_POSTS` constant, keyed by unit id. It's code, not saved state, so
   adding a unit needs no content-version bump or migration. **Zach's standing ask: when a unit's posts are finished
   in the doc, add them to `CLASSROOM_POSTS` in the same session** and open a PR.
-- Done so far: Units 1 and 2. Wild cards Zach offers in more than one unit (Tunnel Book, Food Truck) repeat in each
-  unit's list. Every wild card title reads `[WILD CARD] Project Name` (Zach's call, Sep 30). Points on wild cards
-  other than Inktober (1 point per 2 drawings) were Claude's guess and still need Zach's OK.
+- Done: **all 20 units** (144 posts, Sep 30, 2026). Every project in the UNIT GUIDES doc has a post except the two TBD wild
+  cards (Digital Painting, Holiday Project), which are skipped until Zach defines them. Posts for projects the doc labels
+  "(suggested)" carry `sug:true`: the app shows a *suggested* badge and the doc's Attach line starts "Suggested project ·".
+  Wild cards Zach offers in more than one unit repeat in each unit's list (Unit 12 reuses Unit 2's five; Unit 11 has its own
+  harder Tunnel Book and two-point Food Truck, per the guide). Every wild card title reads `[WILD CARD] Project Name`
+  (Zach's call, Sep 30). Wild card points (4, or 8 for Festival of Arts) are Claude's guess except Inktober (1 point per 2 drawings).
 - Known drift: Zach moved the Unit 1/11 wild cards (Tunnel Book, Food Truck) up into Units 2/12 in the UNIT GUIDES doc and
   added Festival of Arts Submission to Unit 2. `CURRICULUM` hasn't been regenerated for that yet.
 
