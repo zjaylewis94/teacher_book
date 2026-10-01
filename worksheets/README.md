@@ -8,6 +8,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Tunnel Book | `img/tunnel_book_howto.webp` (Zach's hand-drawn how-to) | `tunnel_book_scene.html` (building your scene) | `pdf/tunnel_book.pdf` |
 | Unit 2 Pen + Ink Intro | `u02_pen_ink_intro.html` p1: Know your tool | p2: Ink warm-ups (T1, 2 pts) | `pdf/u02_pen_ink_intro.pdf` |
 | Unit 2 Pen Shading Techniques | `u02_pen_shading.html` p1: value scales (hatch, crosshatch, stipple, scribble) | p2: apply to forms (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
+| Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
 
 ## The theme (build on it; don't fork it)
 Taken from Zach's hand-drawn how-to sheets:
