@@ -17,7 +17,8 @@
 
   /* One technique = one workspace band */
   .band { border-top: 2px dashed var(--ink); padding-top: 6px; margin-top: 4px; }
-  .legend + .band, .meta + .band { border-top: none; }
+  .meta + .band { border-top: none; }
+  .contour + .band { margin-top: 6px; }
   .band-head { display: grid; grid-template-columns: 1fr 120px; align-items: center; }
   .band .sec { margin: 0; }
   .band .def { font-size: 14px; line-height: 1.2; margin: 1px 0 6px; }
@@ -35,7 +36,28 @@
   .slabel { display: flex; justify-content: space-between; font-size: 12px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-top: 2px; }
   svg.forms { width: 100%; height: 214px; margin-top: 4px; }
 
-  .check { margin-top: 8px; }
+
+  /* Contour-line reference (front): light blue so it reads as a guide, not a mark to copy */
+  .contour .sec { margin-bottom: 2px; }
+  .contour .note { font-size: 14px; line-height: 1.22; margin: 0 0 2px; }
+  .contour svg { width: 100%; height: 182px; display: block; }
+  .contour .caps { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; font-size: 13px; line-height: 1.15; margin-top: 1px; }
+  .contour .caps b { font-weight: normal; -webkit-text-stroke: var(--w-bold) var(--ink); font-size: 15px; display: block; }
+  svg.art .ct { fill: none; stroke: #4a9fe0; stroke-width: 2.4; stroke-linecap: round; }
+  svg.art .ctd { fill: none; stroke: #4a9fe0; stroke-width: 1.6; stroke-dasharray: 4 5; stroke-linecap: round; }
+
+  /* Blank example box: dashed so it reads as "teacher fills this in" */
+  .exbox { width: 74px; height: 62px; border: 2px dashed var(--ink); margin: 0 auto 2px; }
+
+  /* Back page fits three workspaces: shorter boxes and forms */
+  .compact .band-head .sec { font-size: 21px; }
+  .compact .def { margin: 0 0 4px; font-size: 13.5px; }
+  .compact .vscale, .compact .smooth { height: 50px; }
+  .compact .exbox { height: 50px; }
+  .compact svg.forms { height: 160px; margin-top: 2px; }
+  .compact .light svg { width: 46px; height: 34px; }
+
+  .check { margin-top: 6px; font-size: 13.5px; }
   .check ul { margin: 2px 0 0; padding-left: 22px; }
   .check li { font-size: 14px; line-height: 1.3; }
 </style>
@@ -65,10 +87,16 @@
   <div class="steps"><span><b>1.</b> Fill the 5-step scale</span><span><b>2.</b> Fill the smooth scale (no jumps)</span><span><b>3.</b> Shade all 3 forms</span></div>
   <div class="legend"><span>W = white</span><span>L = light</span><span>M = mid</span><span>D = dark</span><span>B = black</span><span style="margin-left:auto">Pen only</span></div>
 
+  <section class="contour">
+    <div class="sec"><span class="no">00</span>Contour lines first</div>
+    <p class="note">Contour lines wrap around a form, like the path an ant would walk across it (light blue below).
+      Point your marks along these curves and the form turns 3D. Flat surfaces get straight lines, curved surfaces get curved lines.</p>
+    <svg class="art" id="contours" viewBox="0 0 700 182"></svg>
+    <div class="caps"><span><b>Cylinder</b>rings around, lines down</span><span><b>Cone</b>rings shrink to the tip</span><span><b>Sphere</b>curves both ways</span></div>
+  </section>
+
   <div class="band" data-tech="hatch" data-no="01" data-name="Hatching"
        data-def="Parallel lines that all go the same direction. Pack them closer together to go darker."></div>
-  <div class="band" data-tech="cross" data-no="02" data-name="Crosshatching"
-       data-def="Layers of hatching that cross each other. Every new layer of lines makes the value darker."></div>
 </div>
 </div>
 
@@ -77,18 +105,15 @@
 <div class="frame">
   <div class="meta">Pen Shading · back</div>
 
-  <div class="band" data-tech="stipple" data-no="03" data-name="Stippling"
+  <div class="band compact" data-tech="cross" data-no="02" data-name="Crosshatching"
+       data-def="Layers of hatching that cross each other. Every new layer of lines makes the value darker."></div>
+  <div class="band compact" data-tech="stipple" data-no="03" data-name="Stippling"
        data-def="Dots only, no dashes or tails. More dots packed closer = darker. Slow and steady wins."></div>
-  <div class="band" data-tech="scumble" data-no="04" data-name="Scumbling"
+  <div class="band compact" data-tech="scumble" data-no="04" data-name="Scumbling"
        data-def="Tiny overlapping scribbled loops, like a tangle of thread. Stack more loops to go darker."></div>
 
-  <div class="callout check"><span class="lead">Check yourself:</span>
-    <ul>
-      <li>Does each 5-step scale go from white to black with an even jump between boxes?</li>
-      <li>Does each smooth scale fade with no hard edges?</li>
-      <li>Does every form have a light side, a shadow side, and a dark cast shadow pointing right?</li>
-    </ul>
-  </div>
+  <div class="callout check"><span class="lead">Check yourself:</span> even jumps on every 5-step scale, no hard edges on the smooth scales,
+    and every form has a light side, a shadow side and a dark cast shadow.</div>
 </div>
 </div>
 
@@ -136,13 +161,39 @@ document.querySelectorAll('.band').forEach(b => {
     <div class="band-head"><div class="sec"><span class="no">${b.dataset.no}</span>${b.dataset.name}</div><div class="light">Light ${sun}</div></div>
     <p class="def">${b.dataset.def}</p>
     <div class="scales">
-      <div class="ex">${example(b.dataset.tech)}Example</div>
+      <div class="ex"><div class="exbox"></div>Example</div>
       <div><div class="vscale"><div></div><div></div><div></div><div></div><div></div></div>
         <div class="vlabels"><span>W</span><span>L</span><span>M</span><span>D</span><span>B</span></div></div>
       <div><div class="smooth"></div><div class="slabel"><span>White</span><span>smooth scale</span><span>Black</span></div></div>
     </div>
     ${forms}`;
 });
+
+
+// Contour-line reference: black outlines, light blue contours
+(() => {
+  let s = '<g filter="url(#wobble)">';
+  // cylinder
+  const cx = 130, w = 62, top = 28, bot = 166, ry = 14;
+  s += `<path class="white" d="M ${cx - w} ${top} V ${bot} A ${w} ${ry} 0 0 0 ${cx + w} ${bot} V ${top} Z"/><ellipse class="white" cx="${cx}" cy="${top}" rx="${w}" ry="${ry}"/>`;
+  [62, 96, 130].forEach(y => s += `<path class="ct" d="M ${cx - w} ${y} A ${w} ${ry} 0 0 0 ${cx + w} ${y}"/>`);
+  [-60, -30, 0, 30, 60].forEach(a => { const x = cx + w * Math.sin(a * Math.PI / 180), yb = bot + ry * Math.cos(a * Math.PI / 180), yt = top + ry * Math.cos(a * Math.PI / 180); s += `<path class="ct" d="M ${x.toFixed(1)} ${yt.toFixed(1)} V ${yb.toFixed(1)}"/>`; });
+  // cone
+  const kx = 350, apex = 12, base = 166, kw = 72, kry = 15;
+  s += `<path class="white" d="M ${kx - kw} ${base} L ${kx} ${apex} L ${kx + kw} ${base} A ${kw} ${kry} 0 0 1 ${kx - kw} ${base} Z"/><path class="ln" d="M ${kx - kw} ${base} A ${kw} ${kry} 0 0 0 ${kx + kw} ${base}"/>`;
+  [0.35, 0.6, 0.83].forEach(t => { const y = apex + t * (base - apex), hw = kw * t, r = kry * t; s += `<path class="ct" d="M ${(kx - hw).toFixed(1)} ${y.toFixed(1)} A ${hw.toFixed(1)} ${r.toFixed(1)} 0 0 0 ${(kx + hw).toFixed(1)} ${y.toFixed(1)}"/>`; });
+  [-55, -25, 0, 25, 55].forEach(a => { const x = kx + kw * Math.sin(a * Math.PI / 180), y = base + kry * Math.cos(a * Math.PI / 180); s += `<path class="ct" d="M ${kx} ${apex + 6} L ${x.toFixed(1)} ${y.toFixed(1)}"/>`; });
+  // sphere
+  const sx = 575, sy = 92, R = 76;
+  s += `<circle class="white" cx="${sx}" cy="${sy}" r="${R}"/><clipPath id="sphclip"><circle cx="${sx}" cy="${sy}" r="${R - 1}"/></clipPath><g clip-path="url(#sphclip)">`;
+  [-48, -18, 14, 44].forEach(p => { const yc = sy - R * Math.sin(p * Math.PI / 180), hw = R * Math.cos(p * Math.PI / 180), r = hw * 0.26; s += `<path class="ct" d="M ${(sx - hw).toFixed(1)} ${yc.toFixed(1)} A ${hw.toFixed(1)} ${r.toFixed(1)} 0 0 0 ${(sx + hw).toFixed(1)} ${yc.toFixed(1)}"/>`; });
+  [30, 60].forEach(l => { const rx = (R * Math.sin(l * Math.PI / 180)).toFixed(1); s += `<path class="ct" d="M ${sx} ${sy - R} A ${rx} ${R} 0 0 1 ${sx} ${sy + R}"/><path class="ct" d="M ${sx} ${sy - R} A ${rx} ${R} 0 0 0 ${sx} ${sy + R}"/>`; });
+  s += `<path class="ct" d="M ${sx} ${sy - R} V ${sy + R}"/></g>`;
+  // redraw outlines on top so the blue sits inside the forms
+  s += `<path class="ln" d="M ${cx - w} ${top} V ${bot} A ${w} ${ry} 0 0 0 ${cx + w} ${bot} V ${top}"/><ellipse class="ln" cx="${cx}" cy="${top}" rx="${w}" ry="${ry}"/>`;
+  s += `<path class="ln" d="M ${kx - kw} ${base} L ${kx} ${apex} L ${kx + kw} ${base} A ${kw} ${kry} 0 0 1 ${kx - kw} ${base}"/><circle class="ln" cx="${sx}" cy="${sy}" r="${R}"/>`;
+  document.getElementById('contours').innerHTML = s + '</g>';
+})();
 
 // Phones: fit the letter page to the screen width
 const fit = () => document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816).toFixed(3));
