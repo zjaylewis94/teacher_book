@@ -16,6 +16,9 @@ Taken from Zach's hand-drawn how-to sheets:
 - **All caps in Zach's handwriting** (`fonts/MrLewis-Regular.ttf`, from Drive `05 FONTS & BRANDING`). It only has
   letters and basic punctuation, so digits and symbols fall back to Architects Daughter (OFL).
 - **A big title with a marker underline**, and a small `(subtitle)` in parentheses beside it.
+- **Readable on a copy:** MrLewis is a thin pen, so all text gets a marker stroke (`--w-body`, `--w-bold`, `--w-head`,
+  `--w-title` in `worksheet.css`). Running text is 13px minimum, and headers are thick. If a page overflows, cut words
+  before you shrink the text.
 - **Circled step numbers** (`.step` + `.num`) and **starburst callouts** (`.burst`).
 - **Drawings in inline SVG** using the `.ln / .thin / .dark / .mid / .white / .cut` classes and the `#wobble` filter,
   so the lines look hand-drawn. Diagonal hatching (`.cut`) always means "cut this away".

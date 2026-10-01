@@ -15,6 +15,11 @@
   --margin: #d6d6d6;      /* the gray around the frame, like the how-to sheets */
   --hand: "MrLewis", "Hand Fallback", cursive;
   --frame: 3.5px;
+  /* Stroke weights: MrLewis is a thin pen, so every size gets a marker stroke to read well on copies */
+  --w-body: 0.55px;   /* all running text */
+  --w-bold: 1px;      /* labels, emphasis */
+  --w-head: 1.8px;    /* section headers */
+  --w-title: 3px;     /* page titles */
 }
 
 @page { size: letter; margin: 0; }
@@ -31,27 +36,27 @@ body { font-family: var(--hand); color: var(--ink); -webkit-print-color-adjust: 
   height: 100%; background: var(--paper);
   border: var(--frame) solid var(--ink);
   padding: 16px 30px 14px; position: relative;
-  text-transform: uppercase;
+  text-transform: uppercase; -webkit-text-stroke: var(--w-body) var(--ink);
 }
 
 /* Title block: big handwritten title, marker underline, small subtitle in parentheses */
-.title { font-size: 74px; line-height: 1; letter-spacing: 2px; -webkit-text-stroke: 1.3px var(--ink); margin: 0; }
+.title { font-size: 74px; line-height: 1; letter-spacing: 3px; -webkit-text-stroke: var(--w-title) var(--ink); margin: 0; }
 .title-rule { height: 0; border-top: 3px solid var(--ink); border-radius: 3px; width: 64%; margin: 8px 0 4px; transform: rotate(-0.3deg); }
-.subtitle { font-size: 22px; margin: 0 0 0 30%; -webkit-text-stroke: 0.4px var(--ink); }
+.subtitle { font-size: 22px; margin: 0 0 0 30%; -webkit-text-stroke: var(--w-bold) var(--ink); }
 
 /* Section heading with a circled step number, like the how-to steps */
-.step { display: flex; align-items: center; gap: 10px; font-size: 25px; -webkit-text-stroke: 0.6px var(--ink); margin: 0 0 6px; }
+.step { display: flex; align-items: center; gap: 10px; font-size: 25px; letter-spacing: 1px; -webkit-text-stroke: var(--w-head) var(--ink); margin: 0 0 6px; }
 .num {
   flex: none; width: 34px; height: 34px; border: 2.5px solid var(--ink); border-radius: 50%;
   display: grid; place-items: center; font-size: 20px; font-family: "Hand Fallback", cursive;
-  -webkit-text-stroke: 0; transform: rotate(-4deg);
+  -webkit-text-stroke: 0.6px var(--ink); transform: rotate(-4deg);
 }
 .note { font-size: 15px; line-height: 1.25; }
-.small { font-size: 13px; line-height: 1.2; }
-.bold { -webkit-text-stroke: 0.5px var(--ink); }
+.small { font-size: 14px; line-height: 1.2; -webkit-text-stroke: var(--w-bold) var(--ink); letter-spacing: 0; }
+.bold { -webkit-text-stroke: var(--w-bold) var(--ink); }
 
 /* Starburst callout ("DO THIS FOR BOTH PIECES") */
-.burst { position: absolute; display: grid; place-items: center; text-align: center; font-size: 12px; line-height: 1.05; -webkit-text-stroke: 0.3px var(--ink); }
+.burst { position: absolute; display: grid; place-items: center; text-align: center; font-size: 13px; line-height: 1.05; -webkit-text-stroke: var(--w-bold) var(--ink); }
 .burst svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .burst span { position: relative; transform: rotate(-10deg); }
 
@@ -82,10 +87,10 @@ svg.art text { font-family: var(--hand); fill: var(--ink); text-transform: upper
 
 /* Unit intro worksheets ("Know your tool"), modeled on the Pencil Intro Worksheet:
    page 1 explains the medium in numbered sections, page 2 is five warm-up boxes. */
-.meta { font-size: 14px; letter-spacing: 1px; -webkit-text-stroke: 0.3px var(--ink); }
-.sec { display: flex; align-items: baseline; gap: 8px; font-size: 22px; -webkit-text-stroke: 0.6px var(--ink); margin: 0 0 4px; }
-.sec .no { font-family: "Hand Fallback", cursive; font-size: 20px; -webkit-text-stroke: 0; border-bottom: 2.5px solid var(--ink); line-height: 1; }
-.callout { border: 2.5px solid var(--ink); border-radius: 12px 16px 10px 14px; padding: 6px 12px; font-size: 13.5px; line-height: 1.25; }
-.callout .lead { -webkit-text-stroke: 0.55px var(--ink); font-size: 15px; margin-right: 4px; }
+.meta { font-size: 15px; letter-spacing: 1px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+.sec { display: flex; align-items: baseline; gap: 8px; font-size: 23px; letter-spacing: 1px; -webkit-text-stroke: var(--w-head) var(--ink); margin: 0 0 4px; }
+.sec .no { font-family: "Hand Fallback", cursive; font-size: 20px; -webkit-text-stroke: 0.8px var(--ink); border-bottom: 2.5px solid var(--ink); line-height: 1; }
+.callout { border: 2.5px solid var(--ink); border-radius: 12px 16px 10px 14px; padding: 6px 12px; font-size: 14px; line-height: 1.25; }
+.callout .lead { -webkit-text-stroke: var(--w-head) var(--ink); font-size: 16px; margin-right: 4px; }
 .wbox { border: 2.2px solid var(--ink); border-radius: 2px; position: relative; }
-.wbox .tag { position: absolute; left: 5px; top: 3px; font-size: 11px; }
+.wbox .tag { position: absolute; left: 5px; top: 3px; font-size: 13px; -webkit-text-stroke: var(--w-bold) var(--ink); }

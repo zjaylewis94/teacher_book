@@ -11,47 +11,47 @@
   .head .rule-row { display: flex; align-items: center; gap: 14px; }
   .head .title-rule { width: 52%; flex: none; margin: 6px 0 2px; }
   .head .subtitle { margin: 0; white-space: nowrap; font-size: 20px; }
-  .intro { font-size: 15px; line-height: 1.28; margin: 6px 0 10px; }
+  .intro { font-size: 16px; line-height: 1.28; margin: 6px 0 10px; }
 
   /* 1: the three layers */
-  .depth-arrow { display: grid; grid-template-columns: 150px 1fr 150px; align-items: center; gap: 8px; margin: 0 0 4px 0; width: 548px; font-size: 13px; }
+  .depth-arrow { display: grid; grid-template-columns: 150px 1fr 150px; align-items: center; gap: 8px; margin: 0 0 4px 0; width: 548px; font-size: 14px; }
   .depth-arrow .arrow { height: 14px; }
   .layers { display: grid; grid-template-columns: 150px 24px 150px 24px 150px 30px 160px; align-items: start; }
   .op { font-family: "Hand Fallback", cursive; font-size: 30px; text-align: center; padding-top: 52px; }
-  .layer h3 { font-size: 19px; margin: 0 0 3px; -webkit-text-stroke: 0.55px var(--ink); white-space: nowrap; }
-  .layer h3 small { font-size: 12px; -webkit-text-stroke: 0; }
-  .layer ul { list-style: none; padding: 0; margin: 5px 0 0; font-size: 12px; line-height: 1.18; }
+  .layer h3 { font-size: 19px; margin: 0 0 3px; -webkit-text-stroke: var(--w-bold) var(--ink); white-space: nowrap; }
+  .layer h3 small { font-size: 13.5px; -webkit-text-stroke: 0; }
+  .layer ul { list-style: none; padding: 0; margin: 5px 0 0; font-size: 13.5px; line-height: 1.18; }
   .layer li { padding-left: 11px; position: relative; margin-bottom: 1px; }
   .layer li::before { content: "•"; position: absolute; left: 0; font-family: "Hand Fallback", cursive; }
-  .layer .ideas { margin-top: 4px; font-size: 11.5px; line-height: 1.2; border-top: 1.5px dashed var(--ink); padding-top: 4px; }
+  .layer .ideas { margin-top: 4px; font-size: 13px; line-height: 1.2; border-top: 1.5px dashed var(--ink); padding-top: 4px; }
   .layer.view h3 { text-align: center; }
-  .layer.view .cap { font-size: 12.5px; text-align: center; margin-top: 6px; line-height: 1.2; }
-  .legend { display: flex; gap: 16px; align-items: center; font-size: 12px; margin: 4px 0 0; }
+  .layer.view .cap { font-size: 14px; text-align: center; margin-top: 6px; line-height: 1.2; }
+  .legend { display: flex; gap: 16px; align-items: center; font-size: 13.5px; margin: 4px 0 0; }
   .legend svg { width: 28px; height: 16px; }
 
   /* 2: depth tricks */
   .tricks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; text-align: center; }
   .tricks svg { width: 100%; height: 46px; }
-  .tricks b { display: block; font-weight: normal; font-size: 16px; -webkit-text-stroke: 0.5px var(--ink); margin-top: 2px; }
-  .tricks span { font-size: 12px; line-height: 1.15; display: block; }
+  .tricks b { display: block; font-weight: normal; font-size: 16px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-top: 2px; }
+  .tricks span { font-size: 13.5px; line-height: 1.15; display: block; }
 
   /* 3: bridge rule + scene ideas */
   .row3 { display: grid; grid-template-columns: 300px 1fr; gap: 18px; }
-  .bridge { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; font-size: 12px; line-height: 1.15; }
+  .bridge { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; font-size: 13.5px; line-height: 1.15; }
   .bridge svg { width: 100%; height: 78px; }
-  table.ideas { width: 100%; border-collapse: collapse; font-size: 12px; line-height: 1.15; }
-  table.ideas th { font-weight: normal; font-size: 13px; -webkit-text-stroke: 0.45px var(--ink); text-align: left; border-bottom: 2.5px solid var(--ink); padding: 2px 5px; }
+  table.ideas { width: 100%; border-collapse: collapse; font-size: 13.5px; line-height: 1.15; }
+  table.ideas th { font-weight: normal; font-size: 14px; -webkit-text-stroke: var(--w-bold) var(--ink); text-align: left; border-bottom: 2.5px solid var(--ink); padding: 2px 5px; }
   table.ideas td { border-bottom: 1.3px solid var(--ink); padding: 2px 5px; vertical-align: top; }
-  table.ideas td:first-child { -webkit-text-stroke: 0.4px var(--ink); white-space: nowrap; }
+  table.ideas td:first-child { -webkit-text-stroke: var(--w-bold) var(--ink); white-space: nowrap; }
   table.ideas tr:last-child td { border-bottom: 0; }
   table.ideas td + td, table.ideas th + th { border-left: 1.3px solid var(--ink); }
 
   /* 4: plan boxes */
   .plan { display: grid; grid-template-columns: 156px 156px 156px 1fr; gap: 16px; align-items: end; }
   .plan .box { border: 2.5px solid var(--ink); aspect-ratio: 4 / 3; border-radius: 2px; position: relative; }
-  .plan .lbl { font-size: 15px; -webkit-text-stroke: 0.45px var(--ink); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
-  .plan .lbl .num { width: 24px; height: 24px; font-size: 14px; border-width: 2px; }
-  .extra { font-size: 11.5px; margin: 0; line-height: 1.2; }
+  .plan .lbl { font-size: 16px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+  .plan .lbl .num { width: 24px; height: 24px; font-size: 15px; border-width: 2px; }
+  .extra { font-size: 13px; margin: 0; line-height: 1.2; }
 
   section { margin-bottom: 8px; }
 </style>
@@ -101,23 +101,22 @@
         <h3>Foreground</h3>
         <svg class="art" id="p-fg" viewBox="0 0 160 120" width="150" height="112"></svg>
         <ul>
-          <li>The frame of your scene</li>
-          <li>Biggest, darkest, most detail</li>
-          <li>Must touch the edges</li>
+          <li>The frame</li>
+          <li>Biggest + darkest</li>
+          <li>Touches the edges</li>
           <li>Cut out the middle</li>
         </ul>
-        <div class="ideas">Try: trees, curtains, cave walls</div>
       </div>
       <div class="op">+</div>
       <div class="layer">
         <h3>Midground</h3>
         <svg class="art" id="p-mg" viewBox="0 0 160 120" width="150" height="112"></svg>
         <ul>
-          <li>The story: your main subject lives here</li>
-          <li>Medium size, medium value</li>
-          <li>Cut out the sky around it</li>
+          <li>The story</li>
+          <li>Your main subject</li>
+          <li>Medium size + value</li>
+          <li>Cut the sky around it</li>
         </ul>
-        <div class="ideas">Try: a house, a character, a ship</div>
       </div>
       <div class="op">+</div>
       <div class="layer" style="position:relative">
@@ -127,17 +126,17 @@
           <svg viewBox="0 0 78 62" id="burst"></svg><span>don't<br>cut it!</span>
         </div>
         <ul>
-          <li>Smallest, lightest, least detail</li>
-          <li>It's the back wall of the book</li>
-          <li>Keep the whole panel</li>
+          <li>The back wall</li>
+          <li>Smallest + lightest</li>
+          <li>Least detail</li>
+          <li>Keep it whole</li>
         </ul>
-        <div class="ideas">Try: sky, moon, mountains, a skyline</div>
       </div>
       <div class="op">=</div>
       <div class="layer view">
         <h3>The view</h3>
         <svg class="art" id="p-view" viewBox="0 0 160 120" width="160" height="120"></svg>
-        <div class="cap">What you see when you look through the front</div>
+        <div class="cap">Looking through the front</div>
         <div class="legend" style="justify-content:center">
           <svg class="art" viewBox="0 0 28 16"><rect class="cut" x="1" y="1" width="26" height="14"/></svg>
           <span>= cut away</span>
@@ -169,11 +168,11 @@
       <div class="step"><span class="num">4</span>Scene ideas</div>
       <table class="ideas">
         <tr><th>Scene</th><th>Foreground</th><th>Midground</th><th>Background</th></tr>
-        <tr><td>Under the sea</td><td>seaweed</td><td>a diver</td><td>light rays</td></tr>
-        <tr><td>Haunted forest</td><td>dead trees</td><td>a creepy house</td><td>full moon</td></tr>
-        <tr><td>Outer space</td><td>ship window</td><td>an astronaut</td><td>planets</td></tr>
-        <tr><td>City at night</td><td>lamp posts</td><td>a shop</td><td>skyline</td></tr>
-        <tr><td>The stage</td><td>curtains</td><td>a performer</td><td>backdrop</td></tr>
+        <tr><td>Under the sea</td><td>seaweed</td><td>a diver</td><td>sun rays</td></tr>
+        <tr><td>Haunted forest</td><td>dead trees</td><td>a cabin</td><td>full moon</td></tr>
+        <tr><td>Outer space</td><td>porthole</td><td>astronaut</td><td>planets</td></tr>
+        <tr><td>City at night</td><td>lampposts</td><td>a shop</td><td>skyline</td></tr>
+        <tr><td>The stage</td><td>curtains</td><td>a singer</td><td>backdrop</td></tr>
       </table>
     </div>
   </section>
