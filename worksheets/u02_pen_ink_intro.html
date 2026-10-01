@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pen and Ink Intro</title>
+<link rel="stylesheet" href="worksheet.css">
+<style>
+  .head { display: grid; grid-template-columns: 1fr 120px; align-items: start; }
+  .head .title { font-size: 54px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 50%; flex: none; margin: 6px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 20px; }
+  .intro { font-size: 14px; line-height: 1.28; margin: 6px 0 8px; }
+  section { margin-bottom: 7px; }
+
+  /* 01: the ink family */
+  .tools { display: grid; grid-template-columns: 150px 1fr 190px; column-gap: 14px; row-gap: 2px; align-items: center; }
+  .tools svg.pen { width: 150px; height: 30px; }
+  .tools svg.sample { width: 190px; height: 30px; }
+  .tools .name { font-size: 15px; -webkit-text-stroke: 0.5px var(--ink); }
+  .tools .desc { font-size: 12px; line-height: 1.18; }
+  .tools .rowline { grid-column: 1 / -1; border-top: 1.3px dashed var(--ink); height: 0; }
+
+  /* 02: permanent vs water-based */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .vs .card { display: grid; grid-template-columns: 104px 1fr; gap: 10px; align-items: center; }
+  .vs svg { width: 104px; height: 66px; }
+  .vs h4 { margin: 0 0 2px; font-weight: normal; font-size: 15px; -webkit-text-stroke: 0.5px var(--ink); }
+  .vs p { margin: 0; font-size: 12px; line-height: 1.2; }
+
+  /* 03: handling ink */
+  .tips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center; }
+  .tips svg { width: 100%; height: 44px; }
+  .tips b { display: block; font-weight: normal; font-size: 14px; -webkit-text-stroke: 0.45px var(--ink); margin-top: 2px; }
+  .tips span { display: block; font-size: 11.5px; line-height: 1.15; }
+
+  /* 04: vocabulary */
+  .vocab { display: grid; grid-template-columns: 1fr 1fr; column-gap: 22px; row-gap: 3px; font-size: 12px; line-height: 1.2; }
+  .vocab div b { font-weight: normal; -webkit-text-stroke: 0.5px var(--ink); font-size: 13px; }
+
+  /* Page 2: warm-ups */
+  .howto { font-size: 13.5px; line-height: 1.25; margin: 6px 0 10px; }
+  .wu { margin-bottom: 11px; }
+  .wu .sec { font-size: 19px; margin-bottom: 1px; }
+  .wu p { margin: 0 0 5px; font-size: 12.5px; line-height: 1.2; }
+  .row { display: grid; gap: 10px; }
+  .wbox .tag { font-size: 11.5px; }
+  .ask { font-size: 12.5px; margin-top: 4px; }
+  .ask .blank { display: inline-block; border-bottom: 1.5px solid var(--ink); width: 300px; height: 13px; vertical-align: bottom; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#fff"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#8a8a8a" stroke-width="1.3"/>
+    </pattern>
+    <filter id="wobble" x="-5%" y="-10%" width="110%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="bleed" x="-30%" y="-60%" width="160%" height="220%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="9" result="n"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.6" result="b"/>
+      <feDisplacementMap in="b" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <linearGradient id="press" x1="0" x2="1">
+      <stop offset="0" stop-color="#c4c4c4"/><stop offset="1" stop-color="#111"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ============ PAGE 1: KNOW YOUR TOOL ============ -->
+<div class="page">
+<div class="frame">
+
+  <div class="head">
+    <div>
+      <div class="meta">Unit 2 · Draw + Paint 1 · Know your tool</div>
+      <h1 class="title">Pen + Ink</h1>
+      <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(intro worksheet)</p></div>
+    </div>
+    <svg class="art" id="hero" viewBox="0 0 120 100" width="120" height="100"></svg>
+  </div>
+
+  <p class="intro">Ink is the bold, brave cousin of the pencil. There's no eraser, so every mark you make stays on the page.
+    That sounds scary, but it's why ink looks so confident: comics, tattoos, posters and street art all live here.
+    This worksheet is about meeting the tools and finding out how ink behaves.</p>
+
+  <section>
+    <div class="sec"><span class="no">01</span>The ink family</div>
+    <div class="tools" id="tools"></div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">02</span>Permanent vs. water-based</div>
+    <div class="vs">
+      <div class="card">
+        <svg class="art" id="v-perm" viewBox="0 0 120 78"></svg>
+        <div><h4>Permanent</h4><p>Sharpie, Micron, India ink. Once it's dry, water can't move it. The bottom half got water: no change.</p></div>
+      </div>
+      <div class="card">
+        <svg class="art" id="v-water" viewBox="0 0 120 78"></svg>
+        <div><h4>Water-based</h4><p>Washable markers, Flair pens, most brush pens. Water melts the line into a soft wash (bottom half).</p></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:7px"><span class="lead">Ink isn't only black.</span>
+      Water it down for grays (a <span class="bold">wash</span>), grab colored inks and markers, or let a water-based line bleed into a soft shadow on purpose.</div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">03</span>Handling ink</div>
+    <div class="tips">
+      <div><svg class="art" id="h-pull" viewBox="0 0 130 54"></svg><b>Pull, don't push</b><span>pushing makes the tip skip and snag</span></div>
+      <div><svg class="art" id="h-light" viewBox="0 0 130 54"></svg><b>Light touch</b><span>pressing hard bends a fineliner tip for good</span></div>
+      <div><svg class="art" id="h-dry" viewBox="0 0 130 54"></svg><b>Let it dry</b><span>wet ink smears. Rest your hand on scrap paper</span></div>
+      <div><svg class="art" id="h-turn" viewBox="0 0 130 54"></svg><b>Turn the paper</b><span>so every line is a comfortable pull</span></div>
+    </div>
+    <div class="callout" style="margin-top:7px"><span class="lead">Golden rule:</span>
+      Sketch light in pencil, then ink what you mean. One confident line beats five shaky ones.
+      Made a mistake? Ink can't be erased, so make it part of the drawing.</div>
+  </section>
+
+  <section style="margin-bottom:0">
+    <div class="sec"><span class="no">04</span>Ink vocab</div>
+    <div class="vocab">
+      <div><b>Line weight:</b> how thick or thin a line is.</div>
+      <div><b>Nib:</b> the metal tip of a dip pen.</div>
+      <div><b>Tip size:</b> a fineliner's number. Bigger number, thicker line.</div>
+      <div><b>Bleed:</b> ink spreading past your line or through the paper.</div>
+      <div><b>Chisel tip:</b> a flat, angled marker tip. Thin on the edge, fat on the side.</div>
+      <div><b>Wash:</b> ink thinned with water to make grays.</div>
+      <div><b>Permanent:</b> water can't move it once it's dry.</div>
+      <div><b>Ghosting:</b> practicing a stroke in the air before you touch the paper.</div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ PAGE 2: WARM-UPS ============ -->
+<div class="page">
+<div class="frame">
+
+  <div class="meta">Tier 1 · Skill builder · 2 points</div>
+  <h1 class="title" style="font-size:56px">Ink warm-ups</h1>
+  <div class="title-rule" style="width:50%"></div>
+  <p class="howto">Complete all five boxes. <span class="bold">Pen only: no pencil first, no erasing.</span>
+    This isn't about making something pretty. It's about finding out what each tool does.</p>
+
+  <div class="wu">
+    <div class="sec"><span class="no">1</span>Tip test strip</div>
+    <p>Pick five different pens or markers. In each box, write the pen's name, draw one straight line, then fill the small square solid.
+      Which ones fill a solid black, and which leave streaks?</p>
+    <div class="row" style="grid-template-columns:repeat(5,1fr)" id="tiptest"></div>
+  </div>
+
+  <div class="wu">
+    <div class="sec"><span class="no">2</span>Thin side, fat side</div>
+    <p>One marker, three lines. Write your name with the <span class="bold">point</span>, then with the flat side of the
+      <span class="bold">chisel</span>. In the last box, twist the chisel slowly as you pull, so the line turns from thin to fat (a ribbon).</p>
+    <div class="row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="wbox" style="height:66px"><span class="tag">A · point</span></div>
+      <div class="wbox" style="height:66px"><span class="tag">B · chisel</span></div>
+      <div class="wbox" style="height:66px"><span class="tag">C · twist (ribbon)</span><svg class="art" id="ribbon" viewBox="0 0 60 30" style="position:absolute;right:6px;bottom:4px;width:60px;height:30px;opacity:.55"></svg></div>
+    </div>
+  </div>
+
+  <div class="wu">
+    <div class="sec"><span class="no">3</span>Pressure test</div>
+    <p>With a <span class="bold">ballpoint</span>, scribble from feather-light on the left to pressing hard on the right.
+      Then try the same thing with a fineliner in the bottom strip.</p>
+    <div class="row" style="grid-template-columns:1fr">
+      <div class="wbox" style="height:40px"><span class="tag">ballpoint</span></div>
+      <div class="wbox" style="height:40px"><span class="tag">fineliner</span></div>
+    </div>
+    <div class="ask">What changed, and what didn't? <span class="blank" style="width:420px"></span></div>
+  </div>
+
+  <div class="wu">
+    <div class="sec"><span class="no">4</span>Water test</div>
+    <p>Draw five lines in each box. Box A with a <span class="bold">permanent</span> pen, box B with a <span class="bold">water-based</span> marker.
+      Then brush clean water across the bottom half of both boxes.</p>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="wbox" style="height:74px"><span class="tag">A · permanent</span></div>
+      <div class="wbox" style="height:74px"><span class="tag">B · water-based</span></div>
+    </div>
+  </div>
+
+  <div class="wu" style="margin-bottom:0">
+    <div class="sec"><span class="no">5</span>Smear + bleed test</div>
+    <p>A: draw a thick line and swipe your finger across it right away. B: draw another, count to 30, then swipe.
+      C: hold a Sharpie still on the paper for 3 seconds. Then flip your paper over.</p>
+    <div class="row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="wbox" style="height:62px"><span class="tag">A · swipe it wet</span></div>
+      <div class="wbox" style="height:62px"><span class="tag">B · swipe it dry</span></div>
+      <div class="wbox" style="height:62px"><span class="tag">C · hold it (3 sec)</span></div>
+    </div>
+    <div class="ask">Did C bleed through to the back? &nbsp;Yes / No. &nbsp;So what paper would you use? <span class="blank" style="width:190px"></span></div>
+  </div>
+  <div class="callout" style="margin-top:12px"><span class="lead">Quick fact:</span>
+    "India ink" was actually invented in China. It got its English name from the trade routes that carried it through India.</div>
+
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const G = s => `<g filter="url(#wobble)">${s}</g>`;
+
+// ---- Pens, drawn pointing right in a 150 x 34 box ----
+const PENS = {
+  fineliner: `<rect class="white" x="4" y="11" width="78" height="12" rx="3"/>
+    <rect class="dark" x="60" y="11" width="10" height="12"/>
+    <path class="white" d="M82 12 L100 15 L100 19 L82 22 Z"/>
+    <path class="ln" d="M100 17 H114"/>`,
+  ballpoint: `<rect class="white" x="4" y="12" width="84" height="10" rx="5"/>
+    <path class="thin" d="M14 12 V8 H54 V12"/>
+    <path class="thin" d="M70 12 V22 M74 12 V22 M78 12 V22"/>
+    <path class="white" d="M88 12.5 L108 16 L108 18 L88 21.5 Z"/><circle cx="110" cy="17" r="1.8" fill="#111"/>`,
+  brush: `<rect class="white" x="4" y="11" width="72" height="12" rx="4"/>
+    <rect class="mid" x="62" y="11" width="14" height="12"/>
+    <path class="dark" d="M76 12 Q96 10 120 17 Q96 24 76 22 Z"/>`,
+  marker: `<path class="white" d="M22 9 H98 Q104 9 104 15 V19 Q104 25 98 25 H22 Q16 25 16 19 V15 Q16 9 22 9 Z"/>
+    <path class="white" d="M104 13 L114 14.5 Q118 17 114 19.5 L104 21 Z"/>
+    <path class="dark" d="M16 12 L6 13 L3 21 L16 22 Z"/>
+    <path class="thin" d="M40 9 V25 M80 9 V25"/>`,
+  dip: `<path class="white" d="M4 16 Q30 12 70 13 L70 21 Q30 22 4 18 Z"/>
+    <rect class="mid" x="70" y="12" width="14" height="10" rx="1"/>
+    <path class="white" d="M84 12 Q104 13 120 17 Q104 21 84 22 Z"/>
+    <path class="thin" d="M100 17 H120"/><circle cx="98" cy="17" r="1.8" fill="#111"/>`
+};
+
+// ---- Line samples, 190 x 34 ----
+const SAMPLES = {
+  fineliner: `<path d="M4 7 H130" stroke="#111" stroke-width="0.8"/><path d="M4 17 H130" stroke="#111" stroke-width="1.8"/><path d="M4 28 H130" stroke="#111" stroke-width="3.2"/>
+    <text x="138" y="10" font-size="9">005</text><text x="138" y="20" font-size="9">03</text><text x="138" y="31" font-size="9">08</text>`,
+  ballpoint: `<path d="M4 20 q6 -12 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="url(#press)" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="4" y="33" font-size="8">light</text><text x="160" y="33" font-size="8">hard</text>`,
+  brush: `<path d="M6 26 C30 26 40 4 70 6 C100 8 96 30 130 26 C150 24 165 12 184 10 C166 16 150 30 128 30 C94 34 98 12 70 11 C44 10 32 30 6 27 Z" fill="#111"/>`,
+  marker: `<path d="M4 9 H84" stroke="#111" stroke-width="2.4" stroke-linecap="round"/><text x="4" y="31" font-size="8.5">point</text>
+    <path d="M100 4 H186 V20 H100 Z" fill="#111"/><text x="100" y="31" font-size="8.5">chisel</text>`,
+  dip: `<path d="M4 22 C30 22 40 8 64 10 C88 12 92 24 118 22" fill="none" stroke="#111" stroke-width="1"/>
+    <path d="M30 20.5 C40 15 48 10 64 10.5 C50 12 42 17 32 22 Z" fill="#111"/>
+    <path d="M150 16 q6 -8 12 -2 q8 -4 8 5 q6 6 -2 10 q-4 8 -12 3 q-9 2 -8 -7 q-6 -6 2 -9 Z" fill="#111"/>
+    <text x="128" y="14" font-size="8">blot!</text>`
+};
+
+const TOOLS = [
+  ['fineliner', 'Fineliner (Micron)', 'Steady line that never changes. Comes in tip sizes. Best for details and clean outlines.'],
+  ['ballpoint', 'Ballpoint', 'The only pen where pressure changes the darkness. Great for sketching. Can leave blobs.'],
+  ['brush', 'Brush pen', 'A soft, bendy tip. Press for thick, lift for thin, all in one stroke.'],
+  ['marker', 'Marker (Sharpie)', 'Two tips: the point for lines, the chisel for big, bold blacks. Bleeds through thin paper.'],
+  ['dip', 'Dip pen + India ink', 'The old-school way. A metal nib you dip in ink. The line swells with pressure. Watch for blots!']
+];
+$('tools').innerHTML = TOOLS.map(([k, name, desc], i) =>
+  (i ? '<div class="rowline"></div>' : '') +
+  `<svg class="art pen" viewBox="0 0 150 34">${G(PENS[k])}</svg>
+   <div><div class="name">${name}</div><div class="desc">${desc}</div></div>
+   <svg class="art sample" viewBox="0 0 190 34">${SAMPLES[k]}</svg>`).join('');
+
+// ---- Hero: a dip-pen nib over an ink drop ----
+$('hero').innerHTML = G(`
+  <path class="white" d="M60 4 Q82 30 74 58 L60 78 L46 58 Q38 30 60 4 Z"/>
+  <path class="ln" d="M60 40 V77"/><circle class="white" cx="60" cy="40" r="5"/>
+  <path class="thin" d="M47 30 Q60 26 73 30"/>
+  <path class="dark" d="M60 84 q8 8 0 13 q-8 -5 0 -13 Z"/>`);
+
+// ---- 02: permanent vs water-based ----
+const water = `<rect x="6" y="40" width="108" height="34" fill="url(#hatch)" opacity=".35"/><path class="thin" d="M6 40 H114" style="stroke-dasharray:4 3"/>
+`;
+const lines = [16, 30, 44, 58, 72, 86, 100].map(x => `M${x} 8 L${x - 4} 72`).join(' ');
+$('v-perm').innerHTML = `<rect class="box" x="2" y="2" width="116" height="74" style="fill:#fff"/>${water}<path d="${lines}" stroke="#111" stroke-width="2.4" stroke-linecap="round"/>`;
+$('v-water').innerHTML = `<rect class="box" x="2" y="2" width="116" height="74" style="fill:#fff"/>${water}
+  <path d="${[16, 30, 44, 58, 72, 86, 100].map(x => `M${x} 8 L${x - 2} 40`).join(' ')}" stroke="#111" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="${[16, 30, 44, 58, 72, 86, 100].map(x => `M${x - 2} 42 L${x - 4} 70`).join(' ')}" stroke="#666" stroke-width="7" stroke-linecap="round" filter="url(#bleed)" opacity=".8"/>`;
+
+// ---- 03: handling tips ----
+$('h-pull').innerHTML = G(`<path class="white" d="M70 6 L104 40 L100 44 L66 10 Z"/><path class="ln" d="M104 40 L110 46"/>
+  <path class="ln" d="M24 50 H96"/><path class="ln" d="M36 44 L24 50 L36 56" style="stroke-width:2"/>`);
+$('h-light').innerHTML = G(`<path class="white" d="M40 4 L58 34 L54 36 L36 6 Z"/><path class="ln" d="M58 34 L61 40"/>
+  <path class="white" d="M84 4 L102 34 L98 36 L80 6 Z"/><path class="ln" d="M102 34 Q104 40 110 40"/>
+  <path class="thin" d="M30 46 H66"/><text x="86" y="52" font-size="9">ouch</text>`);
+$('h-dry').innerHTML = G(`<path d="M18 22 H100" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+  <path d="M56 22 C66 30 80 34 104 36" stroke="#777" stroke-width="7" stroke-linecap="round" fill="none" filter="url(#bleed)"/>
+  <rect class="white" x="20" y="38" width="90" height="12" rx="2"/><text x="34" y="47" font-size="8">scrap paper</text>`);
+$('h-turn').innerHTML = G(`<rect class="white" x="44" y="6" width="42" height="42" rx="2" transform="rotate(18 65 27)"/>
+  <path class="ln" d="M30 40 A36 36 0 0 1 40 10"/><path class="ln" d="M34 12 L40 9 L42 16" style="stroke-width:2"/>
+  <path class="ln" d="M100 14 A36 36 0 0 1 90 44"/><path class="ln" d="M96 42 L90 45 L88 38" style="stroke-width:2"/>`);
+
+// ---- Page 2 boxes ----
+$('tiptest').innerHTML = [1, 2, 3, 4, 5].map(n => `<div class="wbox" style="height:90px">
+  <span class="tag">pen: ________</span>
+  <div style="position:absolute;right:8px;bottom:8px;width:30px;height:30px;border:1.6px dashed #111"></div></div>`).join('');
+$('ribbon').innerHTML = `<path d="M2 24 C14 24 20 22 30 14 C38 8 46 4 58 4 L58 12 C48 12 40 14 32 20 C22 28 14 28 2 26 Z" fill="#111"/>`;
+
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>

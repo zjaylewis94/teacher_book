@@ -23,7 +23,10 @@ const front = opt('--front');
   const overflow = await page.evaluate(() => [...document.querySelectorAll('.frame')].map(f => f.scrollHeight - f.clientHeight));
   if (overflow.some(n => n > 0)) errors.push('content runs past the frame by ' + overflow.join(', ') + 'px');
 
-  await page.screenshot({ path: out + '.png', clip: { x: 0, y: 0, width: 816, height: 1056 } });
+  const pages = await page.$$('.page');
+  for (let i = 0; i < pages.length; i++) {
+    await pages[i].screenshot({ path: out + (pages.length > 1 ? '-' + (i + 1) : '') + '.png' });
+  }
 
   if (front) {
     const url = 'file://' + path.resolve(__dirname, front);
