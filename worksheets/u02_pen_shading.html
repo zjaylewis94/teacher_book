@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pen Shading Techniques</title>
+<link rel="stylesheet" href="worksheet.css">
+<style>
+  .head { display: grid; grid-template-columns: 1fr 110px; align-items: start; }
+  .head .title { font-size: 54px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 46%; flex: none; margin: 6px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 20px; }
+  .intro { font-size: 15px; line-height: 1.28; margin: 6px 0 8px; }
+
+  /* Value key */
+  .key { display: grid; grid-template-columns: 150px repeat(5, 1fr); gap: 0; align-items: center; margin-bottom: 10px; }
+  .key .lbl { font-size: 15px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .key .sw { height: 30px; border: 2px solid var(--ink); border-left-width: 0; display: grid; place-items: center; font-size: 13px; }
+  .key .sw:first-of-type { border-left-width: 2px; }
+
+  /* Technique rows */
+  .tech { display: grid; grid-template-columns: 210px 1fr; gap: 16px; padding: 8px 0; border-top: 2px dashed var(--ink); }
+  .tech:last-child { border-bottom: 2px dashed var(--ink); }
+  .tech h3 { margin: 0 0 2px; font-weight: normal; font-size: 21px; letter-spacing: 1px; -webkit-text-stroke: var(--w-head) var(--ink); }
+  .tech p { margin: 0 0 4px; font-size: 13.5px; line-height: 1.2; }
+  .tech .tip { font-size: 13px; line-height: 1.2; }
+  .tech .tip b { font-weight: normal; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .scales { display: grid; grid-template-rows: auto auto; gap: 5px; }
+  .scale-row { display: grid; grid-template-columns: 78px 1fr; align-items: center; }
+  .scale-row .rl { font-size: 13px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .scale-row svg { width: 100%; height: auto; display: block; }
+
+  .oops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: center; }
+  .oops svg { width: 100%; height: 56px; }
+  .oops b { display: block; font-weight: normal; font-size: 15px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .oops span { display: block; font-size: 13px; line-height: 1.15; }
+
+  /* Page 2: forms */
+  .light { display: flex; align-items: center; gap: 10px; font-size: 15px; margin: 4px 0 10px; }
+  .light svg { width: 44px; height: 44px; flex: none; }
+  .forms { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; }
+  .form { border: 2.2px solid var(--ink); border-radius: 3px; padding: 8px 10px 6px; }
+  .form h3 { margin: 0; font-weight: normal; font-size: 20px; letter-spacing: 1px; -webkit-text-stroke: var(--w-head) var(--ink); }
+  .form .sub { font-size: 13px; margin-bottom: 4px; }
+  .form .pair { display: grid; grid-template-columns: 124px 1fr; gap: 8px; align-items: end; }
+  .form .pair svg { width: 100%; display: block; }
+  .form .cap { font-size: 12.5px; text-align: center; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .check { margin-top: 12px; }
+  .check ul { margin: 4px 0 0; padding-left: 0; list-style: none; font-size: 14px; line-height: 1.3; columns: 2; column-gap: 24px; }
+  .check li::before { content: "☐ "; font-family: "Hand Fallback", cursive; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ============ PAGE 1: VALUE SCALES ============ -->
+<div class="page">
+<div class="frame">
+  <div class="head">
+    <div>
+      <div class="meta">Unit 2 · Tier 1 · Skill builder · 2 points</div>
+      <h1 class="title">Pen Shading</h1>
+      <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(techniques)</p></div>
+    </div>
+    <svg class="art" id="hero" viewBox="0 0 110 100" width="110" height="100"></svg>
+  </div>
+
+  <p class="intro"><span class="bold">Value</span> is how light or dark something is. A pen can't make gray, so you build value
+    with marks: <span class="bold">more marks, closer together = darker.</span> White paper is your lightest value. Match the five values below.</p>
+
+  <div class="key" id="key"><div class="lbl">Value key</div></div>
+
+  <div id="techs"></div>
+
+  <div class="sec" style="margin-top:10px">Watch out</div>
+  <div class="oops">
+    <div><svg class="art" id="o1" viewBox="0 0 120 56"></svg><b>Hairy hatching</b><span>lines that wander in every direction</span></div>
+    <div><svg class="art" id="o2" viewBox="0 0 120 56"></svg><b>Comma dots</b><span>dragging the pen instead of tapping</span></div>
+    <div><svg class="art" id="o3" viewBox="0 0 120 56"></svg><b>Blob scribble</b><span>scribbling so tight it turns into a black blob</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ============ PAGE 2: APPLY TO FORMS ============ -->
+<div class="page">
+<div class="frame">
+  <div class="meta">Pen shading · Part 2</div>
+  <h1 class="title" style="font-size:52px">Apply to forms</h1>
+  <div class="title-rule" style="width:52%"></div>
+
+  <div class="light">
+    <svg class="art" id="sun" viewBox="0 0 44 44"></svg>
+    <div>The light comes from the <span class="bold">top left</span> on every form. Shade each form with its technique.
+      Use the example on the left to help: light side white, dark side packed with marks.</div>
+  </div>
+
+  <div class="forms" id="forms"></div>
+
+  <div class="check">
+    <div class="sec" style="font-size:20px">Before you turn it in</div>
+    <ul>
+      <li>All four value scales go from white to black</li>
+      <li>Each step is clearly darker than the last</li>
+      <li>All four forms are shaded with their technique</li>
+      <li>The light side of every form stays white</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---------- seeded random so the marks look the same every time ----------
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const f1 = n => n.toFixed(1);
+
+// ---------- mark generators: dark(x, y) returns 0 (white) .. 1 (black), or -1 outside ----------
+// Hatching: parallel lines; every 4th line appears first, then the gaps fill in as it gets darker.
+function hatchLayer(box, dark, angle, s, thresholds, w = 0.9) {
+  const [x0, y0, x1, y1] = box, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  const R = Math.hypot(x1 - x0, y1 - y0) / 2 + 2, a = angle * Math.PI / 180;
+  const dx = Math.cos(a), dy = Math.sin(a), nx = -dy, ny = dx;
+  let d = '';
+  for (let i = 0, o = -R; o <= R; o += s, i++) {
+    const t = thresholds[i % thresholds.length];
+    let on = false;
+    for (let u = -R; u <= R; u += 0.8) {
+      const x = cx + nx * o + dx * u, y = cy + ny * o + dy * u, v = dark(x, y);
+      const hit = v > t;
+      if (hit && !on) { d += `M${f1(x)} ${f1(y)}`; on = true; }
+      else if (!hit && on) { d += `L${f1(x)} ${f1(y)}`; on = false; }
+      else if (hit && u + 0.8 > R) { d += `L${f1(x)} ${f1(y)}`; }
+    }
+  }
+  return `<path d="${d}" fill="none" stroke="#111" stroke-width="${w}" stroke-linecap="round"/>`;
+}
+const HATCH = (box, dark, s = 2.3) => hatchLayer(box, dark, -55, s, [0.12, 0.52, 0.32, 0.72]);
+const XHATCH = (box, dark, s = 3.4) =>
+  hatchLayer(box, dark, -55, s, [0.1]) + hatchLayer(box, dark, 35, s, [0.38]) +
+  hatchLayer(box, dark, -10, s, [0.6]) + hatchLayer(box, dark, 80, s, [0.8]);
+function STIPPLE(box, dark, g = 1.9, seed = 7) {
+  const r = rng(seed), [x0, y0, x1, y1] = box; let out = '';
+  for (let y = y0; y < y1; y += g) for (let x = x0; x < x1; x += g) {
+    const px = x + (r() - .5) * g, py = y + (r() - .5) * g, v = dark(px, py);
+    if (v > 0 && r() < Math.pow(v, 1.15) * 1.05) out += `<circle cx="${f1(px)}" cy="${f1(py)}" r="0.78"/>`;
+  }
+  return `<g fill="#111">${out}</g>`;
+}
+function SCRIBBLE(box, dark, c = 9, seed = 3) {
+  // Loose coils ("llllll" loops) dropped in random directions; darker cells get more of them.
+  const r = rng(seed), [x0, y0, x1, y1] = box; let d = '';
+  for (let y = y0 - c; y < y1; y += c) for (let x = x0 - c; x < x1; x += c) {
+    const v = dark(x + c / 2, y + c / 2); if (v <= 0) continue;
+    const n = Math.round(v * v * 4.2 + v * 0.9);
+    for (let k = 0; k < n; k++) {
+      const sx = x + r() * c, sy = y + r() * c, a = r() * 6.28, ux = Math.cos(a), uy = Math.sin(a);
+      const rad = 1.6 + r() * 1.4, len = 10 + r() * 8;
+      d += `M${f1(sx + rad)} ${f1(sy)}`;
+      for (let t = 0.6; t <= len; t += 0.6) {
+        const th = t * 1.25, px = sx + ux * t * 0.55 + Math.cos(th) * rad, py = sy + uy * t * 0.55 + Math.sin(th) * rad;
+        d += `L${f1(px)} ${f1(py)}`;
+      }
+    }
+  }
+  return `<path d="${d}" fill="none" stroke="#111" stroke-width="0.6" stroke-linejoin="round"/>`;
+}
+
+// ---------- page 1: value key + technique rows ----------
+const LEVELS = [0, 0.27, 0.47, 0.67, 0.92];
+const NAMES = ['white', 'light', 'middle', 'dark', 'black'];
+$('key').innerHTML += LEVELS.map((v, i) =>
+  `<div class="sw" style="background:hsl(0 0% ${Math.round(100 - v * 88)}%);color:${v > .5 ? '#fff' : '#111'};-webkit-text-stroke-color:${v > .5 ? '#fff' : '#111'}">${NAMES[i]}</div>`).join('');
+
+function scaleSVG(mark, example, seed, H = 58) {
+  // 5 boxes of 93 x H, drawn 1:1 so the marks keep their real shape
+  const W = 93, X0 = 2, Y0 = 2;
+  let s = '';
+  LEVELS.forEach((v, i) => {
+    const bx = X0 + i * W, box = [bx, Y0, bx + W, Y0 + H];
+    if (example && v > 0) {
+      const dark = (x, y) => (x >= box[0] && x <= box[2] && y >= box[1] && y <= box[3]) ? v : -1;
+      s += `<clipPath id="c${seed}_${i}"><rect x="${bx + 1}" y="${Y0 + 1}" width="${W - 2}" height="${H - 2}"/></clipPath>`;
+      s += `<g clip-path="url(#c${seed}_${i})">${mark(box, dark, seed + i)}</g>`;
+    }
+    s += `<rect x="${bx}" y="${Y0}" width="${W}" height="${H}" fill="none" stroke="#111" stroke-width="2"/>`;
+  });
+  return `<svg viewBox="0 0 ${W * 5 + 4} ${H + 4}">${s}</svg>`;
+}
+
+const TECHS = [
+  { name: 'Hatching', mark: (b, d) => HATCH(b, d),
+    def: 'Parallel lines that all run the same direction.',
+    tip: '<b>Darker:</b> draw the lines closer together.' },
+  { name: 'Crosshatching', mark: (b, d) => XHATCH(b, d),
+    def: 'Layers of hatching that cross each other.',
+    tip: '<b>Darker:</b> add another layer in a new direction.' },
+  { name: 'Stippling', mark: (b, d, s) => STIPPLE(b, d, 1.9, s),
+    def: 'Value made from dots only.',
+    tip: '<b>Darker:</b> pack the dots tighter. Tap, don\'t drag, or you\'ll get commas.' },
+  { name: 'Scribbling', mark: (b, d, s) => SCRIBBLE(b, d, 9, s),
+    def: 'Small, loose loops and squiggles, layered up.',
+    tip: '<b>Darker:</b> scribble over your scribbles. Keep your hand loose.' }
+];
+$('techs').innerHTML = TECHS.map((t, i) => `<div class="tech">
+  <div><h3>${t.name}</h3><p>${t.def}</p><div class="tip">${t.tip}</div></div>
+  <div class="scales">
+    <div class="scale-row"><span class="rl">Example</span>${scaleSVG(t.mark, true, 10 + i * 10)}</div>
+    <div class="scale-row"><span class="rl">Your turn</span>${scaleSVG(t.mark, false, 50 + i * 10, 82)}</div>
+  </div></div>`).join('');
+
+// ---------- forms (light from the top left) ----------
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+function inPoly(x, y, P) { let c = false; for (let i = 0, j = P.length - 1; i < P.length; j = i++) {
+  const [xi, yi] = P[i], [xj, yj] = P[j];
+  if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
+
+// Each form: outline path, a clip path, and dark(x, y). Drawn in a 120 x 120 box.
+const FORMS = {
+  cube: (() => {
+    const cx = 60, cy = 52, a = 40, k = 0.87;
+    const T = [cx, cy - a / 2 - 10], R = [cx + a * k, cy - 10 + 0], C = [cx, cy + a / 2 - 10], L = [cx - a * k, cy - 10];
+    const top = [T, R, C, L], left = [L, C, [C[0], C[1] + a], [L[0], L[1] + a]], right = [C, R, [R[0], R[1] + a], [C[0], C[1] + a]];
+    const poly = P => 'M' + P.map(p => p.map(f1).join(' ')).join(' L') + ' Z';
+    return { outline: poly(top) + poly(left) + poly(right), clip: poly(top) + poly(left) + poly(right),
+      dark: (x, y) => inPoly(x, y, top) ? 0.08 : inPoly(x, y, left) ? 0.42 : inPoly(x, y, right) ? 0.82 : -1 };
+  })(),
+  cylinder: (() => {
+    const cx = 60, w = 30, yt = 24, yb = 96, ry = 9;
+    return { outline: `M${cx - w} ${yt} V${yb} A${w} ${ry} 0 0 0 ${cx + w} ${yb} V${yt} M${cx - w} ${yt} A${w} ${ry} 0 0 1 ${cx + w} ${yt} A${w} ${ry} 0 0 1 ${cx - w} ${yt}`,
+      clip: `M${cx - w} ${yt} V${yb} A${w} ${ry} 0 0 0 ${cx + w} ${yb} V${yt} A${w} ${ry} 0 0 0 ${cx - w} ${yt} Z`,
+      dark: (x, y) => {
+        if (((x - cx) / w) ** 2 + ((y - yt) / ry) ** 2 <= 1) return 0.06;
+        const u = (x - cx) / w;
+        return clamp(0.1 + 0.8 * Math.pow(clamp((u + 0.55) / 1.55), 1.3) + (u < -0.85 ? 0.12 : 0));
+      } };
+  })(),
+  sphere: (() => {
+    const cx = 60, cy = 58, R = 40, L = [-0.55, -0.6, 0.58];
+    return { outline: `M${cx - R} ${cy} A${R} ${R} 0 1 0 ${cx + R} ${cy} A${R} ${R} 0 1 0 ${cx - R} ${cy}`,
+      clip: `M${cx - R} ${cy} A${R} ${R} 0 1 0 ${cx + R} ${cy} A${R} ${R} 0 1 0 ${cx - R} ${cy} Z`,
+      dark: (x, y) => {
+        const nx = (x - cx) / R, ny = (y - cy) / R, q = nx * nx + ny * ny; if (q > 1) return -1;
+        const nz = Math.sqrt(1 - q), l = nx * L[0] + ny * L[1] + nz * L[2];
+        return clamp(0.95 - 1.05 * clamp(l) + (q > 0.82 && l < 0.1 ? -0.15 : 0));
+      } };
+  })(),
+  cone: (() => {
+    const cx = 60, top = 14, yb = 96, w = 34, ry = 9;
+    return { outline: `M${cx} ${top} L${cx - w} ${yb} A${w} ${ry} 0 0 0 ${cx + w} ${yb} Z`,
+      clip: `M${cx} ${top} L${cx - w} ${yb} A${w} ${ry} 0 0 0 ${cx + w} ${yb} Z`,
+      dark: (x, y) => {
+        const hw = w * clamp((y - top) / (yb - top), 0.02, 1.2), u = (x - cx) / hw;
+        return clamp(0.1 + 0.82 * Math.pow(clamp((u + 0.5) / 1.5), 1.25));
+      } };
+  })()
+};
+
+const PAIRS = [
+  ['Hatching', 'cube', (b, d) => HATCH(b, d, 2.2)],
+  ['Crosshatching', 'cylinder', (b, d) => XHATCH(b, d, 3.2)],
+  ['Stippling', 'sphere', (b, d) => STIPPLE(b, d, 1.7, 21)],
+  ['Scribbling', 'cone', (b, d) => SCRIBBLE(b, d, 7, 5)]
+];
+$('forms').innerHTML = PAIRS.map(([tech, form, mark], i) => {
+  const F = FORMS[form], box = [0, 0, 120, 120];
+  const ex = `<svg viewBox="0 0 120 112" style="height:124px"><clipPath id="fc${i}"><path d="${F.clip}"/></clipPath>
+      <g clip-path="url(#fc${i})">${mark(box, F.dark)}</g>
+      <path d="${F.outline}" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg>`;
+  const blank = `<svg viewBox="0 0 120 112" style="height:288px"><g filter="url(#wobble)">
+      <path d="${F.outline}" fill="none" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></g></svg>`;
+  return `<div class="form"><h3>${tech}</h3><div class="sub">on a ${form}</div>
+    <div class="pair"><div>${ex}<div class="cap">example</div></div><div>${blank}<div class="cap">your turn</div></div></div></div>`;
+}).join('');
+
+// ---------- little drawings ----------
+$('sun').innerHTML = `<g filter="url(#wobble)"><circle cx="22" cy="22" r="8" fill="#fff" stroke="#111" stroke-width="2.2"/>
+  ${[0, 45, 90, 135, 180, 225, 270, 315].map(a => { const r = a * Math.PI / 180;
+    return `<path d="M${f1(22 + Math.cos(r) * 12)} ${f1(22 + Math.sin(r) * 12)} L${f1(22 + Math.cos(r) * 18)} ${f1(22 + Math.sin(r) * 18)}" stroke="#111" stroke-width="2.2" stroke-linecap="round"/>`; }).join('')}</g>`;
+(() => { // hero: a stippled sphere next to a hatched value strip
+  const F = FORMS.sphere;
+  $('hero').innerHTML = `<g transform="translate(-6 -6) scale(0.92)"><clipPath id="hc"><path d="${F.clip}"/></clipPath>
+    <g clip-path="url(#hc)">${STIPPLE([0, 0, 120, 120], F.dark, 2.1, 99)}</g>
+    <path d="${F.outline}" fill="none" stroke="#111" stroke-width="2.2"/></g>`;
+})();
+
+// ---------- watch-out examples, each with a red-pen X ----------
+(() => {
+  const X = `<path d="M100 6 L114 20 M114 6 L100 20" stroke="#111" stroke-width="3" stroke-linecap="round"/>`;
+  const box = `<rect x="2" y="2" width="92" height="52" fill="none" stroke="#111" stroke-width="2"/>`;
+  const r = rng(42);
+  let hairy = '';
+  for (let i = 0; i < 26; i++) { const x = 8 + r() * 78, y = 8 + r() * 40, a = r() * 6.28, L = 6 + r() * 12;
+    hairy += `M${f1(x)} ${f1(y)} l${f1(Math.cos(a) * L)} ${f1(Math.sin(a) * L)}`; }
+  let commas = '';
+  for (let i = 0; i < 40; i++) { const x = 8 + r() * 80, y = 8 + r() * 40;
+    commas += `M${f1(x)} ${f1(y)} q2 1 1 5`; }
+  $('o1').innerHTML = box + `<path d="${hairy}" stroke="#111" stroke-width="1" stroke-linecap="round" fill="none"/>` + X;
+  $('o2').innerHTML = box + `<path d="${commas}" stroke="#111" stroke-width="1.4" stroke-linecap="round" fill="none"/>` + X;
+  $('o3').innerHTML = `<clipPath id="oc"><rect x="3" y="3" width="90" height="50"/></clipPath><g clip-path="url(#oc)">` +
+    SCRIBBLE([20, 8, 76, 48], (x, y) => 0.35, 9, 8) +
+    `<path d="M30 18 q12 -10 28 -2 q16 2 12 18 q-4 14 -22 12 q-20 2 -22 -12 q-4 -10 4 -16 Z" fill="#111"/></g>` + box + X;
+})();
+
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
