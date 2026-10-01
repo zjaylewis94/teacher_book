@@ -31,7 +31,7 @@
 
   /* 03: handling ink */
   .tips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center; }
-  .tips svg { width: 100%; height: 44px; }
+  .tips svg { width: 100%; height: 52px; }
   .tips b { display: block; font-weight: normal; font-size: 15px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-top: 2px; }
   .tips span { display: block; font-size: 13px; line-height: 1.15; }
 
@@ -113,8 +113,8 @@
   <section>
     <div class="sec"><span class="no">03</span>Handling ink</div>
     <div class="tips">
-      <div><svg class="art" id="h-pull" viewBox="0 0 130 54"></svg><b>Pull, don't push</b><span>pushing makes the tip skip and snag</span></div>
-      <div><svg class="art" id="h-light" viewBox="0 0 130 54"></svg><b>Light touch</b><span>pressing hard bends a fineliner tip for good</span></div>
+      <div><svg class="art" id="h-pull" viewBox="0 0 130 58"></svg><b>Pull, don't push</b><span>pushing makes the tip skip and snag</span></div>
+      <div><svg class="art" id="h-light" viewBox="0 0 130 58"></svg><b>Light touch</b><span>pressing hard bends a fineliner tip for good</span></div>
       <div><svg class="art" id="h-dry" viewBox="0 0 130 54"></svg><b>Let it dry</b><span>wet ink smears. Rest your hand on scrap paper</span></div>
       <div><svg class="art" id="h-turn" viewBox="0 0 130 54"></svg><b>Turn the paper</b><span>so every line is a comfortable pull</span></div>
     </div>
@@ -278,11 +278,23 @@ $('v-water').innerHTML = `<rect class="box" x="2" y="2" width="116" height="74" 
   <path d="${[16, 30, 44, 58, 72, 86, 100].map(x => `M${x - 2} 42 L${x - 4} 70`).join(' ')}" stroke="#666" stroke-width="7" stroke-linecap="round" filter="url(#bleed)" opacity=".8"/>`;
 
 // ---- 03: handling tips ----
-$('h-pull').innerHTML = G(`<path class="white" d="M70 6 L104 40 L100 44 L66 10 Z"/><path class="ln" d="M104 40 L110 46"/>
-  <path class="ln" d="M24 50 H96"/><path class="ln" d="M36 44 L24 50 L36 56" style="stroke-width:2"/>`);
-$('h-light').innerHTML = G(`<path class="white" d="M40 4 L58 34 L54 36 L36 6 Z"/><path class="ln" d="M58 34 L61 40"/>
-  <path class="white" d="M84 4 L102 34 L98 36 L80 6 Z"/><path class="ln" d="M102 34 Q104 40 110 40"/>
-  <path class="thin" d="M30 46 H66"/><text x="86" y="52" font-size="11.5">ouch</text>`);
+// One fineliner, drawn with its tip at (tx, ty) and the body leaning up and to the right
+function finePen(tx, ty, bent) {
+  const tip = bent
+    ? `<path class="ln" d="M8 0 L4 0 Q1 0 0 3 L-1 7"/><path class="thin" d="M-4 -3 l-5 -2 M-3 5 l-5 1"/>`
+    : `<path class="ln" d="M8 0 L0 0"/>`;
+  return `<g transform="translate(${tx} ${ty}) rotate(-60)">
+    ${tip}
+    <path class="white" d="M8 -1.6 L15 -4 L15 4 L8 1.6 Z"/>
+    <rect class="white" x="15" y="-4.5" width="30" height="9" rx="2"/>
+    <rect class="dark" x="33" y="-4.5" width="4" height="9"/>
+    <rect class="white" x="45" y="-3.5" width="3" height="7" rx="1"/>
+  </g>`;
+}
+$('h-pull').innerHTML = G(finePen(78, 46) +
+  `<path class="ln" d="M74 52 H26"/><path class="ln" d="M36 46 L25 52 L36 58" style="stroke-width:2"/>`);
+$('h-light').innerHTML = G(`<path class="thin" d="M16 50.5 H36"/>` + finePen(36, 50) + finePen(84, 50, true) +
+  `<text x="92" y="57" font-size="11.5">ouch</text>`);
 $('h-dry').innerHTML = G(`<path d="M18 22 H100" stroke="#111" stroke-width="5" stroke-linecap="round"/>
   <path d="M56 22 C66 30 80 34 104 36" stroke="#777" stroke-width="7" stroke-linecap="round" fill="none" filter="url(#bleed)"/>
   <rect class="white" x="20" y="38" width="90" height="12" rx="2"/><text x="27" y="48" font-size="11">scrap paper</text>`);
