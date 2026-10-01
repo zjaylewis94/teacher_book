@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pen Shading Techniques</title>
+<link rel="stylesheet" href="worksheet.css">
+<style>
+  .title { font-size: 58px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 46%; flex: none; margin: 6px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 20px; }
+  .brief { font-size: 14.5px; line-height: 1.26; margin: 6px 0 4px; }
+  .steps { display: flex; gap: 18px; font-size: 14px; margin: 2px 0 2px; }
+  .steps b { font-weight: normal; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .legend { display: flex; gap: 16px; font-size: 14px; -webkit-text-stroke: var(--w-bold) var(--ink); margin: 2px 0 6px; }
+
+  /* One technique = one workspace band */
+  .band { border-top: 2px dashed var(--ink); padding-top: 6px; margin-top: 4px; }
+  .legend + .band, .meta + .band { border-top: none; }
+  .band-head { display: grid; grid-template-columns: 1fr 120px; align-items: center; }
+  .band .sec { margin: 0; }
+  .band .def { font-size: 14px; line-height: 1.2; margin: 1px 0 6px; }
+  .light { display: flex; align-items: center; gap: 4px; justify-content: flex-end; font-size: 12px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .light svg { width: 54px; height: 40px; }
+
+  .scales { display: grid; grid-template-columns: 78px 312px 1fr; gap: 14px; align-items: start; }
+  .ex { text-align: center; font-size: 11px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .ex svg { width: 74px; height: 62px; display: block; margin: 0 auto 2px; }
+  .vscale { display: grid; grid-template-columns: repeat(5, 1fr); border: 2.4px solid var(--ink); height: 62px; }
+  .vscale div { border-left: 2.2px solid var(--ink); }
+  .vscale div:first-child { border-left: none; }
+  .vlabels { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 15px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-top: 1px; }
+  .smooth { border: 2.4px solid var(--ink); height: 62px; }
+  .slabel { display: flex; justify-content: space-between; font-size: 12px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-top: 2px; }
+  svg.forms { width: 100%; height: 214px; margin-top: 4px; }
+
+  .check { margin-top: 8px; }
+  .check ul { margin: 2px 0 0; padding-left: 22px; }
+  .check li { font-size: 14px; line-height: 1.3; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wobble" x="-5%" y="-10%" width="110%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <clipPath id="exclip"><rect x="2" y="2" width="70" height="58"/></clipPath>
+  </defs>
+</svg>
+
+<!-- ============ PAGE 1 (FRONT): HATCHING + CROSSHATCHING ============ -->
+<div class="page">
+<div class="frame">
+  <div class="meta">Unit 2 · Draw + Paint 1 · Tier 1 · Skill builder · 2 points</div>
+  <h1 class="title">Pen Shading</h1>
+  <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(4 techniques)</p></div>
+
+  <p class="brief">Pencil gets darker when you press harder. Ink doesn't. In ink, value comes from <span class="bold">how many marks</span>
+    you make and how close together they are: more marks = darker. Light comes from the <span class="bold">top left</span>,
+    so the right sides and the cast shadows are your darkest darks.</p>
+  <div class="steps"><span><b>1.</b> Fill the 5-step scale</span><span><b>2.</b> Fill the smooth scale (no jumps)</span><span><b>3.</b> Shade all 3 forms</span></div>
+  <div class="legend"><span>W = white</span><span>L = light</span><span>M = mid</span><span>D = dark</span><span>B = black</span><span style="margin-left:auto">Pen only</span></div>
+
+  <div class="band" data-tech="hatch" data-no="01" data-name="Hatching"
+       data-def="Parallel lines that all go the same direction. Pack them closer together to go darker."></div>
+  <div class="band" data-tech="cross" data-no="02" data-name="Crosshatching"
+       data-def="Layers of hatching that cross each other. Every new layer of lines makes the value darker."></div>
+</div>
+</div>
+
+<!-- ============ PAGE 2 (BACK): STIPPLING + SCUMBLING ============ -->
+<div class="page">
+<div class="frame">
+  <div class="meta">Pen Shading · back</div>
+
+  <div class="band" data-tech="stipple" data-no="03" data-name="Stippling"
+       data-def="Dots only, no dashes or tails. More dots packed closer = darker. Slow and steady wins."></div>
+  <div class="band" data-tech="scumble" data-no="04" data-name="Scumbling"
+       data-def="Tiny overlapping scribbled loops, like a tangle of thread. Stack more loops to go darker."></div>
+
+  <div class="callout check"><span class="lead">Check yourself:</span>
+    <ul>
+      <li>Does each 5-step scale go from white to black with an even jump between boxes?</li>
+      <li>Does each smooth scale fade with no hard edges?</li>
+      <li>Does every form have a light side, a shadow side, and a dark cast shadow pointing right?</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<script>
+// Seeded random so every print looks the same
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const f = n => Math.round(n * 10) / 10;
+
+// Small inked example of each mark, light (left) to dark (right), in a 74 x 62 box
+function example(kind) {
+  const r = rng(kind.length * 7 + 3); let s = '';
+  if (kind === 'hatch' || kind === 'cross') {
+    for (let x = 4; x < 90; x += 2.2 + Math.max(0, 70 - x) / 9) s += `<line x1="${f(x)}" y1="0" x2="${f(x - 16)}" y2="62" stroke="#111" stroke-width="1.1"/>`;
+    if (kind === 'cross') {
+      for (let x = 24; x < 110; x += 2.6 + Math.max(0, 80 - x) / 12) s += `<line x1="${f(x - 30)}" y1="0" x2="${f(x)}" y2="62" stroke="#111" stroke-width="1.1"/>`;
+      for (let y = 4; y < 62; y += 3.4) s += `<line x1="48" y1="${f(y)}" x2="74" y2="${f(y)}" stroke="#111" stroke-width="1.1"/>`;
+    }
+  }
+  if (kind === 'stipple') for (let i = 0; i < 520; i++) { const x = 2 + Math.pow(r(), 0.5) * 70, y = 2 + r() * 58; s += `<circle cx="${f(x)}" cy="${f(y)}" r="0.9" fill="#111"/>`; }
+  if (kind === 'scumble') {
+    let d = '';
+    for (let i = 0; i < 150; i++) { const t = Math.pow(r(), 0.6), cx = 4 + t * 66, cy = 4 + r() * 54, rr = 2.5 + r() * 2.5;
+      d += `M ${f(cx + rr)} ${f(cy)} a ${f(rr)} ${f(rr * 0.8)} 0 1 0 0.1 0.1 `; }
+    s += `<path d="${d}" fill="none" stroke="#111" stroke-width="0.9"/>`;
+  }
+  return `<svg viewBox="0 0 74 62"><g clip-path="url(#exclip)">${s}</g><rect x="1" y="1" width="72" height="60" fill="none" stroke="#111" stroke-width="2"/></svg>`;
+}
+
+// The three forms with cast shadows (light from the top left, shadows fall right)
+const forms = `<svg class="art forms" viewBox="0 0 700 214" preserveAspectRatio="xMidYMid meet"><g filter="url(#wobble)">
+  <ellipse class="ln" cx="175" cy="186" rx="95" ry="15"/>
+  <path class="white" d="M 40 40 V 186 A 70 16 0 0 0 180 186 V 40 Z"/>
+  <ellipse class="white" cx="110" cy="40" rx="70" ry="16"/>
+  <ellipse class="ln" cx="408" cy="186" rx="98" ry="14"/>
+  <path class="white" d="M 290 186 L 365 22 L 440 186 A 75 15 0 0 1 290 186 Z"/>
+  <path class="ln" d="M 290 186 A 75 15 0 0 0 440 186"/>
+  <ellipse class="ln" cx="630" cy="194" rx="62" ry="12"/>
+  <circle class="white" cx="600" cy="112" r="78"/>
+</g></svg>`;
+
+const sun = `<svg class="art" viewBox="0 0 54 40"><circle class="ln" cx="11" cy="11" r="6"/><path class="thin" d="M 11 1 V 3 M 11 19 V 21 M 1 11 H 3 M 19 11 H 21 M 4 4 L 5.5 5.5 M 16.5 16.5 L 18 18 M 18 4 L 16.5 5.5 M 4 18 L 5.5 16.5"/><path class="ln" d="M 22 18 L 46 34 M 46 34 L 38 33 M 46 34 L 43 27"/></svg>`;
+
+document.querySelectorAll('.band').forEach(b => {
+  b.innerHTML = `
+    <div class="band-head"><div class="sec"><span class="no">${b.dataset.no}</span>${b.dataset.name}</div><div class="light">Light ${sun}</div></div>
+    <p class="def">${b.dataset.def}</p>
+    <div class="scales">
+      <div class="ex">${example(b.dataset.tech)}Example</div>
+      <div><div class="vscale"><div></div><div></div><div></div><div></div><div></div></div>
+        <div class="vlabels"><span>W</span><span>L</span><span>M</span><span>D</span><span>B</span></div></div>
+      <div><div class="smooth"></div><div class="slabel"><span>White</span><span>smooth scale</span><span>Black</span></div></div>
+    </div>
+    ${forms}`;
+});
+
+// Phones: fit the letter page to the screen width
+const fit = () => document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816).toFixed(3));
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>

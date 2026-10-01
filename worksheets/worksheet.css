@@ -1,0 +1,96 @@
+/* Mr. Lewis worksheet theme.
+   Matches the hand-drawn how-to sheets: black marker line art on white,
+   a thick black frame on a light gray page, all caps in Zach's handwriting.
+   Every worksheet links this file so the whole set stays consistent. */
+
+@font-face { font-family: "MrLewis"; src: url("fonts/MrLewis-Regular.ttf") format("truetype"); }
+/* MrLewis has letters and basic punctuation only; digits and symbols fall back to this. */
+@font-face { font-family: "Hand Fallback"; src: url("fonts/ArchitectsDaughter.ttf") format("truetype"); }
+
+:root {
+  --ink: #111;
+  --ink-2: #555;          /* dark fill: foreground value */
+  --ink-3: #9a9a9a;       /* mid fill: midground value, "cut" hatching */
+  --paper: #fff;
+  --margin: #d6d6d6;      /* the gray around the frame, like the how-to sheets */
+  --hand: "MrLewis", "Hand Fallback", cursive;
+  --frame: 3.5px;
+  /* Stroke weights: MrLewis is a thin pen, so every size gets a marker stroke to read well on copies */
+  --w-body: 0.55px;   /* all running text */
+  --w-bold: 1px;      /* labels, emphasis */
+  --w-head: 1.8px;    /* section headers */
+  --w-title: 3px;     /* page titles */
+}
+
+@page { size: letter; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--margin); }
+body { font-family: var(--hand); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.page {
+  width: 8.5in; height: 11in; padding: 0.25in;
+  background: var(--margin); overflow: hidden; margin: 0 auto;
+  page-break-after: always; break-after: page;
+}
+.frame {
+  height: 100%; background: var(--paper);
+  border: var(--frame) solid var(--ink);
+  padding: 16px 30px 14px; position: relative;
+  text-transform: uppercase; -webkit-text-stroke: var(--w-body) var(--ink);
+}
+
+/* Title block: big handwritten title, marker underline, small subtitle in parentheses */
+.title { font-size: 74px; line-height: 1; letter-spacing: 3px; -webkit-text-stroke: var(--w-title) var(--ink); margin: 0; }
+.title-rule { height: 0; border-top: 3px solid var(--ink); border-radius: 3px; width: 64%; margin: 8px 0 4px; transform: rotate(-0.3deg); }
+.subtitle { font-size: 22px; margin: 0 0 0 30%; -webkit-text-stroke: var(--w-bold) var(--ink); }
+
+/* Section heading with a circled step number, like the how-to steps */
+.step { display: flex; align-items: center; gap: 10px; font-size: 25px; letter-spacing: 1px; -webkit-text-stroke: var(--w-head) var(--ink); margin: 0 0 6px; }
+.num {
+  flex: none; width: 34px; height: 34px; border: 2.5px solid var(--ink); border-radius: 50%;
+  display: grid; place-items: center; font-size: 20px; font-family: "Hand Fallback", cursive;
+  -webkit-text-stroke: 0.6px var(--ink); transform: rotate(-4deg);
+}
+.note { font-size: 15px; line-height: 1.25; }
+.small { font-size: 14px; line-height: 1.2; -webkit-text-stroke: var(--w-bold) var(--ink); letter-spacing: 0; }
+.bold { -webkit-text-stroke: var(--w-bold) var(--ink); }
+
+/* Starburst callout ("DO THIS FOR BOTH PIECES") */
+.burst { position: absolute; display: grid; place-items: center; text-align: center; font-size: 13px; line-height: 1.05; -webkit-text-stroke: var(--w-bold) var(--ink); }
+.burst svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.burst span { position: relative; transform: rotate(-10deg); }
+
+/* Line art: every drawing uses the same marker weight and a slight wobble */
+svg.art { display: block; overflow: visible; }
+svg.art .ln { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+svg.art .thin { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+svg.art .box { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; stroke-linejoin: round; }
+svg.art .dark { fill: var(--ink-2); stroke: var(--ink); stroke-width: 1.8; stroke-linejoin: round; }
+svg.art .mid { fill: #c9c9c9; stroke: var(--ink); stroke-width: 1.8; stroke-linejoin: round; }
+svg.art .white { fill: var(--paper); stroke: var(--ink); stroke-width: 1.8; stroke-linejoin: round; }
+svg.art .cut { fill: url(#hatch); stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 5 4; }
+svg.art text { font-family: var(--hand); fill: var(--ink); text-transform: uppercase; }
+
+@media screen {
+  body { padding: 16px 0; }
+  .page { box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+  .page + .page { margin-top: 16px; }
+}
+@media screen and (max-width: 840px) {
+  /* Phones: scale the letter page down to fit the screen width */
+  /* Scale (not zoom) so the text wraps exactly like the printed page */
+  html, body { padding: 0; overflow-x: hidden; }
+  .page { margin: 0; transform: scale(var(--fit, 0.45)); transform-origin: top left;
+          margin-bottom: calc(11in * (var(--fit, 0.45) - 1)); }
+  .page + .page { margin-top: 0; }
+}
+
+/* Unit intro worksheets ("Know your tool"), modeled on the Pencil Intro Worksheet:
+   page 1 explains the medium in numbered sections, page 2 is five warm-up boxes. */
+.meta { font-size: 15px; letter-spacing: 1px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+.sec { display: flex; align-items: baseline; gap: 8px; font-size: 23px; letter-spacing: 1px; -webkit-text-stroke: var(--w-head) var(--ink); margin: 0 0 4px; }
+.sec .no { font-family: "Hand Fallback", cursive; font-size: 20px; -webkit-text-stroke: 0.8px var(--ink); border-bottom: 2.5px solid var(--ink); line-height: 1; }
+.callout { border: 2.5px solid var(--ink); border-radius: 12px 16px 10px 14px; padding: 6px 12px; font-size: 14px; line-height: 1.25; }
+.callout .lead { -webkit-text-stroke: var(--w-head) var(--ink); font-size: 16px; margin-right: 4px; }
+.wbox { border: 2.2px solid var(--ink); border-radius: 2px; position: relative; }
+.wbox .tag { position: absolute; left: 5px; top: 3px; font-size: 13px; -webkit-text-stroke: var(--w-bold) var(--ink); }
