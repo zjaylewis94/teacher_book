@@ -7,7 +7,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 |---|---|---|---|
 | Tunnel Book | `img/tunnel_book_howto.webp` (Zach's hand-drawn how-to) | `tunnel_book_scene.html` (building your scene) | `pdf/tunnel_book.pdf` |
 | Unit 2 Pen + Ink Intro | `u02_pen_ink_intro.html` p1: Know your tool | p2: Ink warm-ups (T1, 2 pts) | `pdf/u02_pen_ink_intro.pdf` |
-| Unit 2 Pen Shading Techniques | `u02_pen_shading.html` p1: value scales (hatch, crosshatch, stipple, scribble) | p2: apply to forms (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
+| Unit 2 Pen Shading Techniques | `u02_pen_shading.html` front: contour lines first + hatching | back: crosshatching, stippling, scumbling (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
 
 ## The theme (build on it; don't fork it)
@@ -36,9 +36,9 @@ Every unit opens with one, modeled on Zach's Pencil Intro Worksheet (Drive: `ram
 - Files are named `uNN_<medium>_intro.html`; the advanced "+" version would be `uNN_<medium>_intro_plus.html`.
 
 ## Generated pen marks
-`u02_pen_shading.html` draws its examples with code: `HATCH`, `XHATCH`, `STIPPLE` and `SCRIBBLE` take a box and a
-`dark(x, y)` function (0 = white, 1 = black) and return SVG marks, seeded so they come out the same every time.
-`FORMS` has a cube, cylinder, sphere and cone lit from the top left. Reuse them for any ink or value sheet.
+Code that draws real hatching, crosshatching, stippling and scribbling (`HATCH`, `XHATCH`, `STIPPLE`, `SCRIBBLE`, plus
+lit cube/cylinder/sphere/cone `FORMS`) lives in git history: `git show 6992a8f:worksheets/u02_pen_shading.html`.
+That draft was replaced by Zach's contour-lines version, but the mark code is reusable for any ink or value sheet.
 
 ## Making a new worksheet
 1. Copy `tunnel_book_scene.html`, keep the `<svg><defs>` block (hatch, wobble, panel clip), and replace the content.
