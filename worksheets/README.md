@@ -11,6 +11,8 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
 
 ## The theme (build on it; don't fork it)
+This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
+follow the digital rules in the Worksheet style guide in `../CLAUDE.md` (Zach's call, Oct 15, 2026).
 Taken from Zach's hand-drawn how-to sheets:
 - **Black marker line art on white.** It has to survive a black-and-white copier, so use gray fills sparingly
   and never rely on color alone.

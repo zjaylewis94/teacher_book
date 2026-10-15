@@ -57,6 +57,7 @@ Most Semester 2 units list only a T1 intro worksheet so far.
 ## Worksheets
 `worksheets/` holds printable handouts. They're separate from the app, and each is a letter-size HTML page on the shared
 theme `worksheets/worksheet.css` (Zach's MrLewis handwriting, black marker line art, thick frame, B&W-copier safe).
+This is the **print** half of the style guide below; color versions for Classroom follow the guide's digital rules.
 `node worksheets/export.js <page>.html [--front img/x.webp] --out pdf/<name>` builds the PDF and fails on overflow.
 Read `worksheets/README.md` before making a new one, and extend the theme rather than starting a new look.
 First sheet (Sep 30, 2026): Tunnel Book. The front is Zach's hand-drawn how-to, the back is "Building your scene"
@@ -88,9 +89,18 @@ the book actually displays go in this repo.
 **Every worksheet, instructional page, cover page and handout made for Zach follows this.** The goal is one
 congruent look with a handwritten cartoon feel, so nothing looks like AI made it. The same guide is a Teaching page in
 SUBROUTINE (Teaching → Worksheets → Style Guide).
-- **Layout:** 0.25 in border with a 10 pt stroke on the outside and rounded corners. Unit + Tier + Points in the header/footer.
-  Header and text boxes have rounded corners. Clear hierarchy.
-- **Fonts:**
+
+**Two versions, one look (Zach's call, Oct 15):**
+- **Printed** (anything that goes through the copier): **black and white**, on the `worksheets/` theme: MrLewis
+  handwriting, black marker line art, gray only where it survives a copy. See `worksheets/README.md`.
+- **Digital** (Google Classroom posts, slides, on-screen handouts, the app): **color**, with the fonts and Crayola
+  palette below.
+- Everything else is shared by both: layout, sizes, doodle drawings, Rammy, reference artists. When a lesson needs both,
+  build the print sheet first, then a color copy for Classroom.
+
+- **Layout (both):** 0.25 in border with a 10 pt stroke on the outside and rounded corners. Unit + Tier + Points in the
+  header/footer. Header and text boxes have rounded corners. Clear hierarchy.
+- **Fonts (digital):**
   - Title: KCPaintedHand
   - Bold outlined with empty fill: KCPaintedHand
   - Bold: Papernotes
@@ -99,15 +109,16 @@ SUBROUTINE (Teaching → Worksheets → Style Guide).
 
   As of Oct 14 these font files aren't in Drive (`05 FONTS & BRANDING/` only has MrLewis). Ask Zach for them
   before building anything that has to render them.
-- **Sizes:** text 24 / 16 / 12 pt; lines 10 / 8 / 5 pt.
-- **Color, used sparingly:**
+- **Sizes (both):** text 24 / 16 / 12 pt; lines 10 / 8 / 5 pt.
+- **Color (digital only), used sparingly:**
   - Crayola palette only.
   - Use it to highlight areas of focus, annotations and corrections.
   - Sometimes use it to fill blocks of content.
-- **Drawings:** doodle-like but accurate.
-- **Rammy (mascot):** narration, quote bubbles, examples.
-- **Artists to mimic:** Jay Conley, Proko, JeyRam, The Etherington Brothers, Jadokar, Skilltopus.
-- **Next pages in this style** (from his Oct 14 brain dump), each with an instructional page and a cover page:
+- **Drawings (both):** doodle-like but accurate.
+- **Rammy (mascot, both):** narration, quote bubbles, examples.
+- **Artists to mimic (both):** Jay Conley, Proko, JeyRam, The Etherington Brothers, Jadokar, Skilltopus.
+- **Next pages in this style** (from his Oct 14 brain dump), each with an instructional page and a cover page.
+  Print versions first:
   - Contour Hand Illusion
   - Contour Objects Illusion
   - Zen Doodle, plus a patterns page
