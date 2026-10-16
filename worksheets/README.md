@@ -9,7 +9,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Unit 2 Pen + Ink Intro | `u02_pen_ink_intro.html` p1: Know your tool | p2: Ink warm-ups (T1, 2 pts) | `pdf/u02_pen_ink_intro.pdf` |
 | Unit 2 Pen Shading Techniques | `u02_pen_shading.html` front: contour lines first + hatching | back: crosshatching, stippling, scumbling (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
-| Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: the problem, rules, list 20, sketch 6 | back: the final truck. Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, `pdf/life_and_death_sub_note.pdf` |
+| Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, steps, 4-pt rubric) | back: work page (list 20, sketch 6, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, `pdf/life_and_death_sub_note.pdf` |
 
 ## The theme (build on it; don't fork it)
 This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
