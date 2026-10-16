@@ -9,7 +9,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Unit 2 Pen + Ink Intro | `u02_pen_ink_intro.html` p1: Know your tool | p2: Ink warm-ups (T1, 2 pts) | `pdf/u02_pen_ink_intro.pdf` |
 | Unit 2 Pen Shading Techniques | `u02_pen_shading.html` front: contour lines first + hatching | back: crosshatching, stippling, scumbling (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
-| Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, steps, 4-pt rubric) | back: work page (list 20, sketch 6, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, `pdf/life_and_death_sub_note.pdf` |
+| Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, 4 steps, rubric) | back: work page (list 5, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, color: `pdf/life_and_death_color.pdf`, `pdf/life_and_death_sub_note.pdf` |
 
 ## The theme (build on it; don't fork it)
 This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
@@ -37,6 +37,17 @@ Every unit opens with one, modeled on Zach's Pencil Intro Worksheet (Drive: `ram
 - Keep them about the medium. Technique gets its own T1 worksheet (e.g. Unit 2's Pen Shading Techniques and
   Line Quality + Line Weights), so don't teach it here.
 - Files are named `uNN_<medium>_intro.html`; the advanced "+" version would be `uNN_<medium>_intro_plus.html`.
+
+## Color versions (Google Classroom)
+A sheet gets its color copy from the same file: open it with `?color` and it switches to the digital style
+(KC PaintedHand titles, outlined KC PaintedHand headings, Papernotes text, KC Beebosloth labels, Crayola colors).
+`life_and_death.html` is the first one; copy its `.digital` block for the next.
+- The KC and Papernotes fonts are **licensed desktop fonts (2 users)**, so they never go in this public repo.
+  Download them from Drive `05 FONTS & BRANDING/` into `worksheets/fonts/licensed/` (ignored by git) before exporting.
+- KC Beebosloth only has letters, digits and periods; its other punctuation is a placeholder, so the page falls back
+  to Papernotes for those characters.
+- Export: `node export.js 'my_sheet.html?color' --out pdf/my_sheet_color`, then rebuild the PDF from the PNGs so no
+  font files are embedded in it (see the Life & Death commit for the one-liner).
 
 ## Generated pen marks
 Code that draws real hatching, crosshatching, stippling and scribbling (`HATCH`, `XHATCH`, `STIPPLE`, `SCRIBBLE`, plus
