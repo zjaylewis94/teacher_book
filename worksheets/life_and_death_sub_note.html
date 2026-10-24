@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sub Plan</title>
+<link rel="stylesheet" href="worksheet.css">
+<style>
+  /* Same layout as life_and_death.html (style guide, Oct 14) */
+  .frame { border-width: 10pt; border-radius: 18px; padding: 14px 30px 12px; }
+  .title { font-size: 60px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 40%; flex: none; margin: 4px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 21px; }
+  .intro { font-size: 16px; line-height: 1.3; margin: 8px 0 10px; }
+  section { margin-bottom: 11px; }
+  .sec { font-size: 26px; }
+  ul { margin: 0; padding-left: 22px; font-size: 16px; line-height: 1.32; }
+  li { margin-bottom: 4px; }
+  .blank { display: inline-block; border-bottom: 2px solid var(--ink); width: 170px; height: 14px; vertical-align: baseline; }
+  .say { border: 3px solid var(--ink); border-radius: 14px 18px 12px 16px; padding: 8px 14px; font-size: 16px; line-height: 1.32; }
+  .say .q { -webkit-text-stroke: var(--w-head) var(--ink); font-size: 21px; margin-right: 4px; }
+  .alert { border: 5px solid var(--ink); border-radius: 14px 18px 12px 16px; padding: 8px 14px; }
+  .alert ul { padding-left: 20px; }
+  .sign { font-size: 21px; -webkit-text-stroke: var(--w-head) var(--ink); text-align: right; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="frame">
+
+  <div class="meta">For the sub · Life &amp; Death · Wild Card · 4 points</div>
+  <h1 class="title">Sub plan</h1>
+  <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(Life &amp; Death week)</p><div class="sign" style="margin:0 0 0 auto">Mr. Lewis</div></div>
+
+  <p class="intro">Thank you for covering my class! I'm at an art conference all week. Students finish their current
+    project, then start a short one called Life &amp; Death. They'll finish at different times, and that's fine.
+    Please leave <span class="bold">5 minutes for cleanup</span> every period. Bell schedules and rules are in my sub reference guide.</p>
+
+  <section>
+    <div class="sec"><span class="no">01</span>The week</div>
+    <ul>
+      <li><span class="bold">Until they finish:</span> students keep working on their current contour project.
+        Finished work goes in <span class="blank"></span>.</li>
+      <li><span class="bold">When they finish:</span> they take a Life &amp; Death sheet from <span class="blank"></span>.</li>
+      <li><span class="bold">Around midweek</span>, once most of the class is ready, read the script below.</li>
+      <li><span class="bold">Pace:</span> day 1 the list and start drawing, days 2–3 finish and color.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">02</span>Read this out loud</div>
+    <div class="say"><span class="q">"</span>This is a 4-point wild card. The back of a truck has two doors. On the left door, draw
+      something alive, new or whole, and make it look real. On the right door, show that same thing destroyed or transformed.
+      Clever, not gory: no weapons aimed at people or animals, no blood, no self-harm, no real people. List 5 ideas on
+      the back, circle your best one, draw it big, then color it. It isn't done until it's colored.<span class="q">"</span></div>
+    <ul style="margin-top:6px">
+      <li><span class="bold">Examples:</span> the book on my desk, pages 112 and 113. Pass it around or put it under the document camera.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">03</span>If a drawing crosses the line</div>
+    <div class="alert">
+      <ul>
+        <li><span class="bold">Gory or violent:</span> no need to argue. Ask them to pick another idea from their list.
+          If they won't, put a sticky note on it and leave it on my desk.</li>
+        <li><span class="bold">Anything that looks like a student might hurt themselves or someone else:</span> don't wait for me.
+          Follow the school's protocol and contact the counselor or front office that period.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">04</span>Collect</div>
+    <ul>
+      <li><span class="bold">Last day of the week:</span> collect every Life &amp; Death sheet, finished or not, and put them in
+        <span class="blank"></span>. I'd rather grade an unfinished one than lose it.</li>
+      <li><span class="bold">Done early?</span> They can draw a second truck on blank paper for bonus points.</li>
+    </ul>
+  </section>
+
+
+</div>
+</div>
+
+<script>
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
