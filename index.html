@@ -4743,6 +4743,9 @@ initSidebarControls();
       for (var attempt = 0; attempt < 4; attempt++) {
         var remote = await getRemote(c), ritems = remote ? remote.items : {};
         var s = loadSync(), local = flatten(S), merged = {}, items = {};
+        // A never-edited book must not become the copy on GitHub: its starter pages would beat real edits made
+        // on another device. Wait until this device has edits, or until another device has uploaded.
+        if (s.first && s.fresh && !remote) { localStorage.removeItem(SYNC_KEY); break; }
         if (s.first && s.fresh && remote) { s.h = {}; s.t = {}; local = {}; }
         var keys = {}; Object.keys(s.h).concat(Object.keys(ritems)).forEach(function(k){ keys[k] = 1; });
         Object.keys(keys).forEach(function(k){
