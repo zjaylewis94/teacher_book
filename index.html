@@ -826,7 +826,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);dis
   #topbar{flex-wrap:nowrap;height:52px;min-height:52px;padding:0 10px;gap:8px}
   #logo{order:0;flex:1 1 auto;min-width:0;white-space:nowrap}
   #tb-date{display:none}
-  #sync-status{order:0;width:auto;white-space:nowrap}
+  #sync-status{display:none}
   #tb-right{order:0;width:auto;margin-left:auto;flex-wrap:nowrap;overflow:visible;gap:5px;padding:0}
   #export-btn,#import-btn,#sync-btn{min-height:34px;padding:4px 8px;font-size:.62rem;letter-spacing:.5px}
   .editor-toolbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -4608,154 +4608,299 @@ renderApp();
 initSidebarControls();
 </script>
 
-<!-- GitHub Sync — drop-in replacement for Firebase, same _fbLoad/_fbSave interface -->
+<!-- GitHub Sync: merges with teacher_book_data.json piece by piece (same _fbLoad/_fbSave hooks as before) -->
 <script>
 (function(){
-  // Config persisted locally (never leaves your browser except to call GitHub)
-  var CFG_KEY = 'teacher_book_gh_cfg';
+  // The book is split into small pieces: every field of every chapter, page, course, unit and project, keyed by its
+  // path (arrays of things with ids are walked by id, so a page stays the same page when others move). Each piece
+  // carries when it last changed on this device. Sync merges with GitHub piece by piece, newest change winning, so
+  // edits made on two devices don't wipe each other. Removed things stay as null so removals spread too.
+  // Only hashes and times are kept here (teacher_book_sync), to spare the storage every book shares.
+  var CFG_KEY = 'teacher_book_gh_cfg', SYNC_KEY = 'teacher_book_sync', AT_KEY = 'teacher_book_sync_at';
+  var LOCAL_ONLY = { _ts: 1, ui: 1, currEditMode: 1 };   // per-device layout, never synced
   function getCfg(){
     var c; try{ c = JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); }catch(e){ return {}; }
     // Teaching data belongs in the private repo, never the public SUBROUTINE one
     if(String(c.owner||'').toLowerCase()==='zjaylewis94' && String(c.repo||'').toLowerCase()==='subroutine'){
-      c.repo = 'subroutine-data'; delete c._sha; setCfg(c);
+      c.repo = 'subroutine-data'; setCfg(c);
     }
     return c;
   }
   function setCfg(c){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(c)); }catch(e){} }
+  function loadSync(){ try{ return JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ return null; } }
+  function storeSync(s){ try{ localStorage.setItem(SYNC_KEY, JSON.stringify(s)); }catch(e){ console.warn('sync state not saved', e); } }
 
-  function ghHeaders(token){
-    return { 'Authorization':'Bearer '+token, 'Accept':'application/vnd.github+json', 'Content-Type':'application/json' };
+  function isIdArray(a){
+    return a.length > 0 && a.every(function(e){ return e && typeof e === 'object' && !Array.isArray(e) && e.id != null; });
   }
-  function apiURL(c){
-    return 'https://api.github.com/repos/'+c.owner+'/'+c.repo+'/contents/'+(c.path||'teacher_book_data.json')+(c.branch?('?ref='+c.branch):'');
-  }
-
-  // LOAD: returns parsed state object or null
-  window._fbLoad = async function(){
-    var c = getCfg();
-    if(!c.token || !c.owner || !c.repo) return null;
-    try{
-      var res = await fetch(apiURL(c), { headers: ghHeaders(c.token) });
-      if(res.status===404) return null; // file not created yet
-      if(!res.ok){ console.warn('GitHub load failed:', res.status); return null; }
-      var j = await res.json();
-      // remember the blob sha for next write
-      c._sha = j.sha; setCfg(c);
-      var content = decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
-      return JSON.parse(content);
-    }catch(e){ console.warn('GitHub load error:', e); return null; }
-  };
-
-  // SAVE: accepts a JSON string (matches old Firebase interface)
-  var saveTimer=null, pending=null;
-  window._fbSave = async function(json){
-    var c = getCfg();
-    if(!c.token || !c.owner || !c.repo) return;
-    pending = json;
-    // debounce writes so we don't hammer the API on every keystroke
-    if(saveTimer) clearTimeout(saveTimer);
-    saveTimer = setTimeout(doSave, 1500);
-  };
-  async function doSave(){
-    var c = getCfg();
-    if(!c.token || pending===null) return;
-    var body = {
-      message: 'teacher book update '+new Date().toISOString(),
-      content: btoa(unescape(encodeURIComponent(pending))),
-      branch: c.branch || undefined
-    };
-    if(c._sha) body.sha = c._sha;
-    try{
-      var res = await fetch('https://api.github.com/repos/'+c.owner+'/'+c.repo+'/contents/'+(c.path||'teacher_book_data.json'), {
-        method:'PUT', headers: ghHeaders(c.token), body: JSON.stringify(body)
+  // book -> { key: value }. Keys are JSON paths; ['@', id] steps into an array element by id,
+  // '#order' holds an array's id order and '#alive' marks that an element exists.
+  function flatten(book){
+    var out = {};
+    function walk(o, path){
+      Object.keys(o).forEach(function(k){
+        if (!path.length && LOCAL_ONLY[k]) return;
+        var v = o[k], p = path.concat([k]);
+        if (Array.isArray(v) && isIdArray(v)) {
+          out[JSON.stringify(p.concat(['#order']))] = v.map(function(e){ return e.id; });
+          v.forEach(function(e){ var ep = p.concat([['@', e.id]]); out[JSON.stringify(ep.concat(['#alive']))] = true; walk(e, ep); });
+        } else if (v && typeof v === 'object' && !Array.isArray(v)) walk(v, p);
+        else out[JSON.stringify(p)] = v;
       });
-      if(res.ok){
-        var j = await res.json();
-        c._sha = j.content.sha; setCfg(c);
-        ghFlash('Synced to GitHub', 'var(--ok)');
-      } else if(res.status===409){
-        // sha conflict — refetch sha and retry once
-        delete c._sha; setCfg(c);
-        var r2 = await fetch(apiURL(c), { headers: ghHeaders(c.token) });
-        if(r2.ok){ var jj=await r2.json(); c._sha=jj.sha; setCfg(c); return doSave(); }
-      } else {
-        ghFlash('Sync failed ('+res.status+')', 'var(--danger)');
-      }
-    }catch(e){ ghFlash('Sync error', 'var(--danger)'); }
-    pending=null;
+    }
+    walk(book, []);
+    return out;
+  }
+  // { key: value } -> book. A plain value beats an id-array at the same spot; elements missing from the
+  // winning order (added on the other device) go at the end.
+  function unflatten(flat){
+    var root = { kids: {}, els: {}, leaf: undefined, order: null };
+    function node(parent, seg){
+      var m = Array.isArray(seg) ? parent.els : parent.kids, k = Array.isArray(seg) ? String(seg[1]) : seg;
+      return m[k] || (m[k] = { kids: {}, els: {}, leaf: undefined, order: null, alive: false, id: Array.isArray(seg) ? seg[1] : undefined });
+    }
+    Object.keys(flat).forEach(function(key){
+      var v = flat[key]; if (v === null || v === undefined) return;
+      var path = JSON.parse(key), last = path[path.length-1], n = root;
+      for (var i = 0; i < path.length - 1; i++) n = node(n, path[i]);
+      if (last === '#order') n.order = v;
+      else if (last === '#alive') n.alive = true;
+      else node(n, last).leaf = v;
+    });
+    function build(n){
+      var o = {};
+      Object.keys(n.kids).forEach(function(k){
+        var c = n.kids[k];
+        if (c.leaf !== undefined) o[k] = c.leaf;
+        else if (c.order) {
+          var ids = c.order.map(String).filter(function(id){ return c.els[id] && c.els[id].alive; });
+          Object.keys(c.els).forEach(function(id){ if (c.els[id].alive && ids.indexOf(id) < 0) ids.push(id); });
+          o[k] = ids.map(function(id){ var e = build(c.els[id]); if (e.id === undefined) e.id = c.els[id].id; return e; });
+        }
+        else if (Object.keys(c.kids).length) o[k] = build(c);
+      });
+      return o;
+    }
+    return build(root);
+  }
+  function hash(str){   // two FNV-1a passes = 64 bits, plenty to spot a change
+    var a = 0x811c9dc5, b = 0x01000193 ^ str.length;
+    for (var i = 0; i < str.length; i++) { var c = str.charCodeAt(i); a = Math.imul(a ^ c, 16777619); b = Math.imul(b ^ c, 2246822519); }
+    return (a >>> 0).toString(36) + (b >>> 0).toString(36);
+  }
+  // Stamp the pieces that changed since the last look. Does nothing until sync is turned on.
+  function stamp(){
+    var s = loadSync(); if (!s || typeof S === 'undefined') return false;
+    var f = flatten(S), now = Date.now(), changed = false;
+    Object.keys(f).forEach(function(k){ var h = hash(JSON.stringify(f[k])); if (s.h[k] !== h) { s.h[k] = h; s.t[k] = now; changed = true; } });
+    Object.keys(s.h).forEach(function(k){ if (!(k in f) && s.h[k] !== '-') { s.h[k] = '-'; s.t[k] = now; changed = true; } });
+    if (changed) storeSync(s);
+    return changed;
   }
 
-  function ghFlash(msg,color){
-    var el=document.getElementById('sync-status');
-    if(el){ el.textContent=msg; el.style.color=color||'var(--dim)'; setTimeout(function(){ el.textContent=''; },2500); }
+  function api(c, path){ return 'https://api.github.com/repos/' + c.owner + '/' + c.repo + path; }
+  function headers(c){ return { 'Authorization':'Bearer '+c.token, 'Accept':'application/vnd.github+json', 'Content-Type':'application/json' }; }
+  function fail(res){ var e = new Error(res.status === 401 || res.status === 403 ? 'token' : 'HTTP ' + res.status); throw e; }
+  var b64 = function(s){ return btoa(unescape(encodeURIComponent(s))); };
+  var unb64 = function(s){ return decodeURIComponent(escape(atob(String(s).replace(/\n/g,'')))); };
+  async function getRemote(c){
+    var path = c.path || 'teacher_book_data.json', ref = c.branch ? '?ref=' + encodeURIComponent(c.branch) : '';
+    var res = await fetch(api(c, '/contents/' + path + ref), { headers: headers(c), cache: 'no-store' });
+    if (res.status === 404) return null;
+    if (!res.ok) fail(res);
+    var j = await res.json(), text;
+    if (j.content) text = unb64(j.content);
+    else {   // over 1 MB the contents API leaves the body out; the blob API still has it
+      var r2 = await fetch(api(c, '/git/blobs/' + j.sha), { headers: headers(c), cache: 'no-store' });
+      if (!r2.ok) fail(r2);
+      text = unb64((await r2.json()).content);
+    }
+    var data = JSON.parse(text), items = data.items;
+    if (!items && data.boxes) {   // an old whole-book save: every piece counts as old
+      items = {}; var f = flatten(data);
+      Object.keys(f).forEach(function(k){ items[k] = { v: f[k], t: 1 }; });
+    }
+    return { sha: j.sha, items: items || {} };
+  }
+
+  var busy = false, again = false, timer = null;
+  async function sync(){
+    var c = getCfg();
+    if (!c.token || !c.owner || !c.repo) { showSyncStatus(); return; }
+    if (busy) { again = true; return; }
+    busy = true; clearTimeout(timer); timer = null;
+    if (!loadSync()) {
+      // First sync on this device. A book never edited here adopts GitHub's copy outright; an edited one merges,
+      // with its pieces counting as older than anything already on GitHub.
+      var fresh = false; try { fresh = !localStorage.getItem('teacher_book_v2'); } catch(e) {}
+      var s0 = { first: true, fresh: fresh, h: {}, t: {} }, f0 = flatten(S);
+      Object.keys(f0).forEach(function(k){ s0.h[k] = hash(JSON.stringify(f0[k])); s0.t[k] = 1; });
+      storeSync(s0);
+    }
+    stamp();
+    setStatus('Syncing…', 'var(--dim)');
+    try {
+      for (var attempt = 0; attempt < 4; attempt++) {
+        var remote = await getRemote(c), ritems = remote ? remote.items : {};
+        var s = loadSync(), local = flatten(S), merged = {}, items = {};
+        if (s.first && s.fresh && remote) { s.h = {}; s.t = {}; local = {}; }
+        var keys = {}; Object.keys(s.h).concat(Object.keys(ritems)).forEach(function(k){ keys[k] = 1; });
+        Object.keys(keys).forEach(function(k){
+          var r = ritems[k], lt = s.t[k];
+          var useRemote = r && (lt === undefined || r.t > lt || (r.t === lt && s.first));
+          var v = useRemote ? r.v : (k in local ? local[k] : null), t = useRemote ? r.t : lt;
+          merged[k] = v; items[k] = { v: v, t: t };
+          s.h[k] = v === null ? '-' : hash(JSON.stringify(v)); s.t[k] = t;
+        });
+        delete s.first; delete s.fresh;
+        // Rebuild the book only when GitHub brought something new, so the page isn't redrawn under your typing.
+        var live = Object.keys(merged).filter(function(k){ return merged[k] !== null; });
+        var changed = live.length !== Object.keys(local).length || live.some(function(k){ return !(k in local) || JSON.stringify(merged[k]) !== JSON.stringify(local[k]); });
+        if (changed) {
+          var book = unflatten(merged);
+          Object.keys(LOCAL_ONLY).forEach(function(k){ if (S[k] !== undefined) book[k] = S[k]; });
+          S = book;
+          try { hydrateState(); } catch(e) { console.error(e); }
+          try { localStorage.setItem('teacher_book_v2', JSON.stringify(S)); } catch(e) {}
+          try { renderApp(); } catch(e) { console.error(e); }
+          // Rebuilding can differ from the merged pieces (a page added on the other device joins the end of its
+          // chapter's order; loading may fill defaults). Those differences are new edits, so stamp and send them now.
+          var nowF = flatten(S), nowT = Date.now();
+          Object.keys(nowF).forEach(function(k){
+            if (JSON.stringify(nowF[k]) !== JSON.stringify(merged[k])) { items[k] = { v: nowF[k], t: nowT }; s.h[k] = hash(JSON.stringify(nowF[k])); s.t[k] = nowT; }
+          });
+          Object.keys(merged).forEach(function(k){
+            if (merged[k] !== null && !(k in nowF)) { items[k] = { v: null, t: nowT }; s.h[k] = '-'; s.t[k] = nowT; }
+          });
+        }
+        storeSync(s);
+        var same = remote && Object.keys(items).length === Object.keys(ritems).length && Object.keys(items).every(function(k){
+          var r = ritems[k]; return r && r.t === items[k].t && JSON.stringify(r.v) === JSON.stringify(items[k].v);
+        });
+        if (same) break;
+        var body = { message: 'teacher book sync ' + new Date().toISOString(),
+          content: b64(JSON.stringify({ format: 'teacher_book_sync_1', saved: new Date().toISOString(), items: items })) };
+        if (c.branch) body.branch = c.branch;
+        if (remote) body.sha = remote.sha;
+        var put = await fetch(api(c, '/contents/' + (c.path || 'teacher_book_data.json')), { method: 'PUT', headers: headers(c), body: JSON.stringify(body) });
+        if (put.ok) break;
+        if (put.status !== 409 && put.status !== 422) fail(put);
+        if (attempt === 3) throw new Error('busy');
+      }
+      try { localStorage.setItem(AT_KEY, String(Date.now())); } catch(e) {}
+      showSyncStatus();
+    } catch (e) {
+      setStatus(e.message === 'token' ? '⚠ GitHub refused the token' : navigator.onLine === false ? '⚠ Offline' : '⚠ Sync failed', 'var(--danger)');
+    } finally {
+      busy = false;
+      if (again) { again = false; sync(); }
+    }
+  }
+
+  function setStatus(msg, color){
+    var el = document.getElementById('sync-status');
+    if (el) { el.textContent = msg; el.style.color = color || 'var(--dim)'; }
+    // Phones hide the status line, so a failure shows on the button itself
+    var b = document.getElementById('sync-btn'), bad = /^⚠/.test(msg);
+    if (b) { b.textContent = bad ? '⚠ Sync' : '⇅ Sync'; b.style.color = bad ? 'var(--danger)' : ''; b.style.borderColor = bad ? 'var(--danger)' : ''; b.title = msg || 'GitHub sync settings'; }
+  }
+  window.showSyncStatus = function(){
+    var c = getCfg(), at = Number(localStorage.getItem(AT_KEY)) || 0;
+    if (!c.token) setStatus('Sync off', 'var(--dim)');
+    else setStatus(at ? '☁ Synced ' + new Date(at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : '', 'var(--dim)');
+  };
+
+  // Same hooks save() and the old Firebase code used
+  window._fbLoad = async function(){
+    var r = await getRemote(getCfg()); if (!r) return null;
+    var flat = {}; Object.keys(r.items).forEach(function(k){ flat[k] = r.items[k].v; });
+    return unflatten(flat);
+  };
+  window._fbSave = function(){
+    if (!getCfg().token) return;
+    if (stamp()) setStatus('Saving…', 'var(--dim)');
+    clearTimeout(timer); timer = setTimeout(sync, 2500);
+  };
+  window.teacherBookSync = sync;
+
+  // A token another book on this site already saved for subroutine-data
+  function foundToken(){
+    var list = [['subroutine_gh_cfg','Subroutine'], ['hc_gh_cfg','Head Coach HQ']];
+    for (var i = 0; i < list.length; i++) {
+      var c = {}; try { c = JSON.parse(localStorage.getItem(list[i][0]) || '{}'); } catch(e) {}
+      if (c.token && (list[i][0] === 'hc_gh_cfg' || String(c.repo||'').toLowerCase() === 'subroutine-data')) return { token: c.token, name: list[i][1] };
+    }
+    return null;
   }
 
   // ── Settings UI ──
   function openSyncSettings(){
-    var c = getCfg();
+    var c = getCfg(), found = !c.token && foundToken();
     var existing = document.getElementById('gh-modal'); if(existing) existing.remove();
     var ov = document.createElement('div'); ov.id='gh-modal';
-    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
     var box = document.createElement('div');
-    box.style.cssText='background:var(--s1);border:1px solid var(--br2);border-radius:14px;padding:24px;max-width:440px;width:100%;font-family:DM Sans,sans-serif';
+    box.style.cssText='background:var(--s1);border:1px solid var(--br2);border-radius:14px;padding:24px;max-width:440px;width:100%;font-family:DM Sans,sans-serif;max-height:90vh;overflow:auto';
+    var btn = 'border-radius:7px;padding:8px 14px;cursor:pointer;font-family:Rajdhani,sans-serif;font-weight:700;letter-spacing:1px;';
     box.innerHTML =
       '<div style="font-family:Rajdhani,sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;color:var(--text);margin-bottom:4px">GITHUB SYNC</div>'+
-      '<div style="font-size:.72rem;color:var(--dim);margin-bottom:18px;line-height:1.5">Edits save to a JSON file in your repo. Create a <b>fine-grained token</b> with Contents read/write on the repo, then paste below.</div>'+
+      '<div style="font-size:.72rem;color:var(--dim);margin-bottom:18px;line-height:1.5">Your book saves to <b>teacher_book_data.json</b> in your private <b>subroutine-data</b> repo and merges with your other devices piece by piece. Use a <b>fine-grained token</b> with Contents read/write on subroutine-data (the one Subroutine uses works).</div>'+
+      (found ? '<button id="gh-found" style="'+btn+'width:100%;margin-bottom:14px;background:var(--teaching);border:none;color:#fff">USE THE TOKEN '+found.name.toUpperCase()+' SAVED HERE</button>' : '')+
+      '<details'+(c.owner && (c.owner!=='zjaylewis94' || c.repo!=='subroutine-data' || c.branch || (c.path && c.path!=='teacher_book_data.json')) ? ' open' : '')+' style="margin-bottom:11px"><summary style="font-size:.64rem;letter-spacing:1px;text-transform:uppercase;color:var(--dim);cursor:pointer;margin-bottom:8px">Repo settings</summary>'+
       fld('Owner (username)','gh-owner',c.owner||'zjaylewis94')+
       fld('Repo','gh-repo',c.repo||'subroutine-data')+
       fld('Branch (optional)','gh-branch',c.branch||'')+
       fld('File path','gh-path',c.path||'teacher_book_data.json')+
-      fld('Token','gh-token',c.token||'','password')+
-      '<div style="display:flex;gap:8px;margin-top:18px;justify-content:flex-end">'+
-        '<button id="gh-cancel" style="background:none;border:1px solid var(--br2);border-radius:7px;color:var(--dim);padding:8px 14px;cursor:pointer;font-family:Rajdhani,sans-serif;font-weight:600;letter-spacing:1px">CANCEL</button>'+
-        '<button id="gh-save" style="background:var(--teaching);border:none;border-radius:7px;color:#fff;padding:8px 16px;cursor:pointer;font-family:Rajdhani,sans-serif;font-weight:700;letter-spacing:1px">SAVE & SYNC</button>'+
+      '</details>'+
+      fld('Token','gh-token','','password', c.token ? 'Token saved (paste to replace)' : 'Paste token')+
+      '<div style="display:flex;gap:8px;margin-top:18px;justify-content:flex-end;flex-wrap:wrap">'+
+        (c.token ? '<button id="gh-off" style="'+btn+'background:none;border:1px solid var(--danger);color:var(--danger)">TURN OFF</button>' : '')+
+        '<button id="gh-cancel" style="'+btn+'background:none;border:1px solid var(--br2);color:var(--dim)">CANCEL</button>'+
+        '<button id="gh-save" style="'+btn+'background:var(--teaching);border:none;color:#fff">'+(c.token ? 'SAVE & SYNC' : 'CONNECT')+'</button>'+
       '</div>';
-    function fld(label,id,val,type){
+    function fld(label,id,val,type,ph){
       return '<div style="margin-bottom:11px"><label style="display:block;font-size:.64rem;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:4px">'+label+'</label>'+
-        '<input id="'+id+'" type="'+(type||'text')+'" value="'+(val||'').replace(/"/g,'&quot;')+'" style="width:100%;background:var(--s2);border:1px solid var(--br2);border-radius:7px;color:var(--text);padding:8px 10px;font-family:DM Sans,sans-serif;font-size:.82rem;outline:none"></div>';
+        '<input id="'+id+'" type="'+(type||'text')+'" value="'+(val||'').replace(/"/g,'&quot;')+'" placeholder="'+(ph||'')+'" autocomplete="off" style="width:100%;box-sizing:border-box;background:var(--s2);border:1px solid var(--br2);border-radius:7px;color:var(--text);padding:8px 10px;font-family:DM Sans,sans-serif;font-size:.82rem;outline:none"></div>';
     }
     ov.appendChild(box); document.body.appendChild(ov);
+    function connect(token){
+      var nc = {
+        owner: document.getElementById('gh-owner').value.trim() || 'zjaylewis94',
+        repo: document.getElementById('gh-repo').value.trim() || 'subroutine-data',
+        branch: document.getElementById('gh-branch').value.trim(),
+        path: document.getElementById('gh-path').value.trim() || 'teacher_book_data.json',
+        token: token || c.token
+      };
+      if (!nc.token) { alert('Paste a token first.'); return; }
+      // Moving to a different file starts the merge bookkeeping over
+      if (nc.owner !== c.owner || nc.repo !== c.repo || nc.branch !== (c.branch||'') || nc.path !== (c.path||'teacher_book_data.json')) localStorage.removeItem(SYNC_KEY);
+      setCfg(nc); ov.remove(); sync();
+    }
     document.getElementById('gh-cancel').onclick=function(){ ov.remove(); };
     ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
-    document.getElementById('gh-save').onclick=async function(){
-      var nc = {
-        owner: document.getElementById('gh-owner').value.trim(),
-        repo: document.getElementById('gh-repo').value.trim(),
-        branch: document.getElementById('gh-branch').value.trim(),
-        path: document.getElementById('gh-path').value.trim()||'teacher_book_data.json',
-        token: document.getElementById('gh-token').value.trim()
-      };
-      setCfg(nc);
-      ov.remove();
-      ghFlash('Connecting…','var(--gold)');
-      // pull remote; if newer, hydrate
-      var remote = await window._fbLoad();
-      if(remote && remote._ts && (!S._ts || remote._ts > S._ts)){
-        if(confirm('Found newer data on GitHub. Load it? (Cancel keeps what is on this device.)')){
-          localStorage.setItem('teacher_book_v2', JSON.stringify(remote));
-          location.reload(); return;
-        }
-      }
-      // otherwise push current up
-      if(typeof S!=='undefined'){ window._fbSave(JSON.stringify(S)); }
+    document.getElementById('gh-save').onclick=function(){ connect(document.getElementById('gh-token').value.trim()); };
+    if (found) document.getElementById('gh-found').onclick=function(){ connect(found.token); };
+    var off = document.getElementById('gh-off');
+    if (off) off.onclick = function(){
+      if (!confirm('Turn off sync on this device? Your book stays here and on GitHub.')) return;
+      var k = getCfg(); delete k.token; setCfg(k);
+      localStorage.removeItem(SYNC_KEY); localStorage.removeItem(AT_KEY);
+      ov.remove(); showSyncStatus();
     };
   }
   window.openSyncSettings = openSyncSettings;
 
-  // Wire the existing Sync button to settings, and do an initial pull
-  document.addEventListener('DOMContentLoaded', function(){
+  // Wire the Sync button, then sync on open and whenever the tab comes back
+  function start(){
     var sb=document.getElementById('sync-btn');
     if(sb) sb.onclick = openSyncSettings;
-    var c=getCfg();
-    if(c.token && c.owner && c.repo && typeof S!=='undefined'){
-      window._fbLoad().then(function(remote){
-        if(remote && remote._ts && (!S._ts || remote._ts > S._ts)){
-          localStorage.setItem('teacher_book_v2', JSON.stringify(remote));
-          location.reload();
-        }
-      });
+    showSyncStatus();
+    if (getCfg().token) {
+      sync();
+      document.addEventListener('visibilitychange', function(){ if (document.hidden) { if (timer) sync(); } else sync(); });
     }
-  });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
 </script>
 </body>

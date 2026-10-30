@@ -51,6 +51,13 @@ Most Semester 2 units list only a T1 intro worksheet so far.
   Page tools (rename, move, delete) are the ⋮ after the page tabs; chapter tools are the ⋮ on each sidebar row.
 - GitHub Sync saves `teacher_book_data.json` to the **private `subroutine-data` repo**, which is the default. Any device still set to the
   public `SUBROUTINE` repo gets switched automatically. Its settings slot is `teacher_book_gh_cfg`.
+  Since Oct 30, 2026 it merges piece by piece instead of overwriting the whole book. The book is flattened into pieces keyed by JSON path
+  (id arrays walked by id, with `#order` and `#alive` entries), and each piece has a last-changed time. The file is
+  `{format:'teacher_book_sync_1', items:{key:{v,t}}}` and the newest piece wins. Removed pieces stay as `null` tombstones.
+  - Local bookkeeping is `teacher_book_sync` (hashes and times only, about 400 KB) plus `teacher_book_sync_at`.
+  - `S.ui`, `S._ts` and `S.currEditMode` are per-device and never synced.
+  - On its first sync, a device never edited (no `teacher_book_v2`) takes GitHub's copy whole. An edited one merges, and on ties GitHub wins.
+  - The Sync dialog offers a token that Subroutine or Head Coach HQ already saved on that device.
 - Every book shares one address (zjaylewis94.github.io), so they share one browser storage space of about 5 MB.
   Keys must be unique per book, and big attachments in one book eat into the others' room.
 
