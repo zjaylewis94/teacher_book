@@ -10,6 +10,8 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Unit 2 Pen Shading Techniques | `u02_pen_shading.html` front: contour lines first + hatching | back: crosshatching, stippling, scumbling (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
 | Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, 4 steps, rubric) | back: work page (list 5, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, color: `pdf/life_and_death_color.pdf`, `pdf/life_and_death_sub_note.pdf` |
+| Unit 12 Sumi-e (Tier 3, 8 pts): instructions | `u12_sumi_e.html`: what it looks like, rules (brush only, 25 strokes max, 1/3 empty, red seal), 5 steps, 4×2 rubric | (one page) | `pdf/u12_sumi_e.pdf` |
+| Unit 12 Sumi-e prelim | `u12_sumi_e_prelim.html` p1: load the brush, ink tones, 6 stroke drills | p2: Plan it (subject, 3 thumbnails, stroke order, rehearsal log) | `pdf/u12_sumi_e_prelim.pdf` |
 
 ## The theme (build on it; don't fork it)
 This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
@@ -53,6 +55,10 @@ A sheet gets its color copy from the same file: open it with `?color` and it swi
 Code that draws real hatching, crosshatching, stippling and scribbling (`HATCH`, `XHATCH`, `STIPPLE`, `SCRIBBLE`, plus
 lit cube/cylinder/sphere/cone `FORMS`) lives in git history: `git show 6992a8f:worksheets/u02_pen_shading.html`.
 That draft was replaced by Zach's contour-lines version, but the mark code is reusable for any ink or value sheet.
+
+## Brush strokes (ink painting)
+`sumi_brush.js` draws pressed-and-lifted brush strokes (a curve with a start, middle and end width), loaded-brush
+gradients and a 17-stroke bamboo. The Unit 12 Sumi-e sheets use it; reuse it for any ink-wash or brush sheet.
 
 ## Making a new worksheet
 1. Copy `tunnel_book_scene.html`, keep the `<svg><defs>` block (hatch, wobble, panel clip), and replace the content.

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumi-e Prelim</title>
+<link rel="stylesheet" href="worksheet.css">
+<script src="sumi_brush.js"></script>
+<style>
+  .frame { border-width: 10pt; border-radius: 18px; padding: 12px 26px 10px; }
+  .head { display: grid; grid-template-columns: 1fr auto; align-items: end; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 46%; flex: none; margin: 4px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 21px; }
+  .who { font-size: 16px; line-height: 1.9; text-align: right; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .who span { display: inline-block; border-bottom: 2px solid var(--ink); }
+  .head .title { font-size: 52px; }
+  section { margin-top: 9px; }
+  .sec { font-size: 25px; }
+  .sec .small { margin-left: 6px; }
+  .note { font-size: 15px; line-height: 1.25; margin: 0 0 6px; }
+
+  /* 01 Load the brush */
+  .load { display: grid; grid-template-columns: 250px 1fr; gap: 14px; align-items: stretch; }
+  .load svg { width: 250px; height: 112px; }
+  .practice { border: 2.2px solid var(--ink); border-radius: 4px; position: relative; min-height: 112px; }
+  .practice .tag { position: absolute; left: 6px; top: 3px; font-size: 13px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+
+  /* 02 Ink tones */
+  .tones { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; text-align: center; }
+  .tones div { font-size: 15px; line-height: 20px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .tones .sw { height: 62px; border: 2.2px solid var(--ink); border-radius: 4px; margin-top: 3px; }
+
+  /* 03 The strokes */
+  .strokes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .drill { border: 2.5px solid var(--ink); border-radius: 12px 14px 10px 13px; height: 236px; display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+  .drill .cap { padding: 4px 8px 3px; border-bottom: 2px solid var(--ink); font-size: 13px; line-height: 1.15; }
+  .drill .cap b { display: block; font-weight: normal; font-size: 18px; -webkit-text-stroke: var(--w-head) var(--ink); }
+  .drill .area { display: grid; grid-template-columns: 70px 1fr; }
+  .drill svg { width: 70px; height: 172px; border-right: 1.5px dashed var(--ink); }
+  .drill .try { font-size: 12px; padding: 3px 6px; -webkit-text-stroke: var(--w-bold) var(--ink); color: var(--ink-2); }
+
+  /* Page 2 */
+  .subjects { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 17px; }
+  .subjects span { display: inline-flex; align-items: center; gap: 7px; }
+  .subjects i { width: 18px; height: 18px; border: 2px solid var(--ink); border-radius: 3px; display: inline-block; }
+  .line { display: flex; align-items: flex-end; gap: 8px; font-size: 15px; margin-top: 6px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .line::after { content: ""; flex: 1; border-bottom: 1.5px solid var(--ink); margin-bottom: 4px; }
+  .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .thumb .box { height: 250px; border: 2.4px solid var(--ink); border-radius: 3px; position: relative; }
+  .thumb .box .tag { position: absolute; left: 6px; top: 3px; font-family: "Hand Fallback", cursive; font-size: 15px; -webkit-text-stroke: 0.6px var(--ink); }
+  .thumb .stat { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; margin-top: 4px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .thumb .stat span { flex: 1; display: flex; gap: 4px; }
+  .thumb .stat span::after { content: ""; flex: 1; border-bottom: 1.5px solid var(--ink); margin-bottom: 3px; }
+  .order { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 28px); column-gap: 28px; }
+  .order div { display: flex; align-items: flex-end; gap: 6px; font-size: 15px; font-family: "Hand Fallback", cursive; }
+  .order div::after { content: ""; flex: 1; border-bottom: 1.5px solid var(--ink); margin-bottom: 4px; }
+  .log { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .log th, .log td { border: 2px solid var(--ink); padding: 3px 8px; text-align: left; font-weight: normal; }
+  .log th { -webkit-text-stroke: var(--w-bold) var(--ink); font-size: 15px; }
+  .log td { height: 40px; }
+  .log td:first-child { width: 70px; font-family: "Hand Fallback", cursive; -webkit-text-stroke: 0.5px var(--ink); }
+  .log td:nth-child(2) { width: 90px; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs id="defs">
+    <filter id="bleed" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ============ PAGE 1: BRUSH PRACTICE ============ -->
+<div class="page">
+<div class="frame">
+  <div class="head">
+    <div>
+      <div class="meta">Unit 12 · Tier 3 · Prelim worksheet</div>
+      <h1 class="title">Sumi-e Prelim</h1>
+      <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(brush practice)</p></div>
+    </div>
+    <div class="who">Name <span style="width:190px"></span><br>Period <span style="width:60px"></span></div>
+  </div>
+
+  <section>
+    <div class="sec"><span class="no">01</span>Load the brush</div>
+    <p class="note">Dip the whole brush in light ink and blot it. Touch <span class="bold">only the tip</span> in dark ink.
+      Now paint 3 strokes without dipping again. Each one should fade from dark to light.</p>
+    <div class="load">
+      <svg class="art" id="load-art" viewBox="0 0 250 112"></svg>
+      <div class="practice"><span class="tag">your 3 loaded strokes</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">02</span>Ink tones <span class="small">you need at least 3 in your final</span></div>
+    <div class="tones">
+      <div>100% ink<div class="sw"></div></div>
+      <div>75%<div class="sw"></div></div>
+      <div>50%<div class="sw"></div></div>
+      <div>25%<div class="sw"></div></div>
+      <div>Just water<div class="sw"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">03</span>The strokes <span class="small">copy the example, then try it 3+ times. One stroke, one try.</span></div>
+    <div class="strokes" id="strokes"></div>
+  </section>
+</div>
+</div>
+
+<!-- ============ PAGE 2: PLAN IT ============ -->
+<div class="page">
+<div class="frame">
+  <div class="head">
+    <div>
+      <div class="meta">Unit 12 · Tier 3 · Prelim worksheet</div>
+      <h1 class="title">Plan it</h1>
+      <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(design before you paint)</p></div>
+    </div>
+    <div class="who">Name <span style="width:190px"></span><br>Period <span style="width:60px"></span></div>
+  </div>
+
+  <section>
+    <div class="sec"><span class="no">04</span>Pick your subject</div>
+    <div class="subjects">
+      <span><i></i>Bamboo</span><span><i></i>Orchid</span><span><i></i>Plum blossom</span><span><i></i>Chrysanthemum</span><span><i></i>My own idea:</span>
+    </div>
+    <div class="line">Real sumi-e I studied (artist or where I found it):</div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">05</span>3 thumbnails <span class="small">brush or pencil is fine here. Circle your best one.</span></div>
+    <div class="thumbs">
+      <div class="thumb"><div class="box"><span class="tag">A</span></div><div class="stat"><span>Strokes:</span><span>Empty:</span></div></div>
+      <div class="thumb"><div class="box"><span class="tag">B</span></div><div class="stat"><span>Strokes:</span><span>Empty:</span></div></div>
+      <div class="thumb"><div class="box"><span class="tag">C</span></div><div class="stat"><span>Strokes:</span><span>Empty:</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">06</span>Stroke order <span class="small">for your best one. Big shapes first, details last.</span></div>
+    <div class="order" id="order"></div>
+    <div class="line" style="max-width:280px">Total strokes (25 max):</div>
+  </section>
+
+  <section style="margin-bottom:0">
+    <div class="sec"><span class="no">07</span>Rehearsal log <span class="small">paint it 3 times on scrap before the final</span></div>
+    <table class="log">
+      <tr><th>Try</th><th>Strokes</th><th>What I'll change next time</th></tr>
+      <tr><td>1</td><td></td><td></td></tr>
+      <tr><td>2</td><td></td><td></td></tr>
+      <tr><td>3</td><td></td><td></td></tr>
+    </table>
+  </section>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const { INK, stroke, loaded } = SUMI;
+let defs = '';
+
+// 01: a brush (light belly, dark tip) and the stroke it makes
+defs += loaded('ld', [118, 40], [236, 70]);
+$('load-art').innerHTML = `
+  <g transform="rotate(-38 46 62)">
+    <rect x="40" y="2" width="12" height="62" rx="3" fill="#fff" stroke="#111" stroke-width="2"/>
+    <rect x="38" y="60" width="16" height="12" rx="2" fill="#555" stroke="#111" stroke-width="2"/>
+    <path d="M38 72 C34 86 40 98 46 110 C52 98 58 86 54 72 Z" fill="#c9c9c9" stroke="#111" stroke-width="2"/>
+    <path d="M42 98 C44 104 45 107 46 110 C48 106 49 103 50 98 Z" fill="#111"/>
+  </g>
+  <text x="74" y="70" font-size="12">← light belly</text><text x="80" y="98" font-size="12">← dark tip</text>
+  <g filter="url(#bleed)">${stroke([118, 40], [176, 30], [236, 70], [3, 16, 2], 'url(#ld)')}</g>
+  <text x="150" y="20" font-size="12">dark → light</text>`;
+
+// 03: six drills, each with a demo stroke on the left and room to practice
+const drills = [
+  ['Bamboo stalk', 'side of the brush. pause at each joint.', () =>
+    [0, 1, 2].map(i => stroke([35, 196 - i * 54], [33, 174 - i * 54], [35, 148 - i * 54], [13, 11, 13], i ? INK.mid : INK.dark)).join('') +
+    [0, 1, 2].map(i => stroke([27, 146 - i * 54], [34, 142 - i * 54], [43, 146 - i * 54], [1, 3.5, 1])).join('')],
+  ['Bamboo leaf', 'press down, then lift fast to a sharp point.', () =>
+    stroke([18, 60], [34, 40], [56, 30], [1, 11, 0.2]) + stroke([16, 130], [38, 126], [58, 140], [1, 10, 0.2], INK.dark) +
+    stroke([20, 190], [26, 168], [44, 150], [1, 10, 0.2], INK.mid)],
+  ['Orchid leaf', 'thin, thick, thin. one long sweep.', () =>
+    stroke([22, 210], [10, 110], [56, 40], [0.8, 6, 0.4]) + stroke([30, 210], [50, 140], [36, 90], [0.8, 5, 0.4], INK.dark)],
+  ['Plum branch', 'drier brush. change direction at each twig.', () =>
+    stroke([12, 210], [30, 160], [24, 120], [9, 6, 4], INK.dark) + stroke([24, 122], [40, 96], [58, 86], [4, 3, 1.5]) +
+    stroke([24, 124], [12, 90], [16, 60], [3.5, 2.5, 1], INK.mid)],
+  ['Blossom dots', 'press and lift. 5 dots make a flower.', () =>
+    [0, 1, 2, 3, 4].map(i => { const a = i / 5 * Math.PI * 2 - Math.PI / 2, x = 35 + Math.cos(a) * 9, y = 80 + Math.sin(a) * 9;
+      return stroke([x, y], [x + Math.cos(a) * 5, y + Math.sin(a) * 5], [x + Math.cos(a) * 10, y + Math.sin(a) * 10], [9, 13, 7], INK.light); }).join('') +
+    `<circle cx="35" cy="80" r="3" fill="#111"/>` + [0,1,2,3,4].map(i => { const a = i / 5 * Math.PI * 2; return `<circle cx="${(35 + Math.cos(a) * 6).toFixed(1)}" cy="${(80 + Math.sin(a) * 6).toFixed(1)}" r="1.2" fill="#111"/>`; }).join('') +
+    [0, 1, 2].map(i => `<circle cx="${22 + i * 13}" cy="${150 + (i % 2) * 14}" r="${3 + (i % 2)}" fill="#111"/>`).join('')],
+  ['Your subject', 'invent the one stroke your subject needs most.', () => ''],
+];
+$('strokes').innerHTML = drills.map(([name, tip]) => `
+  <div class="drill"><div class="cap"><b>${name}</b>${tip}</div>
+    <div class="area"><svg class="art" viewBox="0 25 70 190" preserveAspectRatio="xMidYMid meet"></svg><div class="try">practice here</div></div></div>`).join('');
+[...document.querySelectorAll('.drill svg')].forEach((s, i) => { s.innerHTML = `<g filter="url(#bleed)">${drills[i][2]()}</g>`; });
+
+$('order').innerHTML = Array.from({ length: 10 }, (_, i) => `<div>${i + 1}.</div>`).join('');
+$('defs').insertAdjacentHTML('beforeend', defs);
+
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
