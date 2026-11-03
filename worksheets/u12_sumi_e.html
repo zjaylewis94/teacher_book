@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumi-e</title>
+<link rel="stylesheet" href="worksheet.css">
+<script src="sumi_brush.js"></script>
+<script>
+  // One source, two versions: plain = print (black and white), ?color = Google Classroom (color).
+  if (new URLSearchParams(location.search).has('color')) document.documentElement.classList.add('digital');
+</script>
+<style>
+  /* Style guide (Oct 14): 10 pt rounded outer stroke, rounded text boxes, text 24 / 16 / 12 pt */
+  .frame { border-width: 10pt; border-radius: 18px; padding: 12px 26px 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 40%; flex: none; margin: 4px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 21px; }
+  .intro { font-size: 16px; line-height: 1.28; margin: 6px 0 8px; }
+  section { margin-bottom: 8px; }
+  .sec { font-size: 26px; }
+
+  .top { position: relative; }
+  .top .title { font-size: 62px; }
+  .top .burst { right: 0; top: 4px; width: 150px; height: 90px; font-size: 15px; }
+  .burst polygon { fill: #fff; stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+
+  .look { display: grid; grid-template-columns: 210px 1fr; gap: 16px; align-items: start; }
+  .look figure { margin: 0; text-align: center; }
+  .look svg { width: 210px; height: 236px; border: 2.5px solid var(--ink); border-radius: 10px 14px 9px 12px; }
+  .look figcaption { font-size: 13px; margin-top: 2px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .ideas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .idea { border: 3px solid var(--ink); border-radius: 14px 18px 12px 16px; padding: 5px 10px; font-size: 15px; line-height: 1.22; }
+  .idea b { font-weight: normal; font-size: 20px; -webkit-text-stroke: var(--w-head) var(--ink); display: block; }
+
+  .rules { display: grid; grid-template-columns: 1.25fr 1fr; gap: 14px; align-items: start; }
+  .rules ul { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.3; }
+  .rules li { margin-bottom: 2px; }
+  .callout { border-width: 3px; font-size: 15px; }
+
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; text-align: center; font-size: 14px; line-height: 1.15; }
+  .flow > div { border: 2.5px solid var(--ink); border-radius: 12px 14px 10px 13px; padding: 4px 4px 6px; position: relative; }
+  .flow b { display: flex; justify-content: center; align-items: center; gap: 6px; font-weight: normal; font-size: 20px; -webkit-text-stroke: var(--w-head) var(--ink); margin-bottom: 2px; }
+  .flow .num { width: 26px; height: 26px; font-size: 15px; border-width: 2px; }
+  .flow > div + div::before { content: "→"; font-family: "Hand Fallback", cursive; position: absolute; left: -13px; top: 32%; font-size: 16px; }
+  .flow .must { border-width: 4px; }
+
+  .rubric { border: 3px solid var(--ink); border-radius: 14px 18px 12px 16px; padding: 6px 14px; display: grid; gap: 5px; }
+  .rubric div { display: grid; grid-template-columns: 20px 52px 1fr; align-items: center; gap: 8px; font-size: 16px; line-height: 1.2; }
+  .rubric .box { width: 18px; height: 18px; border: 2px solid var(--ink); border-radius: 3px; }
+  .rubric .pt { font-family: "Hand Fallback", cursive; font-size: 15px; -webkit-text-stroke: 0.6px var(--ink); }
+  .rubric .key { font-size: 13px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+
+  /* ===== Digital (Google Classroom) version: KC fonts + Crayola palette, used sparingly =====
+     Same rules as life_and_death.html. The fonts are licensed and kept out of git (fonts/licensed/).
+     The ink art stays black and gray on purpose (sumi-e is ink); red is saved for the seal. */
+  @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes-Bold.otf"); font-weight: bold; }
+  @font-face { font-family: "KC Beebo"; src: url("fonts/licensed/KCBeebosloth.otf");
+               unicode-range: U+0020, U+002E, U+0030-0039, U+0041-005A, U+0061-007A; }
+  :root.digital { --red: #EE204D; --brick: #CB4154; --yellow: #FCE883; --orange: #FF7538; --blue: #1F75FE; --midnight: #1A4876; --green: #1CAC78; }
+  .digital body, .digital .page { background: #fff; }
+  .digital .frame { font-family: "Papernotes", "Hand Fallback", sans-serif; text-transform: none; -webkit-text-stroke: 0; }
+  .digital .frame * { -webkit-text-stroke: 0; }
+  .digital .bold, .digital .who, .digital figcaption, .digital .tag, .digital .small { font-weight: bold; }
+  .digital .meta, .digital .subtitle { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .digital .title { font-family: "KC Painted", "Papernotes", sans-serif; font-weight: normal; letter-spacing: 1px; }
+  .digital .rule-row .subtitle { font-size: 18px; color: var(--brick); }
+  .digital .title-rule { border-color: var(--brick); }
+  .digital .sec { font-family: "KC Painted", "Papernotes", sans-serif; color: #fff; -webkit-text-stroke: 1.4px var(--ink); }
+  .digital .sec .no { color: var(--midnight); -webkit-text-stroke: 0; border-color: var(--midnight); }
+  .digital .sec .small { color: var(--ink); -webkit-text-stroke: 0; font-family: "Papernotes", sans-serif; text-transform: none; }
+  .digital .callout { background: var(--yellow); }
+  .digital .seal { fill: var(--brick); }
+  .digital .idea b, .digital .flow b { font-family: "KC Painted", "Papernotes", sans-serif; font-weight: normal; }
+  .digital .idea { border-color: var(--midnight); background: rgba(26, 72, 118, .07); }
+  .digital .idea b { color: var(--midnight); }
+  .digital .flow .must { border-color: var(--orange); background: rgba(255, 117, 56, .12); }
+  .digital .rubric { border-color: var(--blue); }
+  .digital .rubric .pt { color: var(--blue); -webkit-text-stroke: 0; }
+  .digital .burst polygon { fill: var(--yellow); }
+  .digital .burst span { font-family: "KC Painted", sans-serif; text-transform: uppercase; color: var(--red); }
+  .digital .look svg { border-color: var(--midnight); }
+  .digital .callout .lead { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs id="defs">
+    <filter id="bleed" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="page">
+<div class="frame">
+
+  <div class="top">
+    <div class="meta">Unit 12 · Advanced Pen + Ink · Tier 3 · 8 points</div>
+    <h1 class="title">Sumi-e</h1>
+    <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(less is more)</p></div>
+    <div class="burst"><svg viewBox="0 0 150 112" preserveAspectRatio="none"><polygon id="burst-shape"/></svg><span>Brush + ink<br>only!</span></div>
+  </div>
+
+  <p class="intro">Sumi-e is Japanese ink painting. Masters like Sesshu trained for years to paint a
+    whole stalk of bamboo in a handful of strokes. Your job: paint one subject with as
+    <span class="bold">few strokes as possible</span>, so every stroke has to count.</p>
+
+  <section>
+    <div class="sec"><span class="no">01</span>What it looks like</div>
+    <div class="look">
+      <figure><svg class="art" id="ex-bamboo" viewBox="-20 20 200 236"></svg><figcaption>Bamboo in 17 strokes</figcaption></figure>
+      <div class="ideas">
+        <div class="idea"><b>Load the brush</b>Dip in light ink, then just the tip in dark. Now one stroke goes dark to light.</div>
+        <div class="idea"><b>One stroke, one try</b>Never go back over a stroke. Leave a shaky one alone.</div>
+        <div class="idea"><b>Empty space counts</b>White paper is part of the painting. In Japanese it's <span class="bold">ma</span>.</div>
+        <div class="idea"><b>Paint the spirit</b>Skip the details. Show how it bends and grows.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">02</span>The rules</div>
+    <div class="rules">
+      <ul>
+        <li><span class="bold">Brush and black ink only.</span> No pencil, pen or Sharpie on the final.</li>
+        <li><span class="bold">25 strokes max.</span> Count them as you paint.</li>
+        <li>Leave at least <span class="bold">1/3 of the paper empty</span>.</li>
+        <li>Subject: bamboo, orchid, plum blossom, chrysanthemum, or your own idea.</li>
+        <li><span class="bold">Sign it</span> and add a <span class="bold">red seal</span>.</li>
+      </ul>
+      <div class="callout"><span class="lead">Rehearse it.</span>
+        Sumi-e is a performance. Paint your whole design 3 times on scrap paper before you touch the final.
+        The 4th time is the one that counts.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">03</span>How to work</div>
+    <div class="flow">
+      <div><b><span class="num">1</span>Study</b>look up real sumi-e</div>
+      <div><b><span class="num">2</span>Prelim</b>drills + 3 thumbnails</div>
+      <div><b><span class="num">3</span>Rehearse</b>paint it 3 times on scrap</div>
+      <div class="must"><b><span class="num">4</span>Paint</b>the final. Count strokes!</div>
+      <div><b><span class="num">5</span>Seal</b>sign + red stamp</div>
+    </div>
+  </section>
+
+  <section style="margin-bottom:0">
+    <div class="sec"><span class="no">04</span>How it's graded <span class="small" style="margin-left:6px">8 pts · 2 = yes · 1 = partly · 0 = missing</span></div>
+    <div class="rubric">
+      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Planning:</span> prelim done, 3 thumbnails, best one circled.</span></div>
+      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Few strokes:</span> 25 or fewer, counted, none gone over twice.</span></div>
+      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Brush control:</span> 3+ ink tones and dark-to-light loaded strokes.</span></div>
+      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Composition:</span> 1/3 empty, subject reads clearly, signed + sealed.</span></div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const b = SUMI.bamboo(0, 0, 1);
+$('defs').insertAdjacentHTML('beforeend', b.defs);
+$('ex-bamboo').innerHTML = `<g filter="url(#bleed)">${b.out}</g>
+  <rect class="seal" x="146" y="214" width="20" height="20" rx="2" fill="#555" stroke="#111" stroke-width="1.5"/>
+  <path d="M151 220 H161 M156 220 V229 M151 228 H161" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <path d="M156 184 q-4 3 0 6 q4 3 0 6 q-4 3 0 6 M153 208 h6" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"/>`;
+
+$('burst-shape').setAttribute('points', Array.from({ length: 28 }, (_, i) => {
+  const a = i / 28 * Math.PI * 2, r = i % 2 ? 0.78 : 1;
+  return `${(75 + Math.cos(a) * 73 * r).toFixed(1)},${(56 + Math.sin(a) * 54 * r).toFixed(1)}`;
+}).join(' '));
+
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
