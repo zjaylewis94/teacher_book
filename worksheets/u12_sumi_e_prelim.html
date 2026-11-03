@@ -6,6 +6,10 @@
 <title>Sumi-e Prelim</title>
 <link rel="stylesheet" href="worksheet.css">
 <script src="sumi_brush.js"></script>
+<script>
+  // One source, two versions: plain = print (black and white), ?color = Google Classroom (color).
+  if (new URLSearchParams(location.search).has('color')) document.documentElement.classList.add('digital');
+</script>
 <style>
   .frame { border-width: 10pt; border-radius: 18px; padding: 12px 26px 10px; }
   .head { display: grid; grid-template-columns: 1fr auto; align-items: end; }
@@ -61,6 +65,37 @@
   .log td { height: 40px; }
   .log td:first-child { width: 70px; font-family: "Hand Fallback", cursive; -webkit-text-stroke: 0.5px var(--ink); }
   .log td:nth-child(2) { width: 90px; }
+
+  /* ===== Digital (Google Classroom) version: KC fonts + Crayola palette, used sparingly =====
+     Same rules as life_and_death.html. The fonts are licensed and kept out of git (fonts/licensed/).
+     The ink art stays black and gray on purpose (sumi-e is ink); red is saved for the seal. */
+  @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes-Bold.otf"); font-weight: bold; }
+  @font-face { font-family: "KC Beebo"; src: url("fonts/licensed/KCBeebosloth.otf");
+               unicode-range: U+0020, U+002E, U+0030-0039, U+0041-005A, U+0061-007A; }
+  :root.digital { --red: #EE204D; --brick: #CB4154; --yellow: #FCE883; --orange: #FF7538; --blue: #1F75FE; --midnight: #1A4876; --green: #1CAC78; }
+  .digital body, .digital .page { background: #fff; }
+  .digital .frame { font-family: "Papernotes", "Hand Fallback", sans-serif; text-transform: none; -webkit-text-stroke: 0; }
+  .digital .frame * { -webkit-text-stroke: 0; }
+  .digital .bold, .digital .who, .digital figcaption, .digital .tag, .digital .small { font-weight: bold; }
+  .digital .meta, .digital .subtitle { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .digital .title { font-family: "KC Painted", "Papernotes", sans-serif; font-weight: normal; letter-spacing: 1px; }
+  .digital .rule-row .subtitle { font-size: 18px; color: var(--brick); }
+  .digital .title-rule { border-color: var(--brick); }
+  .digital .sec { font-family: "KC Painted", "Papernotes", sans-serif; color: #fff; -webkit-text-stroke: 1.4px var(--ink); }
+  .digital .sec .no { color: var(--midnight); -webkit-text-stroke: 0; border-color: var(--midnight); }
+  .digital .sec .small { color: var(--ink); -webkit-text-stroke: 0; font-family: "Papernotes", sans-serif; text-transform: none; }
+  .digital .callout { background: var(--yellow); }
+  .digital .seal { fill: var(--brick); }
+  .digital .drill { border-color: var(--midnight); }
+  .digital .drill .cap { background: rgba(26, 72, 118, .08); border-color: var(--midnight); }
+  .digital .drill .cap b { font-family: "Papernotes", sans-serif; font-weight: bold; color: var(--midnight); -webkit-text-stroke: 0; }
+  .digital .thumb .box .tag { -webkit-text-stroke: 0; font-family: "Papernotes", sans-serif; font-weight: bold; }
+  .digital svg.art text { font-family: "Papernotes", sans-serif; text-transform: none; font-weight: bold; }
+  .digital .practice, .digital .thumb .box { border-color: var(--midnight); }
+  .digital .log th { background: var(--yellow); font-weight: bold; }
+  .digital .subjects i { border-color: var(--brick); }
 </style>
 </head>
 <body>
