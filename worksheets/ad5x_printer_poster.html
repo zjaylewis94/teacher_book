@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Printer Poster</title>
+<link rel="stylesheet" href="worksheet.css">
+<style>
+  .head { display: grid; grid-template-columns: 1fr 160px; align-items: start; }
+  .head .title { font-size: 66px; }
+  .head .rule-row { display: flex; align-items: center; gap: 14px; }
+  .head .title-rule { width: 50%; flex: none; margin: 6px 0 2px; }
+  .head .subtitle { margin: 0; white-space: nowrap; font-size: 19px; }
+  .intro { font-size: 15px; line-height: 1.22; margin: 3px 0 4px; }
+
+  section { margin-bottom: 12px; }
+
+  /* 1: six steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px; }
+  .card { border: 2.3px solid var(--ink); border-radius: 10px 14px 9px 12px; padding: 4px 9px 5px; }
+  .card .hd { display: flex; align-items: center; gap: 7px; font-size: 17px; -webkit-text-stroke: var(--w-bold) var(--ink); margin-bottom: 2px; }
+  .card .hd .num { width: 26px; height: 26px; font-size: 15px; border-width: 2px; }
+  .card p { margin: 0; font-size: 14.5px; line-height: 1.2; }
+
+  /* 2: filament table */
+  table.fil { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.15; }
+  table.fil th { font-weight: normal; font-size: 14px; -webkit-text-stroke: var(--w-bold) var(--ink); text-align: left; border-bottom: 2.5px solid var(--ink); padding: 2px 6px; }
+  table.fil td { border-bottom: 1.3px solid var(--ink); padding: 3px 6px; vertical-align: top; }
+  table.fil td:first-child { -webkit-text-stroke: var(--w-bold) var(--ink); white-space: nowrap; }
+  table.fil tr:last-child td { border-bottom: 0; }
+  table.fil td + td, table.fil th + th { border-left: 1.3px solid var(--ink); }
+  table.fil .no td { background: repeating-linear-gradient(45deg, #fff 0 4px, #e4e4e4 4px 6px); }
+
+  /* 3: design rules + 4: safety */
+  .row3 { display: grid; grid-template-columns: 1fr 250px; gap: 16px; }
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+  .rule { display: grid; grid-template-columns: 66px 1fr; gap: 7px; align-items: center; font-size: 14px; line-height: 1.12; }
+  .rule svg { width: 66px; height: 45px; }
+  .rule b { font-weight: normal; display: block; font-size: 15px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+
+  .safety { position: relative; border: 3px solid var(--ink); border-radius: 14px 10px 16px 12px; padding: 6px 12px 4px; align-self: start; margin-top: 6px; }
+  .safety .hd { font-size: 22px; -webkit-text-stroke: var(--w-head) var(--ink); margin: 0 0 2px; }
+  .safety ul { list-style: none; margin: 0; padding: 0; font-size: 14.5px; line-height: 1.2; }
+  .safety li { padding-left: 13px; position: relative; margin-bottom: 2px; }
+  .safety li::before { content: "!"; position: absolute; left: 0; -webkit-text-stroke: var(--w-bold) var(--ink); }
+  .safety .burst { width: 92px; height: 66px; right: -18px; top: -30px; font-size: 14px; }
+
+  /* 5: uh oh */
+  .fixes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .fix { font-size: 14.5px; line-height: 1.18; border-left: 2.5px solid var(--ink); padding-left: 8px; }
+  .fix b { font-weight: normal; display: block; font-size: 15px; -webkit-text-stroke: var(--w-bold) var(--ink); }
+
+  .deg { font-family: Arial, Helvetica, sans-serif; -webkit-text-stroke: 0; font-size: 0.8em; vertical-align: 0.15em; }
+  .foot { position: absolute; left: 30px; right: 30px; bottom: 10px; display: flex; justify-content: space-between; font-size: 12px; -webkit-text-stroke: 0.3px var(--ink); }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#fff"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#8a8a8a" stroke-width="1.3"/>
+    </pattern>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="page">
+<div class="frame">
+
+  <div class="head">
+    <div>
+      <h1 class="title">3D Printing</h1>
+      <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(Flashforge AD5X)</p></div>
+      <p class="intro">It melts plastic and stacks it one thin layer at a time, in up to 4 colors.
+        It's <span class="bold">hot and open,</span> so read this before your first print.</p>
+    </div>
+    <svg class="art" id="hero" viewBox="0 0 190 132" width="160" height="111"></svg>
+  </div>
+
+  <section>
+    <div class="step"><span class="num">1</span>How to print</div>
+    <div class="steps">
+      <div class="card"><div class="hd"><span class="num">1</span>Get your file</div>
+        <p>An STL in mm that fits in a 220 mm cube.</p></div>
+      <div class="card"><div class="hd"><span class="num">2</span>Slice it</div>
+        <p>Orca-Flashforge: pick AD5X, 0.4 nozzle. Lay it flat. Supports past 45<span class="deg">°</span>.</p></div>
+      <div class="card"><div class="hd"><span class="num">3</span>Check the preview</div>
+        <p>First layer, time + grams. Show Mr. Lewis before you send it.</p></div>
+      <div class="card"><div class="hd"><span class="num">4</span>Prep the printer</div>
+        <p>Plate clean, flat on the magnets, no fingerprints. Right filament loaded.</p></div>
+      <div class="card"><div class="hd"><span class="num">5</span>Watch it start</div>
+        <p>Stay for the first 5 minutes. Bad first layer? Stop it early.</p></div>
+      <div class="card"><div class="hd"><span class="num">6</span>Pop it off</div>
+        <p>Let it cool, flex the plate. Safety glasses to snip supports.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="step"><span class="num">2</span>Pick your filament</div>
+    <table class="fil">
+      <colgroup><col style="width:118px"><col><col style="width:150px"><col style="width:232px"></colgroup>
+      <tr><th>Filament</th><th>Use it for</th><th>Nozzle / bed <span class="deg">°</span>C</th><th>Know this</th></tr>
+      <tr><td>PLA (default)</td><td>almost everything</td><td>190–220 / 55–65</td><td>easiest. melts in a hot car.</td></tr>
+      <tr><td>PETG</td><td>clips, hooks, outdoor stuff</td><td>230–250 / 70–80</td><td>tougher. glue stick on the plate.</td></tr>
+      <tr><td>TPU</td><td>bendy: bumpers, grips</td><td>220–235 / 40–60</td><td>print slow. one color only.</td></tr>
+      <tr class="no"><td>ABS / ASA</td><td>not in this room</td><td>—</td><td>fumes + warping. printer is open.</td></tr>
+    </table>
+    <p class="small" style="margin:3px 0 0">The spool label wins. Keep spools sealed in a bag so they stay dry.</p>
+  </section>
+
+  <section class="row3">
+    <div>
+      <div class="step"><span class="num">3</span>Design rules</div>
+      <div class="rules">
+        <div class="rule"><svg class="art" id="r-flat" viewBox="0 0 74 50"></svg><div><b>Flat side down</b>biggest flat face on the plate</div></div>
+        <div class="rule"><svg class="art" id="r-over" viewBox="0 0 74 50"></svg><div><b>45<span class="deg">°</span> max</b>steeper needs supports</div></div>
+        <div class="rule"><svg class="art" id="r-wall" viewBox="0 0 74 50"></svg><div><b>Walls 1.2 mm+</b>thinner snaps or won't print</div></div>
+        <div class="rule"><svg class="art" id="r-detail" viewBox="0 0 74 50"></svg><div><b>Details 0.6 mm+</b>gaps 0.5 mm+. text 5 mm tall</div></div>
+        <div class="rule"><svg class="art" id="r-fit" viewBox="0 0 74 50"></svg><div><b>Gap 0.2–0.3 mm</b>between parts that fit</div></div>
+        <div class="rule"><svg class="art" id="r-color" viewBox="0 0 74 50"></svg><div><b>Color on top</b>each change wastes plastic</div></div>
+      </div>
+    </div>
+    <div class="safety">
+      <div class="burst"><svg viewBox="0 0 78 62" id="burst"></svg><span>hot!</span></div>
+      <div class="hd">Stay safe</div>
+      <ul>
+        <li>Nozzle 300<span class="deg">°</span>C, bed 110<span class="deg">°</span>C. Hands off while it runs.</li>
+        <li>Hair, hoodie strings + lanyards back.</li>
+        <li>Never reach in mid-print.</li>
+        <li>Never leave it running alone.</li>
+        <li>Weird smell or sound? Stop it, get Mr. Lewis.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section style="margin-bottom:0">
+    <div class="step"><span class="num">4</span>Uh oh</div>
+    <div class="fixes">
+      <div class="fix"><b>Won't stick</b>wash the plate: dish soap + water. add a brim.</div>
+      <div class="fix"><b>Spaghetti</b>stop it. the first layer came loose. clean + retry.</div>
+      <div class="fix"><b>Hairy strings</b>wet filament. dry it, or drop the nozzle 5–10<span class="deg">°</span>.</div>
+      <div class="fix"><b>Jam or error</b>don't force it. stop and get Mr. Lewis.</div>
+    </div>
+  </section>
+
+  <div class="foot"><span>Mr. Lewis · Art</span><span>Flashforge AD5X · 220 × 220 × 220 mm</span></div>
+
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const G = inner => `<g filter="url(#wobble)">${inner}</g>`;
+
+// Hero: open-frame printer with the 4-spool box beside it, mid-print
+$('hero').innerHTML = G(`
+  <rect class="box" x="58" y="10" width="124" height="112" rx="3" style="fill:#fff"/>
+  <path class="ln" d="M64 10 V122 M176 10 V122"/>
+  <path class="dark" d="M58 112 H182 V122 H58 Z"/>
+  <path class="ln" d="M64 36 H176"/>
+  <path class="white" d="M110 30 H132 V48 H110 Z"/>
+  <path class="dark" d="M117 48 H125 L121 56 Z"/>
+  <path class="mid" d="M80 98 H162 V104 H80 Z"/>
+  <path class="white" d="M108 98 V82 Q108 74 114 72 L128 72 Q134 74 134 82 V98 Z"/>
+  <path class="thin" d="M108 94 H134 M108 90 H134 M108 86 H134 M109 82 H133 M111 78 H131 M114 75 H128"/>
+  <path class="thin" d="M121 58 V70" style="stroke-dasharray:2 2"/>
+  <rect class="box" x="4" y="58" width="48" height="64" rx="3" style="fill:#fff"/>
+  ${[0, 1, 2, 3].map(i => `<circle class="${i % 2 ? 'mid' : 'white'}" cx="${16 + (i % 2) * 24}" cy="${76 + Math.floor(i / 2) * 26}" r="9"/><circle cx="${16 + (i % 2) * 24}" cy="${76 + Math.floor(i / 2) * 26}" r="2.4" fill="#111"/>`).join('')}
+  <path class="thin" d="M52 70 Q80 18 110 34"/>
+  <text x="6" y="54" font-size="11">4 colors</text>
+`);
+
+// Design-rule diagrams
+const bed = `<path class="ln" d="M4 44 H70"/>`;
+$('r-flat').innerHTML = G(bed + `
+  <path class="white" d="M10 44 L10 28 L28 28 L28 44 Z"/><path d="M8 18 l4 4 l8 -9" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round"/>
+  <path class="white" d="M50 44 L40 30 L56 20 L66 34 Z"/><path d="M48 8 L60 18 M60 8 L48 18" stroke="#111" stroke-width="2.6" stroke-linecap="round"/>`);
+$('r-over').innerHTML = G(bed + `
+  <path class="white" d="M10 44 V14 H20 L42 36 V44 Z"/>
+  <path class="thin" d="M20 14 V44" style="stroke-dasharray:3 3"/>
+  <path class="thin" d="M20 32 A12 12 0 0 1 28.5 23.5"/><text x="26" y="40" font-size="10">45°</text>
+  <path class="white" d="M50 44 V18 H70 V24 H56 V44 Z"/><path class="cut" d="M56 24 H70 V44 H56 Z"/>`);
+$('r-wall').innerHTML = G(bed + `
+  <path class="white" d="M14 44 V10 H22 V44 Z"/><path class="thin" d="M12 6 H24 M12 3 V9 M24 3 V9"/>
+  <path class="white" d="M46 44 V10 H48.5 V44 Z"/><path d="M54 22 L64 32 M64 22 L54 32" stroke="#111" stroke-width="2.4" stroke-linecap="round"/>`);
+$('r-detail').innerHTML = G(`
+  <rect class="mid" x="4" y="20" width="66" height="24" rx="2"/>
+  <path class="white" d="M10 20 V12 H18 V20 Z M24 20 V12 H32 V20 Z M38 20 V12 H46 V20 Z"/>
+  <text x="50" y="16" font-size="11">ABC</text>`);
+$('r-fit').innerHTML = G(bed + `
+  <path class="mid" d="M8 44 V14 H30 V44 Z"/><path class="white" d="M34 44 V14 H66 V44 Z"/>
+  <path class="white" d="M16 14 V6 H22 V14 Z" style="display:none"/>
+  <path class="thin" d="M30 8 V50 M34 8 V50"/><path class="thin" d="M24 8 H30 M34 8 H40"/>`);
+$('r-color').innerHTML = G(bed + `
+  <path class="white" d="M8 44 V22 H66 V44 Z"/><path class="dark" d="M16 22 V14 H24 V22 Z M30 22 V12 H38 V22 Z M44 22 V14 H52 V22 Z"/>
+  <path class="thin" d="M8 34 H66 M8 28 H66"/>`);
+
+// Starburst behind "HOT!"
+(() => {
+  const cx = 39, cy = 31, n = 14; let d = '';
+  for (let i = 0; i < n * 2; i++) {
+    const a = Math.PI * i / n, r = i % 2 ? 24 : 38;
+    d += (i ? ' L' : 'M') + (cx + Math.cos(a) * r).toFixed(1) + ' ' + (cy + Math.sin(a) * r * 0.8).toFixed(1);
+  }
+  $('burst').innerHTML = `<path d="${d} Z" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round" filter="url(#wobble)"/>`;
+})();
+
+// Phones: scale the letter-size page to the screen
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
