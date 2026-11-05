@@ -296,9 +296,9 @@ def cmd_update(content, deck_path, ref):
             if el["id"].endswith("_due"):
                 reqs += shape_props(el, c)
             if have[el["id"]].strip("\n"):
+                # Bullets go with the deleted text (deleteParagraphBullets on an emptied box is an error);
+                # style_requests re-adds them for numbered lists.
                 reqs.append({"deleteText": {"objectId": el["id"], "textRange": {"type": "ALL"}}})
-                if el.get("numbered"):
-                    reqs.append({"deleteParagraphBullets": {"objectId": el["id"], "textRange": {"type": "ALL"}}})
             reqs += style_requests(el, text_for(el, c), c, warn)
     out = {"requests": reqs}
     if deck.get("revisionId"):
