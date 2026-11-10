@@ -12,6 +12,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, 4 steps, rubric) | back: work page (list 5, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, color: `pdf/life_and_death_color.pdf`, `pdf/life_and_death_sub_note.pdf` |
 | Unit 12 Sumi-e (Tier 3, 8 pts): instructions | `u12_sumi_e.html`: what it looks like, rules (brush only, 25 strokes max, 1/3 empty, red seal), 5 steps, 4×2 rubric | (one page) | `pdf/u12_sumi_e.pdf`, color: `pdf/u12_sumi_e_color.pdf` |
 | Unit 12 Sumi-e prelim | `u12_sumi_e_prelim.html` p1: load the brush, ink tones, 6 stroke drills | p2: Plan it (subject, 3 thumbnails, stroke order, rehearsal log) | `pdf/u12_sumi_e_prelim.pdf`, color: `pdf/u12_sumi_e_prelim_color.pdf` |
+| Unit 4 + 14 Urban Sketching Final (Tier 3, 8 pts) · also the Insight workshop handout | `u04_urban_sketching.html` p1: Da Rules (Zach's 12 rules in cloud bubbles around one park sketch; numbers in the sketch show each rule) | p2: Center Out (find the story moment, 4-step build that doubles as the demo, time plan, 4×2 rubric). `?insight` swaps the header and the rubric for "Keep sketching" | `pdf/u04_urban_sketching.pdf`, `pdf/insight_urban_sketching.pdf`, color: `pdf/u04_urban_sketching_color.pdf` |
 
 ## The theme (build on it; don't fork it)
 This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
