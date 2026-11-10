@@ -1,5 +1,7 @@
 # Worksheets
 
+**Design rules: read `DESIGN_MANUAL.md` first.** This file covers the code.
+
 Printable handouts for the Ramhaus units. Each one is a letter-size HTML page that links `worksheet.css`,
 so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 
