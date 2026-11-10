@@ -1,5 +1,7 @@
 # Worksheets
 
+**Design rules: read `DESIGN_MANUAL.md` first.** This file covers the code.
+
 Printable handouts for the Ramhaus units. Each one is a letter-size HTML page that links `worksheet.css`,
 so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 
@@ -9,9 +11,11 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Unit 2 Pen + Ink Intro | `u02_pen_ink_intro.html` p1: Know your tool | p2: Ink warm-ups (T1, 2 pts) | `pdf/u02_pen_ink_intro.pdf` |
 | Unit 2 Pen Shading Techniques | `u02_pen_shading.html` front: contour lines first + hatching | back: crosshatching, stippling, scumbling (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
+| Unit 3 Tempera Intro (Tier 1, 2 pts) | `u03_tempera_intro.html` p1: Know your tool (the kit, how tempera behaves, handling paint, color words with a tints-to-shades strip) | p2: Tempera warm-ups (brush marks, cover-up test, water test, 9-box value scale from tints to shades, smooth blend). Set in the KC + Papernotes fonts | `pdf/u03_tempera_intro.pdf`, color: `pdf/u03_tempera_intro_color.pdf` |
 | Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, 4 steps, rubric) | back: work page (list 5, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, color: `pdf/life_and_death_color.pdf`, `pdf/life_and_death_sub_note.pdf` |
 | Unit 12 Sumi-e (Tier 3, 8 pts): instructions | `u12_sumi_e.html`: what it looks like, rules (brush only, 25 strokes max, 1/3 empty, red seal), 5 steps, 4×2 rubric | (one page) | `pdf/u12_sumi_e.pdf`, color: `pdf/u12_sumi_e_color.pdf` |
 | Unit 12 Sumi-e prelim | `u12_sumi_e_prelim.html` p1: load the brush, ink tones, 6 stroke drills | p2: Plan it (subject, 3 thumbnails, stroke order, rehearsal log) | `pdf/u12_sumi_e_prelim.pdf`, color: `pdf/u12_sumi_e_prelim_color.pdf` |
+| Urban Sketching handout (Unit 4 + 14 and the Insight workshop; not graded) | `u04_urban_sketching.html` p1: Da Rules (Zach's 12 rules around one sketch of a historic house with orange trees; numbers in the sketch show each rule) | p2: Center Out (story moment hunt, 4-step build that doubles as the demo, watercolor in 3 moves, time plan). `?insight` swaps the header; `?bw` drops the watercolor for the copier | `pdf/u04_urban_sketching.pdf`, `pdf/insight_urban_sketching.pdf`, B&W: `pdf/insight_urban_sketching_bw.pdf` |
 
 ## The theme (build on it; don't fork it)
 This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
@@ -30,6 +34,25 @@ Taken from Zach's hand-drawn how-to sheets:
 - **Drawings in inline SVG** using the `.ln / .thin / .dark / .mid / .white / .cut` classes and the `#wobble` filter,
   so the lines look hand-drawn. Diagonal hatching (`.cut`) always means "cut this away".
 - **Value shows depth:** foreground is dark (`.dark`), midground is mid gray (`.mid`), background is outline only.
+
+## Instruction-sheet look (no frame)
+Zach's reference for how-to pages is Jay Conley's hand-drawn instruction sheets (Nov 10, 2026: "more like this style").
+`u04_urban_sketching.html` is the first sheet built that way; copy it for the next how-to page:
+- **No frame and no boxes.** White page, big pictures, notes placed around the art.
+- **Type is the digital set, in print too.** Zach dropped the MrLewis handwriting font on Nov 10 ("I actually hate it"):
+  KC PaintedHand for titles and headings, Papernotes for text, KC Beebosloth for the small header line.
+  The older sheets still use MrLewis until he asks for them to be converted.
+- **Title** (`title()`): KC PaintedHand, outlined, with a drop shadow and a watercolor wash inside the letters.
+- **Watercolor** (`#wcf` for washes, `#wcs` for small dabs; class `wc`): three Crayola colors at most, loose and a little
+  outside the lines, with paper left white. It goes on the finished sketch only, so the steps before it stay ink.
+- **Pen textures, not gray fills:** hatching `#hd`, vertical lines `#hv`, crosshatch `#hx`, stipple `#stip`.
+- **Ribbon banners and a scroll** (`ribbon()`, `scroll()`) for subtitles and word lists; **fat hatched arrows**
+  (`blockArrow()`) between steps.
+- The scene is drawn in layers (`L[0]`…`L[3]`, then `WASH`) in the order a student draws it, so the step panels reuse it.
+- The page is one 816 × 1056 SVG layer plus absolutely placed text blocks, so `export.js` can't detect overflow here.
+  Look at the PNG.
+- Every version uses the licensed fonts, so **rebuild each PDF from its PNGs** (the `convert` line under Color versions)
+  and check `pdffonts` shows none. `?bw` hides the watercolor for the black-and-white copier.
 
 ## Unit intro worksheets
 Every unit opens with one, modeled on Zach's Pencil Intro Worksheet (Drive: `ramhaus/UNIT 01 PENCIL/PENCIL INTRO WORKSHEET`).

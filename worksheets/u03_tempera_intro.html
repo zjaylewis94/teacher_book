@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tempera Intro</title>
+<link rel="stylesheet" href="worksheet.css">
+<script>
+  // Plain = print (black and white, for the copier). ?color = Google Classroom copy.
+  if (new URLSearchParams(location.search).has('color')) document.documentElement.classList.add('digital');
+</script>
+<style>
+  /* Unit intro worksheet, same structure as the Pen + Ink one, set in Zach's KC + Papernotes fonts
+     (Nov 10: no handwriting font). The fonts are licensed and kept out of git (fonts/licensed/). */
+  @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes-Bold.otf"); font-weight: bold; }
+  @font-face { font-family: "KC Beebo"; src: url("fonts/licensed/KCBeebosloth.otf");
+               unicode-range: U+0020, U+002E, U+0030-0039, U+0041-005A, U+0061-007A; }
+  :root { --hi: #fff; --accent: #111; }
+  :root.digital { --hi: #FCE883; --accent: #1A4876; --red: #EE204D; }
+  .digital body, .digital .page { background: #fff; }
+
+  .frame { border-width: 10pt; border-radius: 18px; padding: 12px 26px 10px;
+           font-family: "Papernotes", "Hand Fallback", sans-serif; text-transform: none; -webkit-text-stroke: 0; }
+  .frame *, .frame .wbox .tag, .frame .callout .lead, .frame .sec .no, .frame .sec .small { -webkit-text-stroke: 0; }
+  .meta { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1.2px; font-size: 13px; }
+  .title { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .subtitle { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .sec { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 24px; color: #fff;
+         -webkit-text-stroke: 1.4px #111; align-items: center; margin-bottom: 5px; }
+  .sec .no { font-family: "Papernotes", sans-serif; font-weight: bold; font-size: 19px; color: var(--accent); -webkit-text-stroke: 0; border-color: var(--accent); }
+  .sec .small { font-family: "Papernotes", sans-serif; font-weight: bold; font-size: 13px; color: #111; -webkit-text-stroke: 0; text-transform: none; letter-spacing: 0; }
+  .callout { background: var(--hi); border-width: 3px; font-size: 14.5px; }
+  .callout .lead { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 16px; }
+  svg.art text { font-family: "Papernotes", sans-serif; text-transform: none; }
+  b, .bold { font-weight: bold; }
+
+  .head { display: grid; grid-template-columns: 1fr 120px; align-items: start; }
+  .head .title { font-size: 60px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 46%; flex: none; margin: 4px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 17px; }
+  .intro { font-size: 16px; line-height: 1.32; margin: 8px 0 14px; }
+  section { margin-bottom: 15px; }
+
+  /* 01: the kit */
+  .kit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 14px; }
+  .kit > div { display: grid; grid-template-columns: 56px 1fr; gap: 9px; align-items: center; }
+  .kit svg { width: 56px; height: 56px; }
+  .kit b { display: block; font-size: 15.5px; }
+  .kit span { font-size: 13.5px; line-height: 1.18; display: block; }
+
+  /* 02: how it behaves */
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center; }
+  .cards svg { width: 100%; height: 54px; }
+  .cards b { display: block; font-size: 15.5px; margin-top: 2px; }
+  .cards span { display: block; font-size: 13.5px; line-height: 1.18; }
+
+  /* 04: color words */
+  .scale { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; margin: 2px 0 2px; }
+  .scale i { height: 46px; border: 2px solid #111; border-radius: 4px; }
+  .scale-lab { display: grid; grid-template-columns: 4fr 1fr 4fr; font-size: 13.5px; font-weight: bold; text-align: center; margin-bottom: 5px; }
+  .vocab { display: grid; grid-template-columns: 1fr 1fr; column-gap: 22px; row-gap: 5px; font-size: 15px; line-height: 1.2; }
+
+  /* Page 2: warm-ups */
+  .howto { font-size: 15px; line-height: 1.28; margin: 6px 0 9px; }
+  .wu { margin-bottom: 11px; }
+  .wu p { margin: 0 0 5px; font-size: 14.5px; line-height: 1.22; }
+  .row { display: grid; gap: 10px; }
+  .wbox { border-width: 2.4px; border-radius: 6px; }
+  .wbox .tag { font-size: 13px; font-weight: bold; }
+  .ask { font-size: 14.5px; margin-top: 4px; }
+  .ask .blank { display: inline-block; border-bottom: 1.5px solid #111; width: 300px; height: 13px; vertical-align: bottom; }
+  .vs { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; }
+  .vs .wbox { height: 100px; }
+  .vs-lab { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; font-size: 12px; line-height: 1.1; text-align: center; margin-top: 3px; }
+  .vs-top { display: grid; grid-template-columns: 4fr 1fr 4fr; gap: 5px; font-family: "KC Painted", "Papernotes", sans-serif; font-size: 14px; text-align: center; margin-bottom: 3px; }
+  .vs .pure { border-width: 4.5px; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#fff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8a8a8a" stroke-width="1.3"/>
+    </pattern>
+    <filter id="wobble" x="-5%" y="-10%" width="110%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ============ PAGE 1: KNOW YOUR TOOL ============ -->
+<div class="page">
+<div class="frame">
+
+  <div class="head">
+    <div>
+      <div class="meta">Unit 3 · Draw + Paint 1 · Know your tool</div>
+      <h1 class="title">Tempera</h1>
+      <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(intro worksheet)</p></div>
+    </div>
+    <svg class="art" id="hero" viewBox="0 0 120 100" width="120" height="100"></svg>
+  </div>
+
+  <p class="intro">Tempera is the classic poster paint: thick, bright and flat. It mixes with water, dries in minutes and
+    covers what's underneath, so you can paint light over dark. It's the best paint for learning to <b>mix color</b>,
+    because what you mix is what you get.</p>
+
+  <section>
+    <div class="sec"><span class="no">01</span>The tempera kit</div>
+    <div class="kit" id="kit"></div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">02</span>How tempera behaves</div>
+    <div class="cards">
+      <div><svg class="art" id="b-opaque" viewBox="0 0 130 58"></svg><b>It's opaque</b><span>Once dry, a new layer hides the one under it.</span></div>
+      <div><svg class="art" id="b-water" viewBox="0 0 130 58"></svg><b>Water thins it</b><span>Too much water = streaky and see-through.</span></div>
+      <div><svg class="art" id="b-dry" viewBox="0 0 130 58"></svg><b>It dries fast + flat</b><span>Minutes, not hours. Colors dry a little lighter.</span></div>
+      <div><svg class="art" id="b-crack" viewBox="0 0 130 58"></svg><b>Thick paint cracks</b><span>Two thin coats beat one gloopy one.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">03</span>Handling paint</div>
+    <div class="cards">
+      <div><svg class="art" id="h-load" viewBox="0 0 130 58"></svg><b>Load 1/3 of the brush</b><span>Dip the tip, wipe the extra on the rim.</span></div>
+      <div><svg class="art" id="h-rinse" viewBox="0 0 130 58"></svg><b>Rinse, then blot</b><span>Every time you change colors.</span></div>
+      <div><svg class="art" id="h-light" viewBox="0 0 130 58"></svg><b>Dark into light</b><span>Add the dark color a dab at a time.</span></div>
+      <div><svg class="art" id="h-soak" viewBox="0 0 130 58"></svg><b>Don't park the brush</b><span>Left in water, the bristles bend for good.</span></div>
+    </div>
+    <div class="callout" style="margin-top:10px"><span class="lead">Golden rule:</span>
+      A little dark goes a long way. Start with the <b>light</b> color and add the <b>dark</b> one a dab at a time.
+      You can always add more. You can't take it back out.</div>
+  </section>
+
+  <section style="margin-bottom:0">
+    <div class="sec"><span class="no">04</span>Color words</div>
+    <div class="scale" id="scale"></div>
+    <div class="scale-lab"><span>← TINTS (color + white)</span><span>HUE</span><span>SHADES (color + black) →</span></div>
+    <div class="vocab">
+      <div><b>Hue:</b> the pure color, straight from the bottle.</div>
+      <div><b>Value:</b> how light or dark a color is.</div>
+      <div><b>Tint:</b> a hue with white added. Lighter.</div>
+      <div><b>Shade:</b> a hue with black added. Darker.</div>
+      <div><b>Tone:</b> a hue with gray added. Duller.</div>
+      <div><b>Opaque:</b> you can't see through it.</div>
+      <div><b>Value scale:</b> even steps from light to dark.</div>
+      <div><b>Matte:</b> a flat finish with no shine.</div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<!-- ============ PAGE 2: WARM-UPS ============ -->
+<div class="page">
+<div class="frame">
+
+  <div class="meta">Unit 3 · Tier 1 · Skill builder · 2 points</div>
+  <h1 class="title" style="font-size:54px">Tempera warm-ups</h1>
+  <div class="title-rule" style="width:46%"></div>
+  <p class="howto">Complete all five boxes with tempera. This isn't about making something pretty.
+    It's about finding out what the paint does. <b>Do box 2A first</b>, so it's dry by the end.</p>
+
+  <div class="wu">
+    <div class="sec"><span class="no">1</span>Brush marks</div>
+    <p>One color, three marks. Find out how many kinds of line one brush can make.</p>
+    <div class="row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="wbox" style="height:66px"><span class="tag">A · flat brush, wide stroke</span></div>
+      <div class="wbox" style="height:66px"><span class="tag">B · flat brush on its edge</span></div>
+      <div class="wbox" style="height:66px"><span class="tag">C · round brush: a line, then dots</span></div>
+    </div>
+  </div>
+
+  <div class="wu">
+    <div class="sec"><span class="no">2</span>Cover-up test <span class="small" style="margin-left:6px">start now, finish last</span></div>
+    <p>A: fill the box with a <b>dark</b> color and let it dry. B: at the very end, paint a <b>light</b> color over the right half of A.</p>
+    <div class="row" style="grid-template-columns:1fr">
+      <div class="wbox" style="height:48px"><span class="tag">A · dark first</span>
+        <div style="position:absolute;right:0;top:0;bottom:0;width:50%;border-left:2px dashed #111"><span class="tag">B · light on top (when dry)</span></div></div>
+    </div>
+    <div class="ask">Did the light color hide the dark one? &nbsp;Yes / Kind of / No</div>
+  </div>
+
+  <div class="wu">
+    <div class="sec"><span class="no">3</span>Water test</div>
+    <div class="row" style="grid-template-columns:1fr 1fr">
+      <div class="wbox" style="height:52px"><span class="tag">A · paint straight from the palette</span></div>
+      <div class="wbox" style="height:52px"><span class="tag">B · the same paint + lots of water</span></div>
+    </div>
+    <div class="ask">Which one hides the paper? <span class="blank" style="width:90px"></span> &nbsp;Which one is streaky? <span class="blank" style="width:90px"></span></div>
+  </div>
+
+  <div class="wu">
+    <div class="sec"><span class="no">4</span>Value scale: tints to shades</div>
+    <p>Pick <b>one</b> color and paint it pure in the middle box. Going <b>left</b>, add a little more <b>white</b> to each box.
+      Going <b>right</b>, add a little more <b>black</b>. Aim for even jumps, like stairs.</p>
+    <div class="vs-top"><span>← TINTS</span><span>HUE</span><span>SHADES →</span></div>
+    <div class="vs" id="vs"></div>
+    <div class="vs-lab"><span>almost white</span><span></span><span></span><span>a little white</span><span><b>pure color</b></span><span>a little black</span><span></span><span></span><span>almost black</span></div>
+    <div class="callout" style="margin-top:6px"><span class="lead">Mixing tip:</span>
+      For tints, start with <b>white</b> and add color. For shades, start with <b>color</b> and add a tiny dab of black.</div>
+  </div>
+
+  <div class="wu" style="margin-bottom:0">
+    <div class="sec"><span class="no">5</span>Smooth blend</div>
+    <p>Same color. Blend from white, to pure color, to black with <b>no steps showing</b>. Work fast, while the paint is wet.</p>
+    <div class="row" style="grid-template-columns:1fr">
+      <div class="wbox" style="height:72px"><span class="tag">white</span><span class="tag" style="left:auto;right:6px">black</span></div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:10px"><span class="lead">Quick fact:</span>
+    Tempera is one of the oldest paints there is. For centuries, painters mixed their color with egg yolk to make it stick.
+    The school kind swaps the egg for a binder that washes out with water.</div>
+
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const G = s => `<g filter="url(#wobble)">${s}</g>`;
+const digital = document.documentElement.classList.contains('digital');
+
+// ---- Hero: a paint jug with a pump, and a blob of paint ----
+$('hero').innerHTML = G(`
+  <rect class="white" x="34" y="34" width="46" height="60" rx="8"/>
+  <rect class="mid" x="42" y="52" width="30" height="24" rx="3"/>
+  <rect class="dark" x="50" y="24" width="14" height="10" rx="2"/>
+  <path class="ln" d="M57 24 V10 H84 V20"/>
+  <path class="dark" d="M84 26 q6 8 0 13 q-6 -5 0 -13 Z"/>
+  <path class="dark" d="M88 86 q10 -8 20 -2 q8 6 -2 10 q-12 4 -20 0 q-6 -4 2 -8 Z"/>`);
+
+// ---- 01: the kit (56 x 56 icons) ----
+const brush = tip => `<rect class="white" x="3" y="25" width="30" height="6" rx="3" transform="rotate(-30 28 28)"/>
+  <rect class="mid" x="33" y="23" width="9" height="10" transform="rotate(-30 28 28)"/>
+  <g transform="rotate(-30 28 28)">${tip}</g>`;
+const KIT = [
+  ['Tempera paint', 'One pump is plenty. Take a little, come back for more.', `
+    <rect class="white" x="14" y="20" width="26" height="32" rx="5"/><rect class="mid" x="19" y="30" width="16" height="12" rx="2"/>
+    <rect class="dark" x="23" y="14" width="8" height="6"/><path class="ln" d="M27 14 V7 H43 V13"/>`],
+  ['Flat brush', 'Square tip. Fills big areas and makes crisp edges.', brush(`<path class="white" d="M42 22 H53 V34 H42 Z"/><path class="thin" d="M45 22 V34 M48 22 V34 M51 22 V34"/>`)],
+  ['Round brush', 'Pointed tip. Lines, curves and small details.', brush(`<path class="dark" d="M42 23 Q52 24 57 28 Q52 32 42 33 Z"/>`)],
+  ['Palette', 'Where you mix. Keep white and black in their own corners.', `
+    <path class="white" d="M28 8 Q52 8 51 28 Q50 46 28 48 Q6 48 6 28 Q7 8 28 8 Z"/>
+    <circle class="white" cx="38" cy="36" r="4"/><circle class="dark" cx="18" cy="22" r="4.5"/><circle class="mid" cx="30" cy="17" r="4.5"/><circle class="white" cx="41" cy="23" r="4.5"/><circle class="mid" cx="19" cy="36" r="4.5"/>`],
+  ['Water cup', 'For rinsing only. Change it when it turns to mud.', `
+    <path class="white" d="M12 12 H44 L40 50 H16 Z"/><path d="M14 26 H42 L40 50 H16 Z" fill="url(#hatch)" stroke="#111" stroke-width="1.6"/>
+    <path class="thin" d="M18 22 q4 -3 8 0 q4 3 8 0"/>`],
+  ['Paper towel', 'Blot the brush after rinsing, so water doesn\'t thin your paint.', `
+    <path class="white" d="M10 12 q6 -4 12 0 q6 4 12 0 q6 -4 12 0 V46 q-6 4 -12 0 q-6 -4 -12 0 q-6 4 -12 0 Z"/>
+    <path class="thin" d="M18 22 h4 M30 22 h4 M24 30 h4 M36 30 h4 M18 38 h4 M30 38 h4" style="stroke-dasharray:1 3"/>`]
+];
+$('kit').innerHTML = KIT.map(([n, d, art]) => `<div><svg class="art" viewBox="0 0 56 56">${G(art)}</svg><div><b>${n}</b><span>${d}</span></div></div>`).join('');
+
+// ---- 02: how it behaves (130 x 58) ----
+$('b-opaque').innerHTML = G(`<rect class="dark" x="14" y="8" width="102" height="42" rx="3"/>
+  <path d="M30 2 L62 2 L92 56 L60 56 Z" fill="#fff" stroke="#111" stroke-width="2"/>
+  <path class="thin" d="M40 8 L66 50 M50 8 L76 50"/>`);
+$('b-water').innerHTML = G(`<path d="M12 14 H118 M12 24 H70 M82 24 H118 M12 34 H46 M58 34 H96 M108 34 H118" stroke="#999" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path class="mid" d="M96 40 q6 8 0 13 q-6 -5 0 -13 Z"/><path class="thin" d="M96 34 V40"/>`);
+$('b-dry').innerHTML = G(`<rect class="mid" x="10" y="12" width="58" height="34" rx="3"/>
+  <circle class="white" cx="98" cy="29" r="19"/><path class="ln" d="M98 29 V16 M98 29 L108 34"/><circle cx="98" cy="29" r="2" fill="#111"/>`);
+$('b-crack').innerHTML = G(`<path class="mid" d="M16 30 Q14 10 44 10 Q66 4 88 12 Q116 12 114 32 Q114 52 82 50 Q60 56 40 50 Q16 52 16 30 Z"/>
+  <path class="ln" d="M36 16 L46 26 L40 34 L52 44 M70 10 L66 24 L78 30 L74 46 M94 18 L88 28 L98 36" style="stroke-width:1.8"/>`);
+
+// ---- 03: handling paint ----
+$('h-load').innerHTML = G(`<rect class="white" x="58" y="2" width="12" height="20" rx="2"/><rect class="mid" x="56" y="20" width="16" height="8"/>
+  <path class="white" d="M56 28 H72 V44 H56 Z"/><path class="dark" d="M56 44 H72 V54 H56 Z"/>
+  <path class="thin" d="M80 44 h6 v10 h-6"/><text x="90" y="53" font-size="12" font-weight="bold">1/3</text>`);
+$('h-rinse').innerHTML = G(`<path class="white" d="M10 14 H44 L40 52 H14 Z"/><path d="M12 28 H42 L40 52 H14 Z" fill="url(#hatch)" stroke="#111" stroke-width="1.6"/>
+  <path class="ln" d="M52 32 H72"/><path class="ln" d="M66 26 L73 32 L66 38" style="stroke-width:2"/>
+  <path class="white" d="M82 16 q6 -4 12 0 q6 4 12 0 q6 -4 12 0 V48 q-6 4 -12 0 q-6 -4 -12 0 q-6 4 -12 0 Z"/><circle class="mid" cx="100" cy="32" r="6"/>`);
+$('h-light').innerHTML = G(`<circle class="white" cx="42" cy="30" r="24"/><text x="27" y="34" font-size="12" font-weight="bold">light</text>
+  <circle class="dark" cx="108" cy="30" r="8"/><path class="ln" d="M94 30 H74"/><path class="ln" d="M80 24 L73 30 L80 36" style="stroke-width:2"/>
+  <text x="96" y="52" font-size="12" font-weight="bold">dark</text>`);
+$('h-soak').innerHTML = G(`<path class="white" d="M40 20 H86 L82 54 H44 Z"/><path d="M42 34 H84 L82 54 H44 Z" fill="url(#hatch)" stroke="#111" stroke-width="1.6"/>
+  <path class="ln" d="M58 50 L78 4" style="stroke-width:4"/>
+  <path d="M26 8 L104 54 M104 8 L26 54" stroke="#111" stroke-width="4" stroke-linecap="round"/>`);
+
+// ---- 04: tints to shades, 9 steps. Gray for print, a red for the color copy ----
+const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+const hue = digital ? [238, 32, 77] : [128, 128, 128];
+const steps = [0.84, 0.63, 0.42, 0.21].map(t => mix(hue, [255, 255, 255], t))
+  .concat([hue], [0.22, 0.44, 0.66, 0.86].map(t => mix(hue, [17, 17, 17], t)));
+$('scale').innerHTML = steps.map((c, i) => `<i style="background:rgb(${c});${i === 4 ? 'border-width:4px' : ''}"></i>`).join('');
+
+// ---- Page 2: the value scale boxes ----
+$('vs').innerHTML = Array.from({ length: 9 }, (_, i) => `<div class="wbox${i === 4 ? ' pure' : ''}"></div>`).join('');
+
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>

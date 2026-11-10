@@ -63,8 +63,8 @@ Most Semester 2 units list only a T1 intro worksheet so far.
 
 ## Worksheets
 `worksheets/` holds printable handouts. They're separate from the app, and each is a letter-size HTML page on the shared
-theme `worksheets/worksheet.css` (Zach's MrLewis handwriting, black marker line art, thick frame, B&W-copier safe).
-This is the **print** half of the style guide below; color versions for Classroom follow the guide's digital rules.
+theme `worksheets/worksheet.css`. The look is set by `worksheets/DESIGN_MANUAL.md` (see the design manual section below).
+Each sheet has a black-and-white print version and, where useful, a `?color` copy for Classroom.
 `node worksheets/export.js <page>.html [--front img/x.webp] --out pdf/<name>` builds the PDF and fails on overflow.
 Read `worksheets/README.md` before making a new one, and extend the theme rather than starting a new look.
 First sheet (Sep 30, 2026): Tunnel Book. The front is Zach's hand-drawn how-to, the back is "Building your scene"
@@ -92,44 +92,36 @@ files between folders). Look up IDs with Drive search by title, because folder n
 PSDs and full-resolution PNGs stay in Drive. GitHub rejects files over 100 MB, so only web-size exports
 the book actually displays go in this repo.
 
-## Worksheet style guide (Zach's spec, Oct 14, 2026)
-**Every worksheet, instructional page, cover page and handout made for Zach follows this.** The goal is one
-congruent look with a handwritten cartoon feel, so nothing looks like AI made it. The same guide is a Teaching page in
-SUBROUTINE (Teaching → Worksheets → Style Guide).
+## Worksheet design manual (Zach's spec, Nov 10, 2026)
+**Every worksheet, practice sheet, project handout and classroom resource follows `worksheets/DESIGN_MANUAL.md`.**
+Read it before building or restyling a sheet, and run its final checklist before delivering. It replaces the Oct 14
+style guide. The short version:
 
-**Two versions, one look (Zach's call, Oct 15):**
-- **Printed** (anything that goes through the copier): **black and white**, on the `worksheets/` theme: MrLewis
-  handwriting, black marker line art, gray only where it survives a copy. See `worksheets/README.md`.
-- **Digital** (Google Classroom posts, slides, on-screen handouts, the app): **color**, with the fonts and Crayola
-  palette below.
-- Everything else is shared by both: layout, sizes, doodle drawings, Rammy, reference artists. When a lesson needs both,
-  build the print sheet first, then a color copy for Classroom.
+- **Identity:** looks like a skilled art teacher designed and drew it by hand. Organized, functional, slightly imperfect.
+  Never a glossy, generic AI infographic. Influences: Jay Conley, Proko, JeyRam, The Etherington Brothers, Jadokar, Skilltopus.
+- **Page:** US Letter portrait, 0.25 in margin, a bold rounded border (about 10 pt) when it suits. Numbered sections.
+  Unit, Tier and Points only when Zach supplies them. Body paragraphs are **not** boxed. Design around the information.
+- **Type:** KC PaintedHand (titles), Papernotes (headings and body, about 12 pt), KC Beebosloth (thin accents only).
+  No handwriting font: Zach dropped MrLewis on Nov 10. Line weights about 10 / 8 / 5 pt.
+- **Fonts are licensed:** the files live in `worksheets/fonts/licensed/` (git-ignored). Never commit, distribute or embed
+  them. PDFs are rebuilt from page images, and `pdffonts` must list none.
+- **Color:** black and white first. Crayola-inspired color only where it teaches. Must still read in grayscale.
+- **Illustration:** accurate, confident, hand-drawn. No clip art, gradients, speed lines, starbursts or expression marks.
+  Real photos must be real, with usage rights.
+- **No Rammy on worksheets.** He's for posters, animated shorts and special character content.
+- **Content is preserved.** A style revision never changes instructions, numbering, points or terminology. Propose
+  content changes separately.
+- **Benchmark:** the Sumi-e sheets (`u12_sumi_e.html`, `u12_sumi_e_prelim.html`). Zach approved them.
+- **Known limit:** code-drawn art is clean line art, not real pen draftsmanship. Zach found the Urban Sketching
+  handout's drawing not good enough (Nov 10). For illustration-heavy sheets, ask for his drawing or supplied art
+  and lay it out, rather than drawing it in code.
 
-- **Layout (both):** 0.25 in border with a 10 pt stroke on the outside and rounded corners. Unit + Tier + Points in the
-  header/footer. Header and text boxes have rounded corners. Clear hierarchy.
-- **Fonts (digital):**
-  - Title: KCPaintedHand
-  - Bold outlined with empty fill: KCPaintedHand
-  - Bold: Papernotes
-  - Lowercase: Papernotes
-  - Thin: KCBeebosloth
+**Sheets that predate the manual** and still break it: the Unit 2 sheets, Tunnel Book and Life & Death use the
+MrLewis handwriting font; the Sumi-e instruction page has a starburst; the Urban Sketching handout has a pigeon,
+ribbon and scroll. Fix those when Zach asks for a restyle, not before.
 
-  As of Oct 14 these font files aren't in Drive (`05 FONTS & BRANDING/` only has MrLewis). Ask Zach for them
-  before building anything that has to render them.
-- **Sizes (both):** text 24 / 16 / 12 pt; lines 10 / 8 / 5 pt.
-- **Color (digital only), used sparingly:**
-  - Crayola palette only.
-  - Use it to highlight areas of focus, annotations and corrections.
-  - Sometimes use it to fill blocks of content.
-- **Drawings (both):** doodle-like but accurate.
-- **Rammy (mascot, both):** narration, quote bubbles, examples.
-- **Artists to mimic (both):** Jay Conley, Proko, JeyRam, The Etherington Brothers, Jadokar, Skilltopus.
-- **Next pages in this style** (from his Oct 14 brain dump), each with an instructional page and a cover page.
-  Print versions first:
-  - Contour Hand Illusion
-  - Contour Objects Illusion
-  - Zen Doodle, plus a patterns page
-  - Ink Wash Blockout / Pen Texture
+**Next pages** (from his Oct 14 list): Contour Hand Illusion, Contour Objects Illusion, Zen Doodle plus a patterns
+page, Ink Wash Blockout / Pen Texture.
 
 ## How we work
 - The whole book is `index.html`: a single self-contained HTML file, vanilla JS, no build step.
