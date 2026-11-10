@@ -9,117 +9,47 @@
   // One source, three versions:
   //   plain    = Unit 4 / 14 Tier 3 final, print (black and white)
   //   ?insight = the Insight "art in the park" workshop handout (no unit, no grading)
-  //   ?color   = Google Classroom (color)
+  //   ?color   = Google Classroom (color pops only; the line work stays black)
   const q = new URLSearchParams(location.search);
   if (q.has('color')) document.documentElement.classList.add('digital');
   if (q.has('insight')) document.documentElement.classList.add('insight');
 </script>
 <style>
-  /* Style guide (Oct 14): 10 pt rounded outer stroke, rounded text boxes, text 24 / 16 / 12 pt */
-  .frame { border-width: 10pt; border-radius: 18px; padding: 12px 24px 10px; }
+  /* Instruction-sheet look (Zach's reference: Jay Conley's hand-drawn how-to pages):
+     no frame and no boxes. Big pictures, descriptive lettering, and hand-lettered notes
+     that float around the art and point at it with arrows. */
+  .page { background: #fff; padding: 0; position: relative; }
+  .sheet { position: absolute; inset: 0; text-transform: uppercase; -webkit-text-stroke: var(--w-body) var(--ink); }
+  .sheet > svg.layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .blk { position: absolute; font-size: 14px; line-height: 1.18; }
+  .blk b { font-weight: normal; -webkit-text-stroke: var(--w-head) var(--ink); }
+  .big { font-size: 17px; line-height: 1.08; -webkit-text-stroke: 1.5px var(--ink); display: block; margin-bottom: 3px; }
+  .cn { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 2.2px solid var(--ink); border-radius: 50%;
+        font-family: "Hand Fallback", cursive; font-size: 14px; -webkit-text-stroke: 0.5px var(--ink); margin-right: 5px; vertical-align: 2px; transform: rotate(-5deg); }
+  .sheet .meta { position: absolute; font-size: 12.5px; letter-spacing: 1px; -webkit-text-stroke: var(--w-bold) var(--ink); }
   .only-insight { display: none; }
   .insight .only-insight { display: revert; }
   .insight .only-class { display: none; }
+  .em { font-size: 1.2em; -webkit-text-stroke: 1.3px var(--ink); }
+  .ital { display: inline-block; transform: skewX(-8deg); }
+  .bx { width: 15px; height: 15px; border: 2px solid #111; border-radius: 2px; margin-top: 1px; }
+  .sheet svg text { font-family: var(--hand); text-transform: uppercase; fill: var(--ink); }
+  .b { fill: none; stroke: #111; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .t { fill: none; stroke: #111; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .f { fill: none; stroke: #111; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+  .mk circle { fill: #fff; stroke: #111; stroke-width: 2; }
+  .sheet svg .mk text { font-family: "Hand Fallback", cursive; font-size: 13px; text-anchor: middle; dominant-baseline: central; stroke: #111; stroke-width: .5; }
 
-  .top { position: relative; }
-  .top .title { font-size: 64px; }
-  .rule-row { display: flex; align-items: center; gap: 14px; }
-  .rule-row .title-rule { width: 38%; flex: none; margin: 4px 0 2px; }
-  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 21px; }
-  .top .burst { right: 4px; top: 2px; width: 168px; height: 96px; font-size: 15px; }
-  .burst polygon { fill: #fff; stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
-  .sec { font-size: 25px; }
-
-  /* ---- Page 1: Da Rules. Twelve cloud bubbles around one sketch ---- */
-  .rules-grid { display: grid; grid-template-columns: 170px 1fr 170px; grid-template-rows: repeat(4, 132px); gap: 14px 12px; margin-top: 10px; }
-  .hero { grid-column: 2; grid-row: 1 / span 4; position: relative; }
-  .hero svg { width: 100%; height: 100%; }
-  .bottom-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px; height: 128px; }
-  .cloud { position: relative; padding: 15px 16px 12px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
-  .cloud > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 0; }
-  .cloud > svg path { fill: #fff; stroke: var(--ink); stroke-width: 2.6; stroke-linejoin: round; }
-  .cloud > * { position: relative; z-index: 1; }
-  .cloud b { display: block; font-weight: normal; font-size: 16px; line-height: 1.05; -webkit-text-stroke: var(--w-head) var(--ink); }
-  .cloud b .n { display: inline; font-family: "Hand Fallback", cursive; -webkit-text-stroke: 0.7px var(--ink); margin-right: 3px; }
-  .cloud span { display: block; font-size: 13px; line-height: 1.15; margin-top: 4px; }
-
-  .kit { display: grid; grid-template-columns: 1fr 1.35fr; gap: 12px; align-items: center; margin-top: 18px; }
-  .kit .callout { font-size: 14px; border-width: 3px; }
-  .kit svg { width: 100%; height: 92px; }
-
-  /* ---- Page 2: Center Out ---- */
-  .intro { font-size: 16px; line-height: 1.28; margin: 6px 0 8px; }
-  section { margin-bottom: 9px; }
-  .find { display: grid; grid-template-columns: 1fr 190px; gap: 14px; align-items: center; }
-  .find ul { margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.3; columns: 2; column-gap: 22px; }
-  .find li { break-inside: avoid; margin-bottom: 2px; }
-  .find svg { width: 190px; height: 120px; }
-  .find .callout { margin-top: 6px; font-size: 14px; border-width: 3px; }
-  .panels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .panel { text-align: center; }
-  .panel svg { width: 100%; height: 232px; border: 2.5px solid var(--ink); border-radius: 10px 14px 9px 12px; background: #fff; }
-  .panel b { display: flex; justify-content: center; align-items: center; gap: 6px; font-weight: normal; font-size: 18px; -webkit-text-stroke: var(--w-head) var(--ink); margin: 4px 0 1px; }
-  .panel .num { width: 26px; height: 26px; font-size: 15px; border-width: 2px; }
-  .panel p { margin: 0; font-size: 13px; line-height: 1.15; }
-
-  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center; font-size: 13.5px; line-height: 1.15; }
-  .flow > div { border: 2.5px solid var(--ink); border-radius: 12px 14px 10px 13px; padding: 4px 4px 6px; position: relative; }
-  .flow b { display: block; font-weight: normal; font-size: 19px; -webkit-text-stroke: var(--w-head) var(--ink); margin-bottom: 1px; }
-  .flow .t { font-family: "Hand Fallback", cursive; font-size: 14px; -webkit-text-stroke: 0.5px var(--ink); }
-  .flow > div + div::before { content: "→"; font-family: "Hand Fallback", cursive; position: absolute; left: -13px; top: 32%; font-size: 16px; }
-  .flow .must { border-width: 4px; }
-
-  .rubric { border: 3px solid var(--ink); border-radius: 14px 18px 12px 16px; padding: 6px 14px; display: grid; gap: 5px; }
-  .rubric div { display: grid; grid-template-columns: 20px 52px 1fr; align-items: center; gap: 8px; font-size: 15.5px; line-height: 1.2; }
-  .rubric .box { width: 18px; height: 18px; border: 2px solid var(--ink); border-radius: 3px; }
-  .rubric .pt { font-family: "Hand Fallback", cursive; font-size: 15px; -webkit-text-stroke: 0.6px var(--ink); }
-  .keep { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .keep .idea { border: 3px solid var(--ink); border-radius: 14px 18px 12px 16px; padding: 6px 10px; font-size: 14px; line-height: 1.22; }
-  .keep .idea b { font-weight: normal; font-size: 19px; -webkit-text-stroke: var(--w-head) var(--ink); display: block; }
-
-  /* Numbered markers in the sketch match the rule bubbles */
-  svg.art .mk circle { fill: #fff; stroke: var(--ink); stroke-width: 2; }
-  svg.art .mk text { font-family: "Hand Fallback", cursive; font-size: 13px; text-anchor: middle; dominant-baseline: central; stroke: var(--ink); stroke-width: 0.5; }
-  svg.art .far { fill: none; stroke: var(--ink); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
-  svg.art .bold { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
-  svg.art .pop { fill: #bdbdbd; }
-  svg.art .pop2 { fill: #8f8f8f; }
-  svg.art .note { font-size: 11.5px; stroke: var(--ink); stroke-width: 0.35; }
-  svg.art .arrow { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 5 4; stroke-linecap: round; }
-
-  /* ===== Digital (Google Classroom) version: KC fonts + Crayola palette, used sparingly =====
-     Same rules as life_and_death.html. The fonts are licensed and kept out of git (fonts/licensed/).
-     The sketch keeps black ink and gets exactly the "limited color pops" rule 12 asks for. */
-  @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
-  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
-  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes-Bold.otf"); font-weight: bold; }
-  @font-face { font-family: "KC Beebo"; src: url("fonts/licensed/KCBeebosloth.otf");
-               unicode-range: U+0020, U+002E, U+0030-0039, U+0041-005A, U+0061-007A; }
-  :root.digital { --red: #EE204D; --brick: #CB4154; --yellow: #FCE883; --orange: #FF7538; --blue: #1F75FE; --midnight: #1A4876; --green: #1CAC78; --pink: #F664AF; --sky: #80DAEB; }
-  .digital body, .digital .page { background: #fff; }
-  .digital .frame { font-family: "Papernotes", "Hand Fallback", sans-serif; text-transform: none; -webkit-text-stroke: 0; }
-  .digital .frame * { -webkit-text-stroke: 0; }
-  .digital .bold, .digital .small { font-weight: bold; }
-  .digital .meta, .digital .subtitle { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-  .digital .title { font-family: "KC Painted", "Papernotes", sans-serif; font-weight: normal; letter-spacing: 1px; }
-  .digital .rule-row .subtitle { font-size: 18px; color: var(--brick); }
-  .digital .title-rule { border-color: var(--brick); }
-  .digital .sec { font-family: "KC Painted", "Papernotes", sans-serif; color: #fff; -webkit-text-stroke: 1.4px var(--ink); }
-  .digital .sec .no { color: var(--midnight); -webkit-text-stroke: 0; border-color: var(--midnight); }
-  .digital .callout { background: var(--yellow); }
-  .digital .cloud b, .digital .panel b, .digital .flow b, .digital .keep .idea b { font-family: "KC Painted", "Papernotes", sans-serif; font-weight: normal; }
-  .digital .cloud b { color: var(--midnight); font-size: 17px; }
-  .digital .cloud b .n { color: var(--brick); }
-  .digital .cloud.hot > svg path { fill: #FFF8D6; }
-  .digital .flow .must { border-color: var(--orange); background: rgba(255, 117, 56, .12); }
-  .digital .rubric { border-color: var(--blue); }
-  .digital .rubric .pt { color: var(--blue); }
-  .digital .burst polygon { fill: var(--yellow); }
-  .digital .burst span { font-family: "KC Painted", sans-serif; text-transform: uppercase; color: var(--red); }
-  .digital svg.art .pop { fill: var(--red); }
-  .digital svg.art .pop2 { fill: var(--pink); }
-  .digital svg.art .mk circle { fill: var(--yellow); }
-  .digital .panel svg { border-color: var(--midnight); }
+  /* ===== Digital (Google Classroom): the same page with a few Crayola pops ===== */
+  :root.digital { --red: #EE204D; --yellow: #FCE883; --pink: #F664AF; --midnight: #1A4876; --brick: #CB4154; }
+  .digital .blk b, .digital .big { color: var(--midnight); }
+  .digital .cn { color: var(--brick); border-color: var(--brick); }
+  .digital .pop { fill: var(--red); }
+  .digital .pop2 { fill: var(--pink); }
+  .digital .win { fill: var(--yellow); }
+  .digital .mk circle { fill: var(--yellow); }
+  .digital .ribbon-face { fill: #FFF3B0; }
+  .digital .scroll-face { fill: #FFFBEA; }
 </style>
 </head>
 <body>
@@ -128,256 +58,295 @@
   <defs>
     <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
       <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
+    <!-- Pen textures: hatching, vertical lines, crosshatch, stipple, windows -->
+    <pattern id="hd" width="4.5" height="4.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="4.5" height="4.5" fill="#fff"/><line x1="0" y1="0" x2="0" y2="4.5" stroke="#111" stroke-width="1.1"/></pattern>
+    <pattern id="hv" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="#fff"/><line x1="1" y1="0" x2="1" y2="4" stroke="#111" stroke-width="0.9"/></pattern>
+    <pattern id="hx" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <rect width="5" height="5" fill="#fff"/><path d="M0 0 V5 M0 0 H5" stroke="#111" stroke-width="0.9"/></pattern>
+    <pattern id="stip" width="9" height="9" patternUnits="userSpaceOnUse">
+      <rect width="9" height="9" fill="#fff"/><circle cx="1.5" cy="2" r=".75" fill="#111"/><circle cx="6" cy="1" r=".6" fill="#111"/>
+      <circle cx="4" cy="5.5" r=".75" fill="#111"/><circle cx="8" cy="6.5" r=".6" fill="#111"/><circle cx="1" cy="7.5" r=".6" fill="#111"/></pattern>
+    <pattern id="win" width="16" height="19" patternUnits="userSpaceOnUse">
+      <rect width="16" height="19" fill="#fff"/><rect class="win" x="4" y="4" width="8" height="10" fill="#fff" stroke="#111" stroke-width="1.4"/>
+      <line x1="8" y1="4" x2="8" y2="14" stroke="#111" stroke-width=".8"/></pattern>
+    <pattern id="brick" width="12" height="8" patternUnits="userSpaceOnUse">
+      <rect class="win" width="12" height="8" fill="#fff"/><path d="M0 0 H12 M0 4 H12 M3 0 V4 M9 4 V8" stroke="#111" stroke-width=".9"/></pattern>
+    <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 L3 5 Z" fill="#111"/></marker>
     <clipPath id="canopy"><path d="M120 176 Q205 92 290 176 Z"/></clipPath>
   </defs>
 </svg>
 
 <!-- ================= PAGE 1: DA RULES ================= -->
 <div class="page">
-<div class="frame">
+<div class="sheet">
+  <svg class="layer" id="art1" viewBox="0 0 816 1056"></svg>
 
-  <div class="top">
-    <div class="meta only-class">Unit 4 + 14 · Urban Sketching Final · Tier 3 · 8 points</div>
-    <div class="meta only-insight">Insight · Art in the Park · Intro to Urban Sketching</div>
-    <h1 class="title">Da Rules</h1>
-    <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(of urban sketching)</p></div>
-    <div class="burst"><svg viewBox="0 0 150 112" preserveAspectRatio="none"><polygon class="burst-shape"/></svg><span>Micron only.<br>No pencil!</span></div>
-  </div>
+  <div class="meta only-class" style="left:40px;top:24px">Unit 4 + 14 · Urban Sketching Final · Tier 3 · 8 pts</div>
+  <div class="meta only-insight" style="left:40px;top:24px">Insight · Art in the Park · Intro to Urban Sketching</div>
 
-  <div class="rules-grid">
-    <div class="cloud" style="grid-column:1;grid-row:1"><b><span class="n">1.</span>Sit still long enough to observe</b><span>Watch for 2 minutes before your first line.</span></div>
-    <div class="cloud hot" style="grid-column:1;grid-row:2"><b><span class="n">2.</span>Look for a "story moment"</b><span>What's happening? That's your subject.</span></div>
-    <div class="cloud hot" style="grid-column:1;grid-row:3"><b><span class="n">3.</span>Start w/ large shapes! No detail</b><span>Story moment first: big, in the middle. Build out.</span></div>
-    <div class="cloud" style="grid-column:1;grid-row:4"><b><span class="n">4.</span>Draw people as gestures, not portraits</b><span>Bean body, stick limbs. Show the action.</span></div>
+  <!-- left column -->
+  <div class="blk" style="left:40px;top:250px;width:180px"><span class="big"><span class="cn">1</span>Sit still long enough to observe.</span>Watch for 2 whole minutes before your first line.</div>
+  <div class="blk" style="left:40px;top:392px;width:180px"><span class="big"><span class="cn">2</span>Look for a <span class="em">"story moment."</span></span>What's happening? That's your subject.</div>
+  <div class="blk" style="left:40px;top:532px;width:180px"><span class="big"><span class="cn">3</span>Start w/ large shapes! <u>No</u> detail.</span>Story moment first: <b>big</b>, in the middle. Then build out.</div>
+  <div class="blk" style="left:40px;top:676px;width:180px"><span class="big"><span class="cn">4</span>Draw people as gestures, not portraits.</span>Bean body, stick limbs. Show what they're <b>doing</b>.</div>
 
-    <div class="hero"><svg class="art" id="hero" viewBox="0 0 320 500" preserveAspectRatio="xMidYMid meet"></svg></div>
+  <!-- right column -->
+  <div class="blk" style="left:604px;top:250px;width:176px"><span class="big"><span class="cn">5</span>Use line weight to fake depth.</span><b>Close</b> = thick + dark.<br><b>Far</b> = thin + light.</div>
+  <div class="blk" style="left:604px;top:392px;width:176px"><span class="big"><span class="cn">6</span>Break perspective rules</span><span class="ital">(strategically!)</span> Lean it or bend it if it tells the story.</div>
+  <div class="blk" style="left:604px;top:532px;width:176px"><span class="big"><span class="cn">7</span>Leave stuff out.</span>Not every brick or leaf. Let the edges fade away.</div>
+  <div class="blk" style="left:604px;top:676px;width:176px"><span class="big"><span class="cn">8</span><span class="em">Don't erase!</span></span>Pen from line one. No pencil = nothing to erase.</div>
 
-    <div class="cloud" style="grid-column:3;grid-row:1"><b><span class="n">5.</span>Use line weight to fake depth</b><span>Close = thick + dark. Far = thin.</span></div>
-    <div class="cloud" style="grid-column:3;grid-row:2"><b><span class="n">6.</span>Break perspective rules</b><span>(strategically) Lean it or bend it if it tells the story.</span></div>
-    <div class="cloud" style="grid-column:3;grid-row:3"><b><span class="n">7.</span>Leave stuff out</b><span>Not every brick or leaf. Let the edges fade away.</span></div>
-    <div class="cloud" style="grid-column:3;grid-row:4"><b><span class="n">8.</span>Don't erase!</b><span>Pen from line one. Nothing to erase.</span></div>
-  </div>
+  <!-- bottom row -->
+  <div class="blk" style="left:40px;top:812px;width:172px"><span class="big"><span class="cn">9</span>Treat mistakes like they belong.</span>Wrong line? Draw the right one next to it.</div>
+  <div class="blk" style="left:228px;top:812px;width:172px"><span class="big"><span class="cn">10</span>Embrace speed.</span>Fast lines look alive. People move, so <b>you</b> move.</div>
+  <div class="blk" style="left:416px;top:812px;width:172px"><span class="big"><span class="cn">11</span>Add notes or tiny text.</span>The time, the place, what you heard.</div>
+  <div class="blk" style="left:604px;top:812px;width:176px"><span class="big"><span class="cn">12</span>Limited color pops.</span>Ink first. Then 2–3 colors, only where it matters.</div>
 
-  <div class="bottom-row">
-    <div class="cloud"><b><span class="n">9.</span>Treat mistakes like they belong</b><span>Wrong line? Draw the right one next to it.</span></div>
-    <div class="cloud"><b><span class="n">10.</span>Embrace speed</b><span>Fast lines look alive. People move, so you move.</span></div>
-    <div class="cloud"><b><span class="n">11.</span>Add notes or tiny text</b><span>The time, the place, what you heard.</span></div>
-    <div class="cloud"><b><span class="n">12.</span>Limited color pops</b><span>Ink first. 2–3 colors, only where it matters.</span></div>
-  </div>
-
-  <div class="kit">
-    <svg class="art" id="kit" viewBox="0 0 300 92"></svg>
-    <div class="callout"><span class="lead">Ink, wait, paint.</span> Microns are waterproof once they dry.
-      Give the ink a minute, then add your color pops with watercolor.
-      The numbers in the sketch show where each rule happens.</div>
-  </div>
-
+  <div class="blk" style="left:330px;top:948px;width:450px"><span class="big" style="display:inline">Ink, wait, paint.</span>
+    Microns are waterproof once they dry. Give the ink a minute, then add your color pops with watercolor.</div>
 </div>
 </div>
 
 <!-- ================= PAGE 2: CENTER OUT ================= -->
 <div class="page">
-<div class="frame">
+<div class="sheet">
+  <svg class="layer" id="art2" viewBox="0 0 816 1056"></svg>
 
-  <div class="top">
-    <div class="meta only-class">Unit 4 + 14 · Urban Sketching Final · Tier 3 · 8 points</div>
-    <div class="meta only-insight">Insight · Art in the Park · Intro to Urban Sketching</div>
-    <h1 class="title">Center Out</h1>
-    <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(how to build a sketch)</p></div>
+  <div class="meta only-class" style="left:40px;top:24px">Unit 4 + 14 · Urban Sketching Final · Tier 3 · 8 pts</div>
+  <div class="meta only-insight" style="left:40px;top:24px">Insight · Art in the Park · Intro to Urban Sketching</div>
+
+  <div class="blk" style="left:470px;top:76px;width:310px;font-size:15px">Don't draw the whole park! Find the <b>one thing that's happening</b>,
+    draw it big in the middle of your page, then let the world grow out around it.</div>
+
+  <!-- story moment hunt (inside the scroll) -->
+  <div class="blk" style="left:74px;top:326px;width:420px">Look around for one of these... (or find your own)</div>
+  <div class="blk" style="left:78px;top:350px;width:200px;font-size:17.5px;line-height:1.25;-webkit-text-stroke:1.1px #111">Someone waiting<br>Someone working<br>Someone selling<br>A dog on a mission</div>
+  <div class="blk" style="left:282px;top:350px;width:236px;font-size:17.5px;line-height:1.25;-webkit-text-stroke:1.1px #111">Something being made<br>About to happen...<br>Two people talking<br>A kid + a snack</div>
+
+  <div class="blk" style="left:560px;top:404px;width:220px"><b>Size check:</b> your story moment should be about the size of your <b>fist</b> on the page.
+    Smaller than that? <b>Start over bigger.</b></div>
+
+  <!-- steps -->
+  <div class="blk" style="left:38px;top:514px;width:170px"><span class="big">1<sup>st</sup> the story moment.</span>Big, in the middle. Thick lines.</div>
+  <div class="blk" style="left:232px;top:514px;;width:170px"><span class="big">2<sup>nd</sup> big shapes.</span>What's touching it? Add that next.</div>
+  <div class="blk" style="left:426px;top:514px;width:170px"><span class="big">3<sup>rd</sup> the setting.</span>Thin lines going out. Edges fade.</div>
+  <div class="blk" style="left:620px;top:514px;width:170px"><span class="big">4<sup>th</sup> pops + notes.</span>2–3 colors, tiny text, sign it!</div>
+
+  <div class="blk" style="left:46px;top:848px;width:250px;font-size:13px"><b>Notice</b> how step 1 has <u>nothing</u> else yet.
+    That's on purpose. Get the moment right and the rest is easy.</div>
+
+  <!-- class: rubric. insight: keep sketching -->
+  <div class="blk only-class" style="left:330px;top:848px;width:450px">
+    <span class="big">How it's graded <span style="font-size:13px;-webkit-text-stroke:.6px #111">(8 pts · 2 = yes · 1 = partly · 0 = missing)</span></span>
+    <div style="display:grid;grid-template-columns:18px 1fr;gap:3px 8px;align-items:start;font-size:13.5px">
+      <span class="bx"></span><span><b>Story moment:</b> one clear subject, big, near the middle.</span>
+      <span class="bx"></span><span><b>Center out:</b> a setting built around it, edges fade.</span>
+      <span class="bx"></span><span><b>Ink:</b> pen only, thick close + thin far, gesture people.</span>
+      <span class="bx"></span><span><b>Finish:</b> 2–3 color pops, notes or tiny text, signed.</span>
+    </div>
   </div>
-
-  <p class="intro">Don't draw the whole park. Find the one thing that's <span class="bold">happening</span>,
-    draw it big in the middle of your page, then let the world grow out around it.</p>
-
-  <section>
-    <div class="sec"><span class="no">01</span>Find the story moment</div>
-    <div class="find">
-      <div>
-        <ul>
-          <li>Someone <span class="bold">waiting</span> in line</li>
-          <li>Someone <span class="bold">working</span> or selling</li>
-          <li>An <span class="bold">animal</span> doing its thing</li>
-          <li>Something being <span class="bold">made</span></li>
-          <li>Something about to <span class="bold">happen</span></li>
-          <li>Two people <span class="bold">talking</span></li>
-        </ul>
-        <div class="callout"><span class="lead">Size check:</span> your story moment should be about the size of your
-          fist on the page. Smaller than that? Start over bigger.</div>
-      </div>
-      <svg class="art" id="viewfinder" viewBox="0 0 190 120"></svg>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec"><span class="no">02</span>Build it from the center out</div>
-    <div class="panels">
-      <div class="panel"><svg class="art" id="p1" viewBox="0 0 320 500"></svg><b><span class="num">1</span>The moment</b><p>Big, in the middle. Thick lines.</p></div>
-      <div class="panel"><svg class="art" id="p2" viewBox="0 0 320 500"></svg><b><span class="num">2</span>Big shapes</b><p>What's touching it? Add that next.</p></div>
-      <div class="panel"><svg class="art" id="p3" viewBox="0 0 320 500"></svg><b><span class="num">3</span>The setting</b><p>Thin lines going out. Let the edges fade.</p></div>
-      <div class="panel"><svg class="art" id="p4" viewBox="0 0 320 500"></svg><b><span class="num">4</span>Pops + notes</b><p>2–3 colors, tiny text, sign it.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec"><span class="no">03</span>Your time</div>
-    <div class="flow">
-      <div><b>Look</b><span class="t">3 min</span><br>sit, watch, pick the moment</div>
-      <div class="must"><b>Ink</b><span class="t">20 min</span><br>center out, pen only</div>
-      <div><b>Color</b><span class="t">10 min</span><br>2–3 watercolor pops</div>
-      <div><b>Notes</b><span class="t">2 min</span><br>time, place, sign it</div>
-    </div>
-  </section>
-
-  <section class="only-class" style="margin-bottom:0">
-    <div class="sec"><span class="no">04</span>How it's graded <span class="small" style="margin-left:6px">8 pts · 2 = yes · 1 = partly · 0 = missing</span></div>
-    <div class="rubric">
-      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Story moment:</span> one clear subject, drawn big, near the middle.</span></div>
-      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Center out:</span> a setting built around it, with edges that fade out.</span></div>
-      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Ink:</span> pen only, thick close and thin far, people as gestures.</span></div>
-      <div><span class="box"></span><span class="pt">2 pts</span><span><span class="bold">Finish:</span> 2–3 color pops, notes or tiny text, and signed.</span></div>
-    </div>
-  </section>
-
-  <section class="only-insight" style="margin-bottom:0">
-    <div class="sec"><span class="no">04</span>Keep sketching</div>
-    <div class="keep">
-      <div class="idea"><b>Your lunch</b>The table, the tray, who's sitting with you.</div>
-      <div class="idea"><b>Your street</b>Sit on the curb. Find the story moment.</div>
-      <div class="idea"><b>A waiting room</b>Everyone sits still. Free models!</div>
-    </div>
-  </section>
-
+  <div class="blk only-insight" style="left:330px;top:848px;width:450px">
+    <span class="big">Keep sketching!</span>
+    Fill a page a week. Try your <b>lunch table</b>, your <b>street</b> from the curb, or a <b>waiting room</b> (everyone sits still. Free models!).
+    Same rules: find the moment, start big, build out.
+  </div>
 </div>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
-const G = inner => `<g filter="url(#wobble)">${inner}</g>`;
+const W = inner => `<g filter="url(#wobble)">${inner}</g>`;
 
-/* ---- The park sketch, in layers, so page 2 can build it up step by step ---- */
+/* ---------- Descriptive lettering: fat outline letters with a pen texture inside ---------- */
+let mId = 0;
+function fatText(txt, x, y, size, fill, ls = 6) {
+  const id = 'm' + (++mId), sw = size * 0.068;
+  const t = extra => `<text x="${x}" y="${y}" font-size="${size}" letter-spacing="${ls}" ${extra}>${txt}</text>`;
+  return `<mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="816" height="1056"><rect width="816" height="1056" fill="#000"/>${t(`style="fill:#fff" stroke="#fff" stroke-width="${sw * 2}" stroke-linejoin="round"`)}</mask>
+    <g transform="translate(4 5)">${t(`stroke="#111" stroke-width="${sw * 2 + 4.5}" stroke-linejoin="round"`)}</g>
+    ${t(`stroke="#111" stroke-width="${sw * 2 + 4.5}" stroke-linejoin="round"`)}
+    <rect width="816" height="1056" fill="${fill}" mask="url(#${id})"/>`;
+}
+
+/* ---------- Ribbon banner and scroll ---------- */
+function ribbon(x, y, w, h, label, size = 20) {
+  const e = 22;
+  return W(`<path d="M${x - e} ${y + 8} L${x} ${y + 8} L${x} ${y + h + 8} L${x - e} ${y + h + 8} L${x - e + 9} ${y + h / 2 + 8} Z" fill="#fff" stroke="#111" stroke-width="2"/>
+    <path d="M${x + w + e} ${y + 8} L${x + w} ${y + 8} L${x + w} ${y + h + 8} L${x + w + e} ${y + h + 8} L${x + w + e - 9} ${y + h / 2 + 8} Z" fill="#fff" stroke="#111" stroke-width="2"/>
+    <path d="M${x} ${y + h} L${x + 8} ${y + h + 8} L${x + 8} ${y + h} Z M${x + w} ${y + h} L${x + w - 8} ${y + h + 8} L${x + w - 8} ${y + h} Z" fill="#111"/>
+    <path class="ribbon-face" d="M${x} ${y} Q${x + w / 2} ${y - 6} ${x + w} ${y} L${x + w} ${y + h} Q${x + w / 2} ${y + h - 6} ${x} ${y + h} Z" fill="#fff" stroke="#111" stroke-width="2.2"/>`) +
+    `<text x="${x + w / 2}" y="${y + h / 2 + size * 0.3}" font-size="${size}" text-anchor="middle" stroke="#111" stroke-width="1">${label}</text>`;
+}
+function scroll(x, y, w, h) {
+  return W(`<path class="scroll-face" d="M${x + 14} ${y} Q${x + w / 2} ${y + 8} ${x + w - 14} ${y} L${x + w - 6} ${y + h - 16} Q${x + w / 2} ${y + h - 4} ${x + 6} ${y + h - 16} Z" fill="#fff" stroke="#111" stroke-width="2.2"/>
+    <path class="scroll-face" d="M${x + 4} ${y + h - 22} q-10 10 2 18 q14 6 ${w - 12} -2 q12 -8 0 -18" fill="#fff" stroke="#111" stroke-width="2.2"/>
+    <path d="M${x + 14} ${y} q-12 -4 -14 6 q0 10 12 8 M${x + w - 14} ${y} q12 -4 14 6 q0 10 -12 8" fill="none" stroke="#111" stroke-width="2"/>
+    <path d="M${x + 4} ${y + 50} h-8 M${x + 6} ${y + 100} h-10 M${x + w - 4} ${y + 70} h10 M${x + w - 6} ${y + 130} h8 M${x + 40} ${y + h - 10} h30 M${x + w - 90} ${y + h - 8} h40" stroke="#111" stroke-width="1.4"/>`);
+}
+
+/* ---------- Fat hatched arrow with a drop shadow ---------- */
+function blockArrow(x, y, len, rot = 0, s = 1) {
+  const d = `M0 -9 L${len - 18} -9 L${len - 18} -20 L${len} 0 L${len - 18} 20 L${len - 18} 9 L0 9 Z`;
+  return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})" filter="url(#wobble)">
+    <path d="${d}" transform="translate(4 5)" fill="#111"/>
+    <path d="${d}" fill="url(#hx)" stroke="#111" stroke-width="2"/></g>`;
+}
+const curve = (d, w = 1.8) => `<path d="${d}" fill="none" stroke="#111" stroke-width="${w}" stroke-linecap="round" marker-end="url(#ah)"/>`;
+
+/* ---------- The park sketch, in layers (page 2 builds it up step by step) ---------- */
 const L = [];
 // 1. The story moment: a kid reaching for a cone, the vendor's hand, a dog who wants in
 L[0] = `
-  <circle class="bold" cx="112" cy="250" r="11"/>
-  <path class="bold" d="M114 262 Q117 282 118 300 M118 300 Q110 320 106 340 L100 358 M118 300 Q126 318 130 336 L138 357
-        M115 270 Q130 258 140 250 Q150 242 158 236 M115 272 Q104 282 98 292"/>
-  <path class="bold" d="M222 249 Q205 254 194 252 Q182 248 176 240"/>
-  <path class="white" d="M161 233 L179 233 L170 254 Z"/>
-  <circle class="white pop2" cx="170" cy="226" r="9.5"/>
-  <path class="bold" d="M56 359 Q47 330 64 318 Q84 312 89 338 Q91 357 82 360 Z" fill="#fff"/>
-  <path class="bold" d="M70 316 Q66 300 77 292 Q88 286 96 292 L104 286 Q106 296 96 302 Q88 310 78 312" fill="#fff"/>
-  <path class="ln" d="M76 293 L72 280 L82 289 M51 352 Q40 346 38 334 M33 340 l-5 -3 M34 331 l-6 0"/>
-  <circle cx="89" cy="295" r="1.8" fill="#111"/>
-  <path class="ln" d="M150 222 l6 -6 M160 214 l2 -8 M141 228 l-3 -6"/>`;
+  <circle cx="112" cy="250" r="11" fill="#fff" stroke="#111" stroke-width="3"/>
+  <path class="t" d="M106 247 q3 -2 5 0 M115 247 q3 -2 5 0 M110 255 q3 2 6 0"/>
+  <path class="b" d="M114 262 Q117 282 118 300 M118 300 Q110 320 106 340 L100 358 M118 300 Q126 318 130 336 L138 357
+        M115 270 Q130 258 140 250 Q150 242 158 236 M115 272 Q104 282 98 292 M94 358 h9 M134 357 h9"/>
+  <path class="b" d="M222 249 Q205 254 194 252 Q182 248 176 240"/>
+  <path d="M161 233 L179 233 L170 254 Z" fill="url(#hx)" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+  <circle class="pop2" cx="170" cy="226" r="9.5" fill="url(#stip)" stroke="#111" stroke-width="1.8"/>
+  <path d="M56 359 Q47 330 64 318 Q84 312 89 338 Q91 357 82 360 Z" fill="#fff" stroke="#111" stroke-width="3"/>
+  <path d="M66 318 q10 4 20 -2" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+  <path class="f" d="M72 328 l-3 4 M79 334 l-3 4 M84 344 l-3 4 M74 350 l-3 4"/>
+  <path d="M70 316 Q66 300 77 292 Q88 286 96 292 L104 286 Q106 296 96 302 Q88 310 78 312" fill="#fff" stroke="#111" stroke-width="3"/>
+  <path d="M76 293 L72 279 L83 288 Z" fill="#111" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/>
+  <path class="t" d="M51 352 Q40 346 38 334 M31 342 l-5 -3 M32 333 l-6 0 M34 324 l-4 -3"/>
+  <circle cx="89" cy="295" r="2" fill="#111"/>
+  <path class="t" d="M150 222 l6 -6 M160 213 l2 -8 M141 228 l-3 -6"/>`;
 // 2. The big shapes touching it: the cart, the umbrella, the vendor
 L[1] = `
-  <path class="ln" d="M150 262 L278 262 L265 275 L135 275 Z" fill="#fff" style="stroke-width:3"/>
-  <path class="ln" d="M135 275 L265 275 L265 340 L135 340 Z" style="stroke-width:3"/>
-  <path class="ln" d="M265 275 L278 262 L278 326 L265 340" style="stroke-width:2.6"/>
-  <text x="200" y="314" text-anchor="middle" font-size="15" stroke="#111" stroke-width="0.6">Ice cream</text>
-  <circle class="ln" cx="160" cy="345" r="16" fill="#fff" style="stroke-width:3"/><circle cx="160" cy="345" r="3" fill="#111"/>
-  <circle class="ln" cx="245" cy="345" r="16" fill="#fff" style="stroke-width:3"/><circle cx="245" cy="345" r="3" fill="#111"/>
-  <path class="ln" d="M278 290 L304 284 l4 6" style="stroke-width:2.6"/>
-  <path class="ln" d="M205 262 L205 150"/>
-  <path class="white" d="M120 176 Q205 92 290 176 Q281 186 273 176 Q264 186 256 176 Q247 186 239 176 Q230 186 222 176 Q213 186 205 176 Q196 186 188 176 Q179 186 171 176 Q162 186 154 176 Q145 186 137 176 Q128 186 120 176 Z"/>
-  <g clip-path="url(#canopy)">
-    <path class="pop" d="M205 112 L120 180 L154 180 Z M205 112 L188 180 L222 180 Z M205 112 L256 180 L290 180 Z"/>
-  </g>
-  <path class="ln" d="M120 176 Q205 92 290 176 M205 114 L154 178 M205 114 L188 178 M205 114 L222 178 M205 114 L256 178 M205 114 L120 177"/>
-  <circle class="ln" cx="232" cy="228" r="11" fill="#fff"/>
-  <path class="ln" d="M222 219 Q232 208 243 219 Z" fill="#fff"/>
-  <path class="ln" d="M222 246 Q232 240 244 246 L246 262 M222 246 L220 262"/>`;
-// 3. The setting, going out in thinner lines and fading at the edges
+  <path d="M150 262 L278 262 L265 275 L135 275 Z" fill="#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M265 275 L278 262 L278 326 L265 340 Z" fill="url(#hv)" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M135 275 L265 275 L265 340 L135 340 Z" fill="#fff" stroke="#111" stroke-width="3.2" stroke-linejoin="round"/>
+  <path class="t" d="M141 282 H259 M141 333 H259"/>
+  <text x="200" y="314" text-anchor="middle" font-size="16" stroke="#111" stroke-width="0.8">Ice cream</text>
+  <circle cx="160" cy="345" r="16" fill="#fff" stroke="#111" stroke-width="3.2"/><circle cx="160" cy="345" r="3" fill="#111"/>
+  <path class="t" d="M160 331 V359 M146 345 H174"/>
+  <circle cx="245" cy="345" r="16" fill="#fff" stroke="#111" stroke-width="3.2"/><circle cx="245" cy="345" r="3" fill="#111"/>
+  <path class="t" d="M245 331 V359 M231 345 H259"/>
+  <path class="b" d="M278 290 L304 284 l4 6"/>
+  <path class="b" d="M205 262 L205 150" style="stroke-width:2.4"/>
+  <path d="M120 176 Q205 92 290 176 Q281 186 273 176 Q264 186 256 176 Q247 186 239 176 Q230 186 222 176 Q213 186 205 176 Q196 186 188 176 Q179 186 171 176 Q162 186 154 176 Q145 186 137 176 Q128 186 120 176 Z" fill="#fff" stroke="#111" stroke-width="2.4" stroke-linejoin="round"/>
+  <g clip-path="url(#canopy)"><path class="pop" fill="url(#hd)" d="M205 112 L120 180 L154 180 Z M205 112 L188 180 L222 180 Z M205 112 L256 180 L290 180 Z"/></g>
+  <path class="b" d="M120 176 Q205 92 290 176 M205 114 L154 178 M205 114 L188 178 M205 114 L222 178 M205 114 L256 178" style="stroke-width:2.2"/>
+  <circle cx="205" cy="110" r="4" fill="#111"/>
+  <circle cx="232" cy="228" r="11" fill="#fff" stroke="#111" stroke-width="2.4"/>
+  <path d="M221 220 Q232 206 243 220 Z" fill="#fff" stroke="#111" stroke-width="2.2" stroke-linejoin="round"/>
+  <path class="t" d="M226 228 h3 M235 228 h3 M228 234 q4 3 8 0"/>
+  <path class="b" d="M222 246 Q232 240 244 246 L246 262 M222 246 L220 262" style="stroke-width:2.4"/>`;
+// 3. The setting, in thinner lines going out, fading at the edges
 L[2] = `
-  <path class="far" d="M118 366 h-30 M150 368 h40 M206 366 h62 M282 368 h26 M60 368 h-34 M8 372 h12"/>
-  <path class="thin" d="M144 364 L270 364 M150 370 L262 370 M160 376 L250 376" style="stroke:#555"/>
-  <path class="far" d="M44 360 Q42 300 46 230 M52 360 Q50 300 52 232"/>
-  <path class="far" style="stroke-width:1.3" d="M46 232 q-30 4 -30 -24 q-10 -22 10 -36 q0 -26 28 -26 q16 -20 40 -4 q26 -4 28 22 q18 14 4 34 q4 26 -26 30 q-14 10 -28 2 q-14 8 -26 2
-     M30 200 q10 -8 20 0 q10 -8 20 0 M40 176 q8 -6 18 0 q8 -8 18 0 M58 222 q8 -6 16 0"/>
-  <path class="far" d="M300 362 L297 150 M290 150 h14 l-3 -12 h-8 Z M297 138 v-6"/>
-  <path class="far" d="M6 132 L22 62 L70 74 L58 138 M24 84 h8 M42 86 h8 M22 104 h8 M40 106 h8"/>
-  <path class="far" d="M88 128 L108 38 L156 50 L142 100 M108 60 h8 M126 62 h8 M106 80 h8"/>
-  <path class="far" d="M236 112 L240 52 L292 48 L306 110 M254 70 h8 M274 68 h8 M256 90 h8" stroke-dasharray="1 0"/>
-  <path class="far" d="M306 110 L312 120" stroke-dasharray="3 5"/>
-  <circle class="far" cx="20" cy="263" r="4"/><path class="far" d="M20 267 L21 284 L16 298 M21 284 L26 297 M20 272 L14 280 M20 272 L27 278"/>
-  <circle class="far" cx="32" cy="266" r="4"/><path class="far" d="M32 270 L32 286 L28 298 M32 286 L37 298 M32 275 L26 281"/>
-  <circle class="ln" cx="246" cy="346" r="16" style="stroke-width:1.2" fill="none"/>`;
+  <path d="M138 364 L272 364 L286 380 L150 382 Z" fill="url(#hd)"/>
+  <path class="f" d="M118 366 h-30 M206 388 h62 M290 368 h26 M60 368 h-34 M8 372 h12 M300 392 h14"/>
+  <path class="f" d="M20 362 l3 -8 l2 8 M27 364 l4 -10 l2 10 M286 362 l3 -7 l3 7 M150 394 l2 -6 l3 6 M92 372 l2 -6 l3 6"/>
+  <path class="f" d="M44 360 Q42 300 46 232 M52 360 Q50 300 53 234 M46 300 q-4 2 -2 6 M50 270 q4 2 2 6"/>
+  <path d="M24 224 q14 10 30 4 q16 6 34 -2 q-6 10 -18 10 q-14 6 -28 1 q-12 2 -18 -13 Z" fill="url(#hd)"/>
+  <path class="f" style="stroke-width:1.2" d="M46 232 q-30 4 -30 -24 q-10 -22 10 -36 q0 -26 28 -26 q16 -20 40 -4 q26 -4 28 22 q18 14 4 34 q4 26 -26 30 q-14 10 -28 2 q-14 8 -26 2
+     M28 202 q6 -6 12 0 q6 -6 12 0 q6 -6 12 0 M38 178 q6 -6 12 0 q6 -6 12 0 M60 158 q6 -5 12 0"/>
+  <path class="f" d="M300 362 L297 150 M289 150 h16 l-3 -13 h-10 Z M297 137 v-6 M292 362 h14"/>
+  <path class="f" d="M6 132 L22 62 L70 74 L58 138 M24 82 h8 M42 86 h8 M20 102 h8 M38 106 h8 M17 120 h8"/>
+  <path class="f" d="M110 56 h8 M128 60 h8 M106 74 h8 M124 78 h8 M102 92 h8"/>
+  <path class="f" d="M88 128 L108 38 L156 50 L142 100"/>
+  <path class="f" d="M236 112 L240 52 L292 48 L306 110 M246 62 h8 M264 62 h8 M246 78 h8 M264 78 h8 M250 52 v-10 h8 v10 M254 42 v-6"/>
+  <path class="f" d="M306 110 L312 120" stroke-dasharray="3 5"/>
+  <circle class="f" cx="20" cy="263" r="4"/><path class="f" d="M20 267 L21 284 L16 298 M21 284 L26 297 M20 272 L14 280 M20 272 L27 278"/>
+  <circle class="f" cx="32" cy="266" r="4"/><path class="f" d="M32 270 L32 286 L28 298 M32 286 L37 298 M32 275 L26 281"/>
+  <path class="f" d="M166 62 q5 -5 10 0 q5 -5 10 0 M192 82 q4 -4 8 0 q4 -4 8 0"/>
+  <circle cx="246" cy="346" r="16" fill="none" stroke="#111" stroke-width="1.2"/>`;
 // 4. Finish: notes and tiny text, and a signature
 L[3] = `
-  <text class="note" x="16" y="420">Sat · 10:42 am</text>
-  <text class="note" x="16" y="438">band playing somewhere</text>
-  <text class="note" x="16" y="456">smells like churros</text>
-  <text class="note" x="196" y="404">oops (kept it)</text>
-  <path class="far" d="M216 394 Q238 384 244 364"/>
-  <path class="ln" d="M226 452 q8 -16 14 0 q6 -14 12 0 q8 -10 20 -2 M226 462 h56" style="stroke-width:1.6"/>`;
+  <text x="14" y="420" font-size="12" stroke="#111" stroke-width=".35">Sat · 10:42 am</text>
+  <text x="14" y="437" font-size="12" stroke="#111" stroke-width=".35">band playing somewhere</text>
+  <text x="14" y="454" font-size="12" stroke="#111" stroke-width=".35">smells like churros</text>
+  <text x="196" y="414" font-size="12" stroke="#111" stroke-width=".35">oops (kept it)</text>
+  <path class="f" d="M216 404 Q238 394 244 364"/>
+  <path class="t" d="M226 456 q8 -16 14 0 q6 -14 12 0 q8 -10 20 -2 M226 466 h56" style="stroke-width:1.6"/>`;
+const sketch = ks => W([2, 1, 0, 3].filter(k => ks.includes(k)).map(k => L[k]).join(''));
+const mk = list => list.map(([n, x, y]) => `<g class="mk"><circle cx="${x}" cy="${y}" r="10"/><text x="${x}" y="${y}">${n}</text></g>`).join('');
 
-const markers = [[2, 128, 224], [3, 150, 292], [4, 10, 238], [5, 285, 214], [6, 120, 26], [7, 304, 100],
-                 [9, 196, 386], [10, 92, 132], [11, 8, 404], [12, 300, 160]]
-  .map(([n, x, y]) => `<g class="mk"><circle cx="${x}" cy="${y}" r="10"/><text x="${x}" y="${y}">${n}</text></g>`).join('');
+/* ======================= PAGE 1 ======================= */
+const pigeon = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})" filter="url(#wobble)">
+  <path d="M0 0 Q4 -16 22 -14 Q34 -12 38 0 Q30 10 12 9 Q2 8 0 0 Z" fill="url(#stip)" stroke="#111" stroke-width="2"/>
+  <path d="M30 -10 Q32 -26 42 -24 Q50 -22 46 -12 Q42 -6 34 -6" fill="#fff" stroke="#111" stroke-width="2"/>
+  <path d="M48 -19 l7 2 l-7 2 Z" fill="#111" stroke="#111" stroke-width="1.4"/>
+  <circle cx="43" cy="-18" r="3.4" fill="#fff" stroke="#111" stroke-width="1.4"/><circle cx="44" cy="-18" r="1.6" fill="#111"/>
+  <path d="M0 0 L-12 4 L-2 6 Z" fill="#111"/>
+  <path d="M14 9 l-2 9 M22 9 l1 9 M8 18 h8 M20 18 h7" stroke="#111" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M10 -4 q8 4 18 -2 M8 2 q10 3 20 -1" stroke="#111" stroke-width="1.1" fill="none"/></g>`;
 
-$('hero').innerHTML = G(L[2] + L[1] + L[0] + L[3]) + markers;
-// Page 2: the same sketch, one layer at a time (this is also the teacher demo order)
-[[0], [1, 0], [2, 1, 0], [2, 1, 0, 3]].forEach((ls, i) => {
-  const layers = [2, 1, 0, 3].filter(k => ls.includes(k)).map(k => L[k]).join('');
-  const mid = i === 0 ? `<path d="M160 20 V480 M20 250 H300" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6" fill="none"/>
-    <text x="166" y="36" font-size="18" fill="#777">middle</text>` : '';
-  $('p' + (i + 1)).innerHTML = mid + G(layers);
-});
+const kitPen = (x, y, tip, label, sub) => `
+  <rect x="${x}" y="${y + 12}" width="15" height="48" rx="3" fill="#fff" stroke="#111" stroke-width="2"/>
+  <rect x="${x}" y="${y}" width="15" height="16" rx="3" fill="#111"/>
+  <path d="M${x + 4} ${y + 60} L${x + 7.5} ${y + 72} L${x + 11} ${y + 60}" fill="#fff" stroke="#111" stroke-width="2"/>
+  <path d="M${x + 7.5} ${y + 72} v${tip + 2}" stroke="#111" stroke-width="${tip}" stroke-linecap="round"/>
+  <text x="${x + 22}" y="${y + 34}" font-size="18" stroke="#111" stroke-width="1" style="font-family:'Hand Fallback',cursive">${label}</text>
+  <text x="${x + 22}" y="${y + 52}" font-size="12" stroke="#111" stroke-width=".4">${sub}</text>`;
 
-/* ---- The kit: thick Micron for close, thin for far, then a brush ---- */
-const pen = (x, tip, label, sub) => `
-  <rect class="white" x="${x}" y="22" width="16" height="50" rx="3"/>
-  <rect class="dark" x="${x}" y="10" width="16" height="16" rx="3"/>
-  <path class="ln" d="M${x + 4} 72 L${x + 8} 84 L${x + 12} 72" fill="#fff"/>
-  <path class="ln" d="M${x + 8} 84 l0 ${tip}" style="stroke-width:${tip}"/>
-  <text x="${x + 26}" y="40" font-size="16" stroke="#111" stroke-width="0.6">${label}</text>
-  <text x="${x + 26}" y="58" font-size="12">${sub}</text>`;
-$('kit').innerHTML = G(pen(4, 4, '08', 'close') + pen(84, 2.2, '05', 'middle') + pen(164, 1, '01', 'far') + `
-  <path class="ln" d="M250 18 L262 72" style="stroke-width:5"/>
-  <path class="dark" d="M259 70 Q270 82 262 92 Q252 84 259 70 Z"/>
-  <text x="266" y="40" font-size="12">brush</text>`);
+$('art1').innerHTML =
+  // title: building letters standing on a street, a pigeon on the roof
+  fatText('Da Rules', 44, 186, 100, 'url(#brick)', 13) +
+  W(`<path d="M28 200 H580" stroke="#111" stroke-width="3"/>
+     <path d="M40 211 h30 M100 211 h30 M160 211 h30 M220 211 h30 M280 211 h30 M340 211 h30 M400 211 h30 M460 211 h30 M520 211 h30" stroke="#111" stroke-width="2"/>`) +
+  pigeon(452, 92, 1) +
+  `<text x="514" y="62" font-size="13" stroke="#111" stroke-width=".5">coo?</text>` +
+  ribbon(612, 156, 160, 32, 'of urban sketching', 14) +
+  `<text x="612" y="104" font-size="15" stroke="#111" stroke-width=".7">12 rules for drawing</text>
+   <text x="612" y="124" font-size="15" stroke="#111" stroke-width=".7">out in the world!</text>` +
+  // the sketch in the middle; the numbers match the rules
+  `<svg x="226" y="222" width="368" height="575" viewBox="0 0 320 500">${sketch([0, 1, 2, 3])}
+     ${mk([[2, 126, 222], [3, 150, 292], [4, 10, 240], [5, 285, 214], [6, 122, 24], [7, 308, 96], [9, 198, 392], [10, 94, 134], [11, 6, 402], [12, 300, 162]])}</svg>` +
+  `<text x="408" y="236" font-size="12.5" text-anchor="middle" stroke="#111" stroke-width=".5">the numbers show where each rule happens</text>` +
+  // kit: pens + brush, and a crossed-out pencil
+  `<text x="40" y="936" font-size="16" stroke="#111" stroke-width="1.1">your kit:</text>` +
+  W(kitPen(44, 950, 4, '08', 'close') + kitPen(116, 950, 2.4, '05', 'middle') + kitPen(188, 950, 1.1, '01', 'far') +
+    `<path d="M262 954 L272 1008" stroke="#111" stroke-width="5" stroke-linecap="round"/><path d="M268 1006 Q280 1018 272 1030 Q260 1020 268 1006 Z" fill="#111"/>`) +
+  `<text x="284" y="1000" font-size="12" stroke="#111" stroke-width=".4">brush</text>` +
+  W(`<path d="M150 918 l44 -8 l8 6 l-6 8 l-44 8 Z" fill="url(#hv)" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+     <path d="M146 904 L208 938 M208 904 L146 938" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>`) +
+  `<text x="218" y="928" font-size="14" stroke="#111" stroke-width=".9">no pencil!</text>`;
 
-/* ---- Viewfinder: frame the moment with your fingers ---- */
-$('viewfinder').innerHTML = G(`
-  <path class="ln" d="M30 18 L30 84 L66 84 M160 84 L160 18 L124 18" style="stroke-width:6"/>
-  <circle class="ln" cx="84" cy="44" r="7"/><path class="ln" d="M84 51 L86 66 L80 78 M86 66 L92 78 M85 56 L100 46"/>
-  <path class="white" d="M100 40 l8 0 l-4 10 Z"/><circle class="white" cx="104" cy="36" r="5"/>
-  <text x="95" y="102" font-size="13" text-anchor="middle">frame it with</text>
-  <text x="95" y="117" font-size="13" text-anchor="middle">your fingers</text>`);
+/* ======================= PAGE 2 ======================= */
+const target = (cx, cy, r) => W(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#111" stroke-width="2"/>
+  <circle cx="${cx}" cy="${cy}" r="${r * .62}" fill="url(#hd)" stroke="#111" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="${r * .26}" fill="#111"/>` +
+  [0, 1, 2, 3, 4, 5, 6, 7].map(i => { const a = i * Math.PI / 4 + .3, r1 = r + 7, r2 = r + 19;
+    return `<path d="M${(cx + Math.cos(a) * r1).toFixed(1)} ${(cy + Math.sin(a) * r1).toFixed(1)} L${(cx + Math.cos(a) * r2).toFixed(1)} ${(cy + Math.sin(a) * r2).toFixed(1)}" stroke="#111" stroke-width="2.2" stroke-linecap="round" marker-end="url(#ah)"/>`; }).join(''));
 
-/* ---- Cloud bubbles: scallops around each rule, like the original poster ---- */
-function cloud(w, h, seed) {
-  let s = seed;
-  const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
-  const r = 8, x0 = r * 0.6, y0 = r * 0.6, x1 = w - r * 0.6, y1 = h - r * 0.6;
-  const pts = [], side = (ax, ay, bx, by) => {
-    const len = Math.hypot(bx - ax, by - ay), n = Math.max(2, Math.round(len / 26));
-    for (let i = 0; i < n; i++) pts.push([ax + (bx - ax) * i / n, ay + (by - ay) * i / n]);
-  };
-  side(x0, y0, x1, y0); side(x1, y0, x1, y1); side(x1, y1, x0, y1); side(x0, y1, x0, y0);
-  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
-  for (let i = 1; i <= pts.length; i++) {
-    const [x, y] = pts[i % pts.length], [px, py] = pts[i - 1];
-    const rad = Math.hypot(x - px, y - py) * (0.56 + rnd() * 0.12);
-    d += ` A${rad.toFixed(1)} ${rad.toFixed(1)} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`;
-  }
-  return d + ' Z';
-}
-function drawClouds() {
-  document.querySelectorAll('.cloud').forEach((el, i) => {
-    el.querySelector(':scope > svg')?.remove();
-    const w = el.clientWidth, h = el.clientHeight;
-    el.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><path filter="url(#wobble)" d="${cloud(w, h, 11 + i * 7)}"/></svg>`);
-  });
-}
-drawClouds();
+const finger = d => `<path d="${d}" fill="none" stroke="#111" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#fff" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+const hands = (x, y) => W(`<g transform="translate(${x} ${y})">
+  ${finger('M0 0 L0 68 Q0 82 14 82 L62 82')}
+  <path d="M-8 60 q-16 6 -14 26 q4 20 26 20 h30" fill="#fff" stroke="#111" stroke-width="2.2"/>
+  ${finger('M176 82 L176 14 Q176 0 162 0 L114 0')}
+  <path d="M184 22 q16 -6 14 -26 q-4 -20 -26 -20 h-30" fill="#fff" stroke="#111" stroke-width="2.2"/>
+  <circle cx="74" cy="28" r="7" fill="#fff" stroke="#111" stroke-width="2"/>
+  <path d="M74 35 L76 52 L70 68 M76 52 L82 68 M75 40 L92 30" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+  <path d="M92 24 l8 0 l-4 10 Z" fill="#fff" stroke="#111" stroke-width="1.6"/><circle cx="96" cy="20" r="5" fill="url(#stip)" stroke="#111" stroke-width="1.6"/></g>`);
 
-document.querySelectorAll('.burst-shape').forEach(p => p.setAttribute('points', Array.from({ length: 28 }, (_, i) => {
-  const a = i / 28 * Math.PI * 2, r = i % 2 ? 0.78 : 1;
-  return `${(75 + Math.cos(a) * 73 * r).toFixed(1)},${(56 + Math.sin(a) * 54 * r).toFixed(1)}`;
-}).join(' ')));
+$('art2').innerHTML =
+  `<text x="44" y="72" font-size="21" stroke="#111" stroke-width="1">How to build a sketch from the</text>` +
+  fatText('Center', 44, 166, 96, 'url(#stip)', 14) +
+  fatText('Out', 120, 252, 88, 'url(#hd)', 14) +
+  target(404, 222, 20) +
+  // story moment hunt scroll
+  scroll(46, 296, 476, 180) +
+  ribbon(150, 278, 260, 32, 'Story moment hunt!', 18) +
+  // viewfinder hands
+  hands(580, 262) +
+  `<text x="668" y="384" font-size="14" text-anchor="middle" stroke="#111" stroke-width=".7">frame it with your fingers</text>` +
+  // the build, left to right with fat arrows
+  W(`<path d="M40 512 H776" stroke="#111" stroke-width="1.6" stroke-dasharray="1 7" stroke-linecap="round" transform="translate(0 -12)"/>`) +
+  [0, 1, 2, 3].map(i => `<svg x="${36 + i * 194}" y="566" width="164" height="256" viewBox="0 0 320 500">
+      ${i === 0 ? `<path d="M160 60 V470 M20 250 H300" stroke="#999" stroke-width="2" stroke-dasharray="7 7" fill="none"/><text x="168" y="76" font-size="22" style="fill:#888">middle</text>` : ''}
+      ${sketch([[0], [0, 1], [0, 1, 2], [0, 1, 2, 3]][i])}</svg>`).join('') +
+  blockArrow(203, 688, 34, 0, 0.75) + blockArrow(397, 688, 34, 0, 0.75) + blockArrow(591, 688, 34, 0, 0.75) +
+  // time plan
+  `<text x="46" y="940" font-size="17" stroke="#111" stroke-width="1.2">Your time:</text>
+   <text x="46" y="964" font-size="14" stroke="#111" stroke-width=".7">look 3 min · ink 20 min</text>
+   <text x="46" y="984" font-size="14" stroke="#111" stroke-width=".7">color 10 min · notes 2 min</text>`;
 
 function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
 fit(); addEventListener('resize', fit);
