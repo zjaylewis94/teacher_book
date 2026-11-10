@@ -107,6 +107,10 @@ SUBROUTINE (Teaching → Worksheets → Style Guide).
 
 - **Layout (both):** 0.25 in border with a 10 pt stroke on the outside and rounded corners. Unit + Tier + Points in the
   header/footer. Header and text boxes have rounded corners. Clear hierarchy.
+- **Handwriting font dropped (Zach, Nov 10, 2026):** he tried the MrLewis handwriting look and doesn't like it.
+  New sheets use the KC + Papernotes set below for print as well. The older print sheets keep MrLewis until he asks
+  for them to be redone. His layout reference for how-to pages is Jay Conley's instruction sheets (no frame, notes
+  around the art); see "Instruction-sheet look" in `worksheets/README.md`.
 - **Fonts (digital):**
   - Title: KCPaintedHand
   - Bold outlined with empty fill: KCPaintedHand

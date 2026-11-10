@@ -12,7 +12,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, 4 steps, rubric) | back: work page (list 5, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, color: `pdf/life_and_death_color.pdf`, `pdf/life_and_death_sub_note.pdf` |
 | Unit 12 Sumi-e (Tier 3, 8 pts): instructions | `u12_sumi_e.html`: what it looks like, rules (brush only, 25 strokes max, 1/3 empty, red seal), 5 steps, 4×2 rubric | (one page) | `pdf/u12_sumi_e.pdf`, color: `pdf/u12_sumi_e_color.pdf` |
 | Unit 12 Sumi-e prelim | `u12_sumi_e_prelim.html` p1: load the brush, ink tones, 6 stroke drills | p2: Plan it (subject, 3 thumbnails, stroke order, rehearsal log) | `pdf/u12_sumi_e_prelim.pdf`, color: `pdf/u12_sumi_e_prelim_color.pdf` |
-| Unit 4 + 14 Urban Sketching Final (Tier 3, 8 pts) · also the Insight workshop handout | `u04_urban_sketching.html` p1: Da Rules (Zach's 12 rules lettered around one park sketch; numbers in the sketch show each rule) | p2: Center Out (story moment hunt, 4-step build that doubles as the demo, time plan, 4×2 rubric). `?insight` swaps the header and the rubric for "Keep sketching" | `pdf/u04_urban_sketching.pdf`, `pdf/insight_urban_sketching.pdf`, color: `pdf/u04_urban_sketching_color.pdf` |
+| Urban Sketching handout (Unit 4 + 14 and the Insight workshop; not graded) | `u04_urban_sketching.html` p1: Da Rules (Zach's 12 rules around one sketch of a historic house with orange trees; numbers in the sketch show each rule) | p2: Center Out (story moment hunt, 4-step build that doubles as the demo, watercolor in 3 moves, time plan). `?insight` swaps the header; `?bw` drops the watercolor for the copier | `pdf/u04_urban_sketching.pdf`, `pdf/insight_urban_sketching.pdf`, B&W: `pdf/insight_urban_sketching_bw.pdf` |
 
 ## The theme (build on it; don't fork it)
 This is the **print** look: black and white for the copier. Color versions for Google Classroom and screens
@@ -35,15 +35,21 @@ Taken from Zach's hand-drawn how-to sheets:
 ## Instruction-sheet look (no frame)
 Zach's reference for how-to pages is Jay Conley's hand-drawn instruction sheets (Nov 10, 2026: "more like this style").
 `u04_urban_sketching.html` is the first sheet built that way; copy it for the next how-to page:
-- **No frame and no boxes.** White page, big pictures, notes lettered around the art.
-- **Descriptive lettering for the title** (`fatText()`): fat outline letters with a drop shadow and a pen texture inside
-  (`#brick`, `#stip`, `#hd`), chosen to match the subject.
+- **No frame and no boxes.** White page, big pictures, notes placed around the art.
+- **Type is the digital set, in print too.** Zach dropped the MrLewis handwriting font on Nov 10 ("I actually hate it"):
+  KC PaintedHand for titles and headings, Papernotes for text, KC Beebosloth for the small header line.
+  The older sheets still use MrLewis until he asks for them to be converted.
+- **Title** (`title()`): KC PaintedHand, outlined, with a drop shadow and a watercolor wash inside the letters.
+- **Watercolor** (`#wcf` for washes, `#wcs` for small dabs; class `wc`): three Crayola colors at most, loose and a little
+  outside the lines, with paper left white. It goes on the finished sketch only, so the steps before it stay ink.
 - **Pen textures, not gray fills:** hatching `#hd`, vertical lines `#hv`, crosshatch `#hx`, stipple `#stip`.
 - **Ribbon banners and a scroll** (`ribbon()`, `scroll()`) for subtitles and word lists; **fat hatched arrows**
-  (`blockArrow()`) between steps; steps read "1st … 2nd … 3rd".
+  (`blockArrow()`) between steps.
+- The scene is drawn in layers (`L[0]`…`L[3]`, then `WASH`) in the order a student draws it, so the step panels reuse it.
 - The page is one 816 × 1056 SVG layer plus absolutely placed text blocks, so `export.js` can't detect overflow here.
   Look at the PNG.
-- The color copy keeps the handwriting and only adds a few Crayola pops, so its PDF needs no licensed fonts.
+- Every version uses the licensed fonts, so **rebuild each PDF from its PNGs** (the `convert` line under Color versions)
+  and check `pdffonts` shows none. `?bw` hides the watercolor for the black-and-white copier.
 
 ## Unit intro worksheets
 Every unit opens with one, modeled on Zach's Pencil Intro Worksheet (Drive: `ramhaus/UNIT 01 PENCIL/PENCIL INTRO WORKSHEET`).
