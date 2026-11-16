@@ -51,5 +51,17 @@ const page = (name, [title, use, zones], bg) => `<!doctype html><html><body styl
   await q.setContent(`<body style="margin:20px;background:#eee;display:grid;grid-template-columns:repeat(5,270px);gap:10px">${Object.entries(T).map(([n, t]) =>
     `<div style="background:#fff;box-shadow:0 1px 4px #0003;width:270px;height:349px;overflow:hidden"><div style="transform:scale(.3309);transform-origin:0 0;width:816px;height:1056px">${page(n, t, '#fff').replace(/<\/?(html|body)[^>]*>|<!doctype html>/g, '')}</div></div>`).join('')}</body>`);
   await q.screenshot({ path: path.join(__dirname, 'contact_sheet.png') });
+  // one PDF of all ten, on white, with an index page, to keep in Drive
+  const r = await b.newPage();
+  const idx = `<div style="width:8.5in;height:11in;padding:.6in;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;page-break-after:always">
+    <h1 style="font-size:30px;margin:0 0 6px">Mr. Lewis worksheet layout guides</h1>
+    <p style="font-size:14px;line-height:1.45;margin:0 0 18px">Ten letter-size guides for building worksheets by hand in Photoshop. Open the matching PNG (2550 × 3300 px, 300 dpi,
+      transparent) as the top layer, build the page underneath, then hide the layer before printing. Blue boxes are zones. The dashed pink line is the 0.25 in print-safe edge.</p>
+    <table style="border-collapse:collapse;font-size:14px;width:100%">${Object.entries(T).map(([n, [title, use]]) =>
+      `<tr><td style="border-bottom:1px solid #ccc;padding:7px 8px;width:36px"><b>${n.slice(0, 2)}</b></td><td style="border-bottom:1px solid #ccc;padding:7px 8px;width:210px"><b>${title}</b></td><td style="border-bottom:1px solid #ccc;padding:7px 8px">${use}</td><td style="border-bottom:1px solid #ccc;padding:7px 8px;color:#777;font-size:12px">${n}.png</td></tr>`).join('')}</table>
+    <p style="font-size:13px;color:#555;margin-top:18px">First draft, Nov 16, 2026. Based on the layouts already used and common worksheet and comic structures. Add to it as you collect references.</p></div>`;
+  await r.setContent(`<style>@page{size:letter;margin:0}body{margin:0}</style>` + idx + Object.entries(T).map(([n, t]) =>
+    `<div style="width:8.5in;height:11in;page-break-after:always">${page(n, t, '#fff').replace(/<\/?(html|body)[^>]*>|<!doctype html>/g, '')}</div>`).join(''));
+  await r.pdf({ path: path.join(__dirname, 'layout_guides.pdf'), format: 'Letter', printBackground: true, margin: { top: 0, right: 0, bottom: 0, left: 0 } });
   await b.close(); console.log('built', Object.keys(T).length, 'templates');
 })();

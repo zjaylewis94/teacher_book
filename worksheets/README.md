@@ -12,7 +12,7 @@ so every sheet shares one look. `export.js` turns a page into a print-ready PDF.
 | Unit 2 Pen Shading Techniques | `u02_pen_shading.html` front: contour lines first + hatching | back: crosshatching, stippling, scumbling (T1, 2 pts) | `pdf/u02_pen_shading.pdf` |
 | Unit 2 Line Quality + Line Weights | `u02_line_quality.html` p1: line qualities, flat vs weighted, when to go thick | p2: line practice; p3: six weight challenges (T1, 2 pts) | `pdf/u02_line_quality.pdf` |
 | Unit 3 Tempera Intro (Tier 1, 2 pts) | `u03_tempera_intro.html` p1: Know your tool (the kit, how tempera behaves, handling paint, color words with a tints-to-shades strip) | p2: Tempera warm-ups (brush marks, cover-up test, water test, 9-box value scale from tints to shades, smooth blend). Set in the KC + Papernotes fonts | `pdf/u03_tempera_intro.pdf`, color: `pdf/u03_tempera_intro_color.pdf` |
-| Unit 3 Mecha Chameleon (Tier 2) materials | `u03_chameleon.html` p1: nine blank figures to cut out | p2–7: six flat-color backgrounds (brick wall, wood fence, lockers, jungle leaves, bookshelf, sunset hills). Digital copies in `img/chameleon/` (backgrounds as JPG, figures on a transparent PNG) | `pdf/u03_chameleon.pdf` |
+| Unit 3 Meccha Chameleon (Tier 2) materials | `u03_chameleon.html` p1: nine chunky blank figures to cut out | p2–7: six flat-color backgrounds (Level 1). p8–13: the same six with texture, light and shadow (Level 2). Digital copies in `img/chameleon/` (backgrounds as JPG, figures on a transparent PNG) | `pdf/u03_chameleon.pdf` |
 | Life & Death (sub-week wild card, 4 pts) | `life_and_death.html` front: instruction page (two examples, rules, 4 steps, rubric) | back: work page (list 5, final truck). Sub plan: `life_and_death_sub_note.html` | `pdf/life_and_death.pdf`, color: `pdf/life_and_death_color.pdf`, `pdf/life_and_death_sub_note.pdf` |
 | Unit 12 Sumi-e (Tier 3, 8 pts): instructions | `u12_sumi_e.html`: what it looks like, rules (brush only, 25 strokes max, 1/3 empty, red seal), 5 steps, 4×2 rubric | (one page) | `pdf/u12_sumi_e.pdf`, color: `pdf/u12_sumi_e_color.pdf` |
 | Unit 12 Sumi-e prelim | `u12_sumi_e_prelim.html` p1: load the brush, ink tones, 6 stroke drills | p2: Plan it (subject, 3 thumbnails, stroke order, rehearsal log) | `pdf/u12_sumi_e_prelim.pdf`, color: `pdf/u12_sumi_e_prelim_color.pdf` |
@@ -39,7 +39,7 @@ Taken from Zach's hand-drawn how-to sheets:
 ## Layout guides for Photoshop (`templates/`)
 Zach builds finished sheets by hand in Photoshop (Nov 16, 2026). `templates/build.js` makes ten guide overlays:
 transparent 2550 × 3300 px PNGs with blue zone boxes and a dashed 0.25 in print-safe line. He puts one on the top layer,
-works underneath, and hides it before printing. `contact_sheet.png` shows all ten. To add or change one, edit the `T`
+works underneath, and hides it before printing. `contact_sheet.png` shows all ten, and `layout_guides.pdf` is an index page plus all ten on white (also saved in Drive, `teacher_book/06 LAYOUT GUIDES/`). To add or change one, edit the `T`
 table in `build.js` (zones are `[x, y, w, h, label]` in inches from the print-safe corner) and run `node build.js`.
 
 ## Instruction-sheet look (no frame)
