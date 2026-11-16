@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mecha Chameleon</title>
+<title>Meccha Chameleon</title>
 <style>
   /* Unit 3 Tier 2: 2D Mecha Chameleon. Page 1 = blank figures to cut out. Pages 2-7 = flat-color backgrounds to hide them on.
      Plain on purpose: these are materials, not a styled worksheet. Fonts are licensed and kept out of git (fonts/licensed/). */
@@ -15,8 +15,8 @@
   html, body { margin: 0; background: #d6d6d6; font-family: "Papernotes", sans-serif; color: #111; }
   .page { width: 8.5in; height: 11in; background: #fff; margin: 0 auto; position: relative; overflow: hidden; page-break-after: always; break-after: page; }
   .page svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  h1 { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 40px; margin: 0; position: absolute; left: 0.4in; top: 0.3in; letter-spacing: 1px; }
-  .sub { position: absolute; left: 0.4in; top: 0.92in; right: 0.4in; font-size: 16px; line-height: 1.3; }
+  h1 { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 34px; margin: 0; position: absolute; left: 0.4in; top: 0.28in; letter-spacing: 1px; }
+  .sub { position: absolute; left: 0.4in; top: 0.86in; right: 0.4in; font-size: 14.5px; line-height: 1.25; }
   .tag { position: absolute; left: 0.3in; bottom: 0.25in; background: #fff; border: 2px solid #111; border-radius: 8px; padding: 2px 10px; font-size: 14px; font-weight: bold; }
   @media screen { body { padding: 16px 0; } .page { box-shadow: 0 2px 10px rgba(0,0,0,.25); } .page + .page { margin-top: 16px; } }
   @media screen and (max-width: 840px) { html, body { padding: 0; overflow-x: hidden; }
@@ -25,33 +25,45 @@
 </head>
 <body>
 <div class="page">
-  <h1>Mecha Chameleon</h1>
+  <h1>Meccha Chameleon</h1>
   <div class="sub"><b>1.</b> Pick a pose and cut it out on the outside of the black line. &nbsp;<b>2.</b> Lay it on your background and decide where it hides.
     &nbsp;<b>3.</b> Mix your paint to match what's underneath, and paint the figure so it disappears. &nbsp;<b>4.</b> Glue it down.</div>
   <svg id="poses" viewBox="0 0 816 1056"></svg>
 </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <filter id="rough" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" seed="8" result="n"/><feDiffuseLighting in="n" surfaceScale="2.6" lighting-color="#fff"><feDistantLight azimuth="225" elevation="52"/></feDiffuseLighting></filter>
+  <filter id="woodgrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.09 0.004" numOctaves="3" seed="5"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.8" intercept="-0.3"/><feFuncG type="linear" slope="1.8" intercept="-0.3"/><feFuncB type="linear" slope="1.8" intercept="-0.3"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#000" flood-opacity=".45"/></filter>
+  <linearGradient id="sheen" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>
+  <linearGradient id="undershelf" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+  <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F9D56E"/><stop offset=".3" stop-color="#F7A944"/><stop offset=".55" stop-color="#EE7B45"/><stop offset=".78" stop-color="#D45A5A"/><stop offset="1" stop-color="#8E4A7E"/></linearGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset="1" stop-color="#FFF6C8" stop-opacity="0"/></radialGradient>
+</defs></svg>
 <div id="bgs"></div>
 <script>
 // ---- Blank figures: a skeleton stroked thick in black, then thinner in white, gives a clean cut line ----
 // Each pose: head [x, y] and limb polylines, in a 200 x 280 box.
 const POSES = [
-  ['T-pose',      [100, 44], ['100 70 100 160', '100 88 30 88', '100 88 170 88', '100 160 76 250', '100 160 124 250']],
-  ['Star',        [100, 50], ['100 76 100 160', '100 92 36 40', '100 92 164 40', '100 160 44 244', '100 160 156 244']],
-  ['Running',     [112, 46], ['108 72 96 158', '106 90 150 112 172 80', '106 90 60 110 40 140', '96 158 140 196 132 250', '96 158 52 190 22 176']],
-  ['Sitting',     [84, 70],  ['84 96 84 190', '84 116 124 150 150 140', '84 116 60 160', '84 190 152 190 152 256', '84 190 140 204']],
-  ['Crouch',      [100, 96], ['100 122 100 196', '100 138 52 176', '100 138 148 176', '100 196 56 200 60 256', '100 196 144 200 140 256']],
-  ['Wall cling',  [70, 52],  ['74 78 86 168', '76 96 30 60', '76 96 34 130', '86 168 40 196', '86 168 50 250']],
-  ['Hands up',    [100, 62], ['100 88 100 172', '100 104 70 40', '100 104 130 40', '100 172 84 256', '100 172 116 256']],
-  ['Lean',        [56, 60],  ['62 84 96 164', '68 100 30 150', '68 100 120 96 150 70', '96 164 84 254', '96 164 140 250']],
-  ['One leg',     [100, 46], ['100 72 100 160', '100 90 44 120', '100 90 156 120', '100 160 100 254', '100 160 150 170 140 214']]
+  ['T-pose',     [100, 40], ['100 84 100 150', '100 92 24 92', '100 92 176 92', '88 160 70 250', '112 160 130 250']],
+  ['Star',       [100, 44], ['100 88 100 150', '100 96 30 36', '100 96 170 36', '92 158 40 246', '108 158 160 246']],
+  ['Running',    [120, 40], ['114 84 98 150', '112 92 166 108 182 58', '112 92 54 96 30 138', '100 156 156 190 150 252', '98 156 44 178 14 152']],
+  ['Sitting',    [66, 56],  ['68 100 70 176', '70 112 132 132', '68 112 34 168', '72 182 152 182 152 256']],
+  ['Crouch',     [100, 78], ['100 122 100 172', '100 130 34 172', '100 130 166 172', '92 182 40 190 44 256', '108 182 160 190 156 256']],
+  ['Climb',      [86, 52],  ['90 96 98 162', '90 104 34 46', '90 104 152 64', '98 168 40 212', '98 168 150 226 146 262']],
+  ['Hands up',   [100, 72], ['100 116 100 176', '100 124 54 32', '100 124 146 32', '90 186 80 258', '110 186 120 258']],
+  ['Wave',       [100, 44], ['100 88 100 154', '100 96 162 48', '100 96 40 142', '90 164 70 252', '110 164 140 248']],
+  ['Kick',       [78, 44],  ['80 88 86 154', '80 96 22 70', '80 96 138 78', '84 164 76 256', '90 160 172 150']]
 ];
+// Chunky mannequins, like the game's blank white hiders: big head, thick torso, stubby limbs.
+// limbs[0] is the torso. The black pass is 5 units wider than the white one, so the cut line stays thin.
 const fig = ([name, head, limbs], ox, oy, s) => {
-  const pl = (w, c) => limbs.map(p => `<polyline points="${p}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
-    `<circle cx="${head[0]}" cy="${head[1]}" r="${w === 34 ? 26 : 23}" fill="${c}"/>`;
-  return `<g transform="translate(${ox} ${oy}) scale(${s})">${pl(34, '#111')}${pl(28, '#fff')}
-    <text x="100" y="${278}" font-size="13" text-anchor="middle" font-family="Papernotes, sans-serif">${name}</text></g>`;
+  const pl = (extra, c) => limbs.map((p, i) => `<polyline points="${p}" fill="none" stroke="${c}" stroke-width="${(i ? 46 : 66) + extra}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
+    `<circle cx="${head[0]}" cy="${head[1]}" r="${31 + extra / 2}" fill="${c}"/>`;
+  return `<g transform="translate(${ox} ${oy}) scale(${s})">${pl(5, '#111')}${pl(0, '#fff')}</g>`;
 };
-document.getElementById('poses').innerHTML = POSES.map((p, i) => fig(p, 52 + (i % 3) * 246, 146 + Math.floor(i / 3) * 300, 0.96)).join('');
+document.getElementById('poses').innerHTML = POSES.map((p, i) => fig(p, 34 + (i % 3) * 262, 128 + Math.floor(i / 3) * 306, 1.02)).join('');
 
 // ---- Backgrounds: flat colors only, 4-6 per page, so every one can be mixed in tempera ----
 let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280; const pick = a => a[Math.floor(rnd() * a.length)];
@@ -75,7 +87,47 @@ const BG = {
     s += `<rect y="640" width="816" height="416" fill="#8E4A7E"/><circle cx="408" cy="560" r="120" fill="#FCEBA4"/>`;
     [['#5B3B6B', 640, 90], ['#3F2B52', 760, 120], ['#2A1D3A', 900, 100]].forEach(([c, y, a], k) => { let d = `M0 ${y}`; for (let x = 0; x <= 816; x += 102) d += ` Q${x + 51} ${y - a + (k * 37 + x) % 60} ${x + 102} ${y + ((x / 102 + k) % 2 ? 20 : -10)}`; s += `<path d="${d} V1056 H0 Z" fill="${c}"/>`; }); return s; }
 };
-document.getElementById('bgs').innerHTML = Object.entries(BG).map(([n, f]) => `<div class="page"><svg viewBox="0 0 816 1056" preserveAspectRatio="none">${f()}</svg><div class="tag">${n}</div></div>`).join('');
+const over = (f, o) => `<rect width="816" height="1056" filter="url(#${f})" style="mix-blend-mode:multiply" opacity="${o}"/>`;
+const BG2 = {
+  'Brick wall': () => { let s = `<rect width="816" height="1056" fill="#A9A397"/>`; const c = ['#B5523B', '#A8452F', '#C4634A', '#9C3F2C', '#8C3A2A', '#BF6B55'];
+    for (let r = 0; r < 23; r++) for (let x = (r % 2 ? -62 : 0); x < 816; x += 124) { const y = r * 46 + 4, w = 112 + rnd() * 6, jx = x + 4 + rnd() * 3;
+      s += `<rect x="${jx.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="38" rx="2" fill="${pick(c)}"/><rect x="${jx.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="5" fill="#fff" opacity=".13"/><rect x="${jx.toFixed(1)}" y="${y + 32}" width="${w.toFixed(1)}" height="6" fill="#000" opacity=".22"/>`; }
+    return s + over('rough', .75) + over('grain', .3); },
+  'Wood fence': () => { let s = `<rect width="816" height="1056" fill="#3E2A1A"/>`; const c = ['#C99A66', '#B98755', '#D6AC7A', '#AE7B4A', '#BF915F'];
+    for (let i = 0; i < 9; i++) { const x = i * 92 - 6; s += `<path d="M${x + 4} 1056 V70 L${x + 46} 24 L${x + 88} 70 V1056 Z" fill="${pick(c)}"/><rect x="${x + 78}" y="70" width="10" height="986" fill="#000" opacity=".18"/>`;
+      for (let k = 0; k < 2; k++) { const ky = 120 + rnd() * 800, kx = x + 22 + rnd() * 44; s += `<ellipse cx="${kx.toFixed(0)}" cy="${ky.toFixed(0)}" rx="9" ry="15" fill="#6B4526"/><ellipse cx="${kx.toFixed(0)}" cy="${ky.toFixed(0)}" rx="4" ry="7" fill="#3E2A1A"/>`; } }
+    s += `<rect y="300" width="816" height="34" fill="#8A6239"/><rect y="334" width="816" height="10" fill="#000" opacity=".3"/><rect y="760" width="816" height="34" fill="#8A6239"/><rect y="794" width="816" height="10" fill="#000" opacity=".3"/>`;
+    for (let i = 0; i < 9; i++) for (const y of [317, 777]) s += `<circle cx="${i * 92 + 40}" cy="${y}" r="4" fill="#4A4A4A"/>`;
+    s += `<rect width="816" height="1056" filter="url(#woodgrain)" style="mix-blend-mode:multiply" opacity=".55" transform="rotate(90 408 408) translate(0 -240) scale(1.3 1)"/><rect y="950" width="816" height="106" fill="#4E8A3E"/>`;
+    for (let i = 0; i < 150; i++) { const x = rnd() * 816, h = 26 + rnd() * 46; s += `<path d="M${x.toFixed(0)} 1056 l${(rnd() * 14 - 7).toFixed(0)} ${(-h - 60).toFixed(0)} l7 ${(h + 60).toFixed(0)} Z" fill="${pick(['#5E9B4C', '#3F7A36', '#7DB05E', '#2F6A2C'])}"/>`; }
+    return s + over('grain', .28); },
+  'Lockers': () => { let s = `<rect width="816" height="1056" fill="#22384C"/>`; const c = ['#4F7FA8', '#5B8DB8', '#466F94', '#537FA2'];
+    for (let r = 0; r < 2; r++) for (let i = 0; i < 6; i++) { const x = i * 136 + 6, y = r * 528 + 6, f = pick(c);
+      s += `<rect x="${x}" y="${y}" width="124" height="516" fill="${f}"/><rect x="${x}" y="${y}" width="124" height="516" fill="url(#sheen)"/><rect x="${x + 6}" y="${y + 6}" width="112" height="504" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="3"/>`;
+      for (let v = 0; v < 5; v++) s += `<rect x="${x + 28}" y="${y + 40 + v * 16}" width="68" height="7" fill="#1B2D3D"/><rect x="${x + 28}" y="${y + 47 + v * 16}" width="68" height="2" fill="#fff" opacity=".3"/>`;
+      s += `<rect x="${x + 44}" y="${y + 140}" width="36" height="22" fill="#E8E2D2"/><rect x="${x + 96}" y="${y + 250}" width="12" height="44" rx="4" fill="#D9D4C7"/><circle cx="${x + 102}" cy="${y + 312}" r="9" fill="#2A2A2A"/><circle cx="${x + 102}" cy="${y + 312}" r="4" fill="#B9B4AA"/>`; }
+    return s + over('rough', .35) + over('grain', .3); },
+  'Jungle leaves': () => { let s = `<rect width="816" height="1056" fill="#12391F"/>`; const c = ['#2E7D46', '#4C9A52', '#6DB56A', '#3A8A5A', '#8CC97A', '#256B3C', '#A6D785'];
+    for (let i = 0; i < 90; i++) { const x = rnd() * 816, y = rnd() * 1056, a = rnd() * 360, l = 130 + rnd() * 150, f = pick(c);
+      s += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${a.toFixed(0)})" filter="url(#shadow)"><path d="M0 0 Q${l * .5} ${-l * .3} ${l} 0 Q${l * .5} ${l * .3} 0 0 Z" fill="${f}"/>
+        <path d="M0 0 Q${l * .5} ${l * .3} ${l} 0 Z" fill="#000" opacity=".16"/><path d="M0 0 H${l}" stroke="#0E2E18" stroke-width="2.5" opacity=".7"/>
+        ${[.25, .45, .65].map(t => `<path d="M${l * t} 0 l${l * .12} ${-l * .11} M${l * t} 0 l${l * .12} ${l * .11}" stroke="#0E2E18" stroke-width="1.4" opacity=".5" fill="none"/>`).join('')}</g>`; }
+    return s + over('grain', .25); },
+  'Bookshelf': () => { let s = `<rect width="816" height="1056" fill="#2A1C12"/>`; const c = ['#C0392B', '#2E6DA4', '#E0A526', '#3D8B5A', '#7B4B94', '#D97B2B', '#E8E0CF', '#1F3A5A', '#8C2F39', '#5D7A3A'];
+    for (let r = 0; r < 4; r++) { const y = r * 264; let x = 16;
+      while (x < 790) { const w = 24 + Math.floor(rnd() * 36), h = 140 + Math.floor(rnd() * 86), f = pick(c), ty = y + 240 - h;
+        s += `<rect x="${x}" y="${ty}" width="${w}" height="${h}" fill="${f}"/><rect x="${x}" y="${ty}" width="${Math.max(4, w * .18).toFixed(0)}" height="${h}" fill="#fff" opacity=".16"/><rect x="${(x + w * .8).toFixed(0)}" y="${ty}" width="${(w * .2).toFixed(0)}" height="${h}" fill="#000" opacity=".22"/>
+          <rect x="${x}" y="${ty + 16}" width="${w}" height="5" fill="#F3E3B0" opacity=".75"/><rect x="${x}" y="${ty + h - 26}" width="${w}" height="5" fill="#F3E3B0" opacity=".75"/><rect x="${(x + w * .3).toFixed(0)}" y="${ty + 40}" width="${(w * .4).toFixed(0)}" height="${Math.min(70, h * .35).toFixed(0)}" fill="#000" opacity=".25"/>`; x += w + 3; }
+      s += `<rect y="${y}" width="816" height="60" fill="url(#undershelf)"/><rect y="${y + 240}" width="816" height="24" fill="#8A6239"/><rect y="${y + 240}" width="816" height="4" fill="#fff" opacity=".2"/>`; }
+    return s + `<rect width="816" height="1056" filter="url(#woodgrain)" style="mix-blend-mode:multiply" opacity=".3"/>` + over('grain', .28); },
+  'Sunset hills': () => { let s = `<rect width="816" height="1056" fill="url(#sky)"/><circle cx="408" cy="560" r="300" fill="url(#glow)"/><circle cx="408" cy="560" r="112" fill="#FCEBA4"/>`;
+    for (let i = 0; i < 16; i++) s += `<ellipse cx="${(rnd() * 816).toFixed(0)}" cy="${(60 + rnd() * 520).toFixed(0)}" rx="${(90 + rnd() * 160).toFixed(0)}" ry="${(8 + rnd() * 16).toFixed(0)}" fill="${pick(['#FBE3A0', '#F2937A', '#C9567A', '#FFD08A'])}" opacity=".6" filter="url(#soft)"/>`;
+    [['#5B3B6B', 640, 90], ['#3F2B52', 760, 120], ['#2A1D3A', 900, 100]].forEach(([c, y, a], k) => { let d = `M0 ${y}`; for (let x = 0; x <= 816; x += 102) d += ` Q${x + 51} ${y - a + (k * 37 + x) % 60} ${x + 102} ${y + ((x / 102 + k) % 2 ? 20 : -10)}`; s += `<path d="${d} V1056 H0 Z" fill="${c}"/>`;
+      for (let i = 0; i < 14; i++) { const x = rnd() * 816, h = 40 + rnd() * 50 + k * 20, by = y + 20 + rnd() * 60; s += `<path d="M${x.toFixed(0)} ${(by - h).toFixed(0)} l${(h * .28).toFixed(0)} ${h.toFixed(0)} h${(-h * .56).toFixed(0)} Z" fill="${['#4A2F5A', '#33224A', '#1E1430'][k]}"/>`; } });
+    return s + over('rough', .3) + over('grain', .3); }
+};
+const pg = (n, lvl, f) => `<div class="page"><svg viewBox="0 0 816 1056" preserveAspectRatio="none">${f()}</svg><div class="tag">${n} · Level ${lvl}</div></div>`;
+document.getElementById('bgs').innerHTML = Object.entries(BG).map(([n, f]) => pg(n, 1, f)).join('') + Object.entries(BG2).map(([n, f]) => pg(n, 2, f)).join('');
 function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); } fit(); addEventListener('resize', fit);
 </script>
 </body>

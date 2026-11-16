@@ -102,7 +102,7 @@ that he turns off before printing.
   He loads one as the top layer, draws underneath, and hides it. Add or change a template there when he asks.
 - **The 0.25 in border was only ever a print-bounds marker for him.** It doesn't need to be drawn on the finished page.
 - **Claude's part:** the lesson content and wording, the guide templates, cut-outs and other plain materials
-  (e.g. `u03_chameleon.html`), research on how other teachers lay out worksheets, and print files. Don't deliver a
+  (e.g. `u03_chameleon.html`; the game is spelled Meccha Chameleon), research on how other teachers lay out worksheets, and print files. Don't deliver a
   fully styled, code-drawn worksheet as the finished look unless he asks for one.
 - He still wants to study other teachers' and designers' worksheets. When he shares references, pull out the layout
   patterns and turn the useful ones into new guide templates.
