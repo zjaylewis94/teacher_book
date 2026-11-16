@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Urban Sketching</title>
+<link rel="stylesheet" href="worksheet.css">
+<script>
+  // One source:
+  //   plain    = color handout, class header (Unit 4 + 14). Not graded.
+  //   ?insight = the Insight "art in the park" workshop header
+  //   ?bw      = no watercolor, for the black-and-white copier (combine: ?insight&bw)
+  const q = new URLSearchParams(location.search);
+  if (q.has('insight')) document.documentElement.classList.add('insight');
+  if (q.has('bw')) document.documentElement.classList.add('bw');
+</script>
+<style>
+  /* Instruction-sheet look: no frame, no boxes. Big pictures, notes placed around the art.
+     Type is Zach's digital set (Nov 10: he dropped the handwriting font): KC PaintedHand titles and headings,
+     Papernotes text, KC Beebosloth labels. The fonts are licensed and kept out of git (fonts/licensed/). */
+  @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes-Bold.otf"); font-weight: bold; }
+  @font-face { font-family: "KC Beebo"; src: url("fonts/licensed/KCBeebosloth.otf");
+               unicode-range: U+0020, U+002E, U+0030-0039, U+0041-005A, U+0061-007A; }
+  /* Crayola: three paint colors (rule 12), plus yellow for the number tags */
+  :root { --orange: #FF7538; --leaf: #71BC78; --sky: #80DAEB; --tag: #FCE883; --paper2: #FFF8DC; }
+  .bw { --tag: #fff; --paper2: #fff; }
+  .bw .wc { display: none; }
+
+  .page { background: #fff; padding: 0; position: relative; }
+  .sheet { position: absolute; inset: 0; font-family: "Papernotes", "Hand Fallback", sans-serif; color: #111; }
+  .sheet > svg.layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .blk { position: absolute; font-size: 14.5px; line-height: 1.22; }
+  .big { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 17px; line-height: 1.12; display: block; margin-bottom: 3px; letter-spacing: .3px; }
+  .cn { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 2.2px solid #111; border-radius: 50%; background: var(--tag);
+        font-family: "Papernotes", sans-serif; font-weight: bold; font-size: 14px; margin-right: 6px; vertical-align: 1px; transform: rotate(-5deg); letter-spacing: 0; }
+  .sheet .meta { position: absolute; font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; font-size: 13px; letter-spacing: 1.2px; -webkit-text-stroke: 0; }
+  .only-insight { display: none; }
+  .insight .only-insight { display: revert; }
+  .insight .only-class { display: none; }
+  .list { font-weight: bold; font-size: 17px; line-height: 1.3; }
+  .sheet svg text { font-family: "Papernotes", "Hand Fallback", sans-serif; fill: #111; }
+  .sheet svg text.kc { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; }
+  .b { fill: none; stroke: #111; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .t { fill: none; stroke: #111; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .f { fill: none; stroke: #111; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+  .mk circle { fill: var(--tag); stroke: #111; stroke-width: 2; }
+  .sheet svg .mk text { font-weight: bold; font-size: 13px; text-anchor: middle; dominant-baseline: central; }
+  .ribbon-face { fill: var(--tag); }
+  .scroll-face { fill: var(--paper2); }
+  .wc { mix-blend-mode: multiply; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Watercolor: ragged edges, paper grain, and a darker rim where the paint pools -->
+    <filter id="wcf" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="8" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="12" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.8" result="b"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="2" seed="3" result="g"/>
+      <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.1 1.4" result="ga"/>
+      <feComposite in="b" in2="ga" operator="in" result="grain"/>
+      <feMorphology in="b" operator="erode" radius="1.4" result="er"/>
+      <feComposite in="b" in2="er" operator="out" result="edge"/>
+      <feMerge><feMergeNode in="grain"/><feMergeNode in="edge"/></feMerge>
+    </filter>
+    <filter id="wcs" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.5"/>
+    </filter>
+    <!-- Pen textures -->
+    <pattern id="hd" width="4.5" height="4.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="4.5" height="4.5" fill="#fff"/><line x1="0" y1="0" x2="0" y2="4.5" stroke="#111" stroke-width="1.1"/></pattern>
+    <pattern id="hv" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="#fff"/><line x1="1" y1="0" x2="1" y2="4" stroke="#111" stroke-width="0.9"/></pattern>
+    <pattern id="hx" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <rect width="5" height="5" fill="#fff"/><path d="M0 0 V5 M0 0 H5" stroke="#111" stroke-width="0.9"/></pattern>
+    <pattern id="stip" width="9" height="9" patternUnits="userSpaceOnUse">
+      <rect width="9" height="9" fill="#fff"/><circle cx="1.5" cy="2" r=".75" fill="#111"/><circle cx="6" cy="1" r=".6" fill="#111"/>
+      <circle cx="4" cy="5.5" r=".75" fill="#111"/><circle cx="8" cy="6.5" r=".6" fill="#111"/><circle cx="1" cy="7.5" r=".6" fill="#111"/></pattern>
+    <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 L3 5 Z" fill="#111"/></marker>
+  </defs>
+</svg>
+
+<!-- ================= PAGE 1: DA RULES ================= -->
+<div class="page">
+<div class="sheet">
+  <svg class="layer" id="art1" viewBox="0 0 816 1056"></svg>
+
+  <div class="meta only-class" style="left:40px;top:24px">Unit 4 + 14 · Urban Sketching</div>
+  <div class="meta only-insight" style="left:40px;top:24px">Insight · Art in the Park · Intro to Urban Sketching</div>
+
+  <!-- left column -->
+  <div class="blk" style="left:40px;top:250px;width:166px"><span class="big"><span class="cn">1</span>Sit still long enough to observe.</span>Watch for 2 whole minutes before your first line.</div>
+  <div class="blk" style="left:40px;top:388px;width:166px"><span class="big"><span class="cn">2</span>Look for a "story moment."</span>What stands out? That's your subject.</div>
+  <div class="blk" style="left:40px;top:510px;width:166px"><span class="big"><span class="cn">3</span>Start w/ large shapes! <u>No</u> detail.</span>Story moment first: <b>big</b>, in the middle. Then build out.</div>
+  <div class="blk" style="left:40px;top:650px;width:166px"><span class="big"><span class="cn">4</span>Draw people as gestures, not portraits.</span>Bean body, stick limbs. Show what they're <b>doing</b>.</div>
+
+  <!-- right column -->
+  <div class="blk" style="left:612px;top:250px;width:168px"><span class="big"><span class="cn">5</span>Use line weight to fake depth.</span><b>Close</b> = thick + dark.<br><b>Far</b> = thin + light.</div>
+  <div class="blk" style="left:612px;top:388px;width:168px"><span class="big"><span class="cn">6</span>Break perspective rules</span><i>(strategically!)</i> Lean it or bend it if it tells the story.</div>
+  <div class="blk" style="left:612px;top:510px;width:168px"><span class="big"><span class="cn">7</span>Leave stuff out.</span>Not every brick, board or leaf. Let the edges fade away.</div>
+  <div class="blk" style="left:612px;top:650px;width:168px"><span class="big"><span class="cn">8</span>Don't erase!</span>Pen from line one. No pencil = nothing to erase.</div>
+
+  <!-- bottom row -->
+  <div class="blk" style="left:40px;top:786px;width:172px"><span class="big"><span class="cn">9</span>Treat mistakes like they belong.</span>Wrong line? Draw the right one next to it.</div>
+  <div class="blk" style="left:228px;top:786px;width:172px"><span class="big"><span class="cn">10</span>Embrace speed.</span>Fast lines look alive. Don't fuss.</div>
+  <div class="blk" style="left:416px;top:786px;width:172px"><span class="big"><span class="cn">11</span>Add notes or tiny text.</span>The time, the place, what you smelled.</div>
+  <div class="blk" style="left:604px;top:786px;width:176px"><span class="big"><span class="cn">12</span>Limited color pops.</span>Ink first. Then 2–3 colors, only where it matters.</div>
+
+  <div class="blk" style="left:390px;top:940px;width:390px"><span class="big" style="display:inline">Ink, wait, paint.</span>
+    Microns are waterproof once they dry. Give the ink a minute, then add your color pops with watercolor.</div>
+</div>
+</div>
+
+<!-- ================= PAGE 2: CENTER OUT ================= -->
+<div class="page">
+<div class="sheet">
+  <svg class="layer" id="art2" viewBox="0 0 816 1056"></svg>
+
+  <div class="meta only-class" style="left:40px;top:24px">Unit 4 + 14 · Urban Sketching</div>
+  <div class="meta only-insight" style="left:40px;top:24px">Insight · Art in the Park · Intro to Urban Sketching</div>
+
+  <div class="blk" style="left:604px;top:62px;width:180px">Don't draw the whole place! Find the <b>one thing that stands out</b>,
+    draw it big in the middle of your page, then let the world grow out around it.</div>
+
+  <!-- story moment hunt (inside the scroll) -->
+  <div class="blk" style="left:74px;top:252px;width:420px">Look around for one of these... (or find your own)</div>
+  <div class="blk list" style="left:78px;top:276px;width:200px">Someone waiting<br>Someone working<br>A dog on a mission<br>A door left open</div>
+  <div class="blk list" style="left:276px;top:276px;width:244px">An old house with a story<br>Something being picked<br>Two people talking<br>A tree doing something weird</div>
+
+  <div class="blk" style="left:560px;top:370px;width:222px"><b>Size check:</b> your story moment should be about the size of your <b>fist</b> on the page.
+    Smaller than that? <b>Start over bigger.</b></div>
+
+  <!-- steps -->
+  <div class="blk" style="left:36px;top:650px;width:150px"><span class="big">1st: the story moment.</span>Big shapes only, in the middle. Thick lines.</div>
+  <div class="blk" style="left:202px;top:650px;width:150px"><span class="big">2nd: parts + neighbors.</span>Windows, posts, whatever is touching it.</div>
+  <div class="blk" style="left:368px;top:650px;width:150px"><span class="big">3rd: the setting.</span>Thin lines going out. Let the edges fade.</div>
+  <div class="blk" style="left:540px;top:446px;width:236px"><span class="big">4th: color pops + notes.</span>2–3 colors, tiny text, sign it!</div>
+
+  <div class="blk" style="left:46px;top:814px;width:250px"><b>Notice</b> how step 1 has <u>nothing</u> else yet.
+    That's on purpose. Get the moment right and the rest is easy.</div>
+
+  <div class="blk" style="left:46px;top:890px;width:250px"><span class="big">Your time:</span>Look 3 min · Ink 20 min<br>Color 10 min · Notes 2 min</div>
+
+  <div class="blk" style="left:330px;top:814px;width:450px"><span class="big">Watercolor pops, in 3 moves</span>
+    <b>1.</b> Let the ink dry. Count to 60.<br>
+    <b>2.</b> One big, light wash first. Lots of water.<br>
+    <b>3.</b> One bold pop last. Leave some paper white!</div>
+
+  <div class="blk" style="left:330px;top:922px;width:450px"><span class="big">Keep sketching!</span>
+    Fill a page a week. Try your <b>lunch table</b>, your <b>street</b> from the curb, or a <b>waiting room</b> (everyone sits still: free models!).
+    Same rules: find the moment, start big, build out.</div>
+</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const W = inner => `<g filter="url(#wobble)">${inner}</g>`;
+
+/* ---------- Title lettering: KC PaintedHand, outlined, with a watercolor wash inside ---------- */
+let mId = 0;
+function title(txt, x, y, size, color, ls = 2) {
+  const id = 'tm' + (++mId);
+  const t = extra => `<text class="kc" x="${x}" y="${y}" font-size="${size}" letter-spacing="${ls}" ${extra}>${txt}</text>`;
+  return `<mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="816" height="1056"><rect width="816" height="1056" fill="#000"/>${t('style="fill:#fff"')}</mask>
+    <g transform="translate(4 5)">${t('stroke="#111" stroke-width="3" stroke-linejoin="round"')}</g>
+    ${t('style="fill:#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"')}
+    <g class="wc" mask="url(#${id})"><g filter="url(#wcf)">
+      <rect x="${x - 10}" y="${y - size}" width="700" height="${size * 1.2}" fill="${color}" opacity=".55"/>
+      <ellipse cx="${x + 120}" cy="${y - size * .2}" rx="130" ry="${size * .35}" fill="${color}" opacity=".5"/>
+      <ellipse cx="${x + 420}" cy="${y - size * .6}" rx="110" ry="${size * .3}" fill="${color}" opacity=".45"/></g></g>`;
+}
+
+/* ---------- Ribbon banner and scroll ---------- */
+function ribbon(x, y, w, h, label, size = 20) {
+  const e = 22;
+  return W(`<path d="M${x - e} ${y + 8} L${x} ${y + 8} L${x} ${y + h + 8} L${x - e} ${y + h + 8} L${x - e + 9} ${y + h / 2 + 8} Z" fill="#fff" stroke="#111" stroke-width="2"/>
+    <path d="M${x + w + e} ${y + 8} L${x + w} ${y + 8} L${x + w} ${y + h + 8} L${x + w + e} ${y + h + 8} L${x + w + e - 9} ${y + h / 2 + 8} Z" fill="#fff" stroke="#111" stroke-width="2"/>
+    <path d="M${x} ${y + h} L${x + 8} ${y + h + 8} L${x + 8} ${y + h} Z M${x + w} ${y + h} L${x + w - 8} ${y + h + 8} L${x + w - 8} ${y + h} Z" fill="#111"/>
+    <path class="ribbon-face" d="M${x} ${y} Q${x + w / 2} ${y - 6} ${x + w} ${y} L${x + w} ${y + h} Q${x + w / 2} ${y + h - 6} ${x} ${y + h} Z" stroke="#111" stroke-width="2.2"/>`) +
+    `<text class="kc" x="${x + w / 2}" y="${y + h / 2 + size * 0.3}" font-size="${size}" text-anchor="middle">${label}</text>`;
+}
+function scroll(x, y, w, h) {
+  return W(`<path class="scroll-face" d="M${x + 14} ${y} Q${x + w / 2} ${y + 8} ${x + w - 14} ${y} L${x + w - 6} ${y + h - 16} Q${x + w / 2} ${y + h - 4} ${x + 6} ${y + h - 16} Z" stroke="#111" stroke-width="2.2"/>
+    <path class="scroll-face" d="M${x + 4} ${y + h - 22} q-10 10 2 18 q14 6 ${w - 12} -2 q12 -8 0 -18" stroke="#111" stroke-width="2.2"/>
+    <path d="M${x + 14} ${y} q-12 -4 -14 6 q0 10 12 8 M${x + w - 14} ${y} q12 -4 14 6 q0 10 -12 8" fill="none" stroke="#111" stroke-width="2"/>
+    <path d="M${x + 4} ${y + 50} h-8 M${x + 6} ${y + 100} h-10 M${x + w - 4} ${y + 70} h10 M${x + w - 6} ${y + 130} h8 M${x + 40} ${y + h - 10} h30 M${x + w - 90} ${y + h - 8} h40" stroke="#111" stroke-width="1.4"/>`);
+}
+function blockArrow(x, y, len, rot = 0, s = 1) {
+  const d = `M0 -9 L${len - 18} -9 L${len - 18} -20 L${len} 0 L${len - 18} 20 L${len - 18} 9 L0 9 Z`;
+  return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})" filter="url(#wobble)">
+    <path d="${d}" transform="translate(4 5)" fill="#111"/>
+    <path d="${d}" fill="url(#hx)" stroke="#111" stroke-width="2"/></g>`;
+}
+
+/* ---------- Drawing helpers ---------- */
+// A lumpy, scalloped outline (tree canopies)
+function blob(cx, cy, rx, ry, n, seed = 1) {
+  let s = seed; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const pts = Array.from({ length: n }, (_, i) => { const a = i / n * Math.PI * 2 - Math.PI / 2, k = 0.93 + rnd() * 0.14;
+    return [cx + Math.cos(a) * rx * k, cy + Math.sin(a) * ry * k]; });
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 1; i <= n; i++) { const [x, y] = pts[i % n], [px, py] = pts[i - 1];
+    const r = Math.hypot(x - px, y - py) * (0.58 + rnd() * 0.1);
+    d += ` A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`; }
+  return d + ' Z';
+}
+const scal = (x0, x1, y, w = 8) => { let d = `M${x0} ${y}`; for (let x = x0; x < x1; x += w) d += ` q${w / 2} 6 ${w} 0`; return d; };
+const bars = (x0, x1, y0, y1, step) => { let d = ''; for (let x = x0; x <= x1; x += step) d += `M${x.toFixed(1)} ${y0} V${y1} `; return d; };
+const ORANGES_L = [[34, 238], [56, 228], [71, 247], [44, 260], [63, 268], [28, 258], [52, 246]];
+const ORANGES_R = [[252, 246], [272, 234], [290, 252], [262, 266], [283, 272], [247, 264], [274, 254]];
+const BASKET = [[249, 338], [255, 335], [261, 338]];
+const fruit = list => list.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.6" fill="#fff" stroke="#111" stroke-width="1.6"/><path class="f" d="M${x} ${y - 4.6} l2 -3"/>`).join('');
+const leaves = (cx, cy) => `<path class="f" d="M${cx - 20} ${cy - 20} q4 -5 8 0 M${cx + 6} ${cy - 30} q4 -5 8 0 M${cx + 16} ${cy + 2} q4 -5 8 0 M${cx - 26} ${cy + 22} q4 -5 8 0 M${cx - 4} ${cy + 26} q4 -5 8 0 M${cx + 22} ${cy + 24} q3 -4 6 0 M${cx - 8} ${cy + 4} q4 -5 8 0"/>`;
+const rungs = () => { let d = ''; for (let y = 340; y >= 284; y -= 11) { const x = 292 - 6 * (352 - y) / 90; d += `M${x.toFixed(1)} ${y} h12 `; } return d; };
+
+/* ---------- The scene: a historic house with orange trees. Layers = the order you draw it ---------- */
+const L = [];
+// 1. The story moment: the house, big shapes only, thick lines
+L[0] = `
+  <path d="M88 214 L160 120 L232 214 L220 214 L220 340 L100 340 L100 214 Z" fill="#fff"/>
+  <path class="t" d="M150 126 L80 220"/>
+  <path class="b" d="M88 214 L160 120 L232 214 Z"/>
+  <path class="b" d="M100 214 V340 M220 214 V340"/>
+  <path class="b" d="M84 292 L98 272 H222 L236 292 Z" fill="#fff"/>
+  <path class="b" d="M92 292 V340 M228 292 V340 M84 340 H236"/>
+  <path class="b" d="M150 340 V298 H170 V340"/>
+  <path class="b" d="M142 346 H178 M136 352 H184" style="stroke-width:2.4"/>`;
+// 2. Parts + neighbors: windows, posts, shingles, and the orange trees touching the house
+L[1] = `
+  <path class="t" d="M99 212 L160 133 L221 212"/>
+  <circle cx="160" cy="172" r="9" fill="#fff" stroke="#111" stroke-width="1.8"/><path class="f" d="M160 163 V181 M151 172 H169"/>
+  <path class="f" d="${scal(104, 216, 198)} ${scal(100, 220, 205)}"/>
+  <path d="M196 167 L198 136 L212 138 L210 185 Z" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M205 137 L212 138 L210 185 L204 177 Z" fill="url(#hd)"/>
+  <path class="b" d="M194 135 L215 139" style="stroke-width:3.4"/>
+  <rect x="116" y="226" width="22" height="36" fill="#fff" stroke="#111" stroke-width="1.8"/><path class="f" d="M127 226 V262 M116 244 H138"/><path class="t" d="M113 264 H141"/>
+  <rect x="182" y="226" width="22" height="36" fill="#fff" stroke="#111" stroke-width="1.8"/><path class="f" d="M193 226 V262 M182 244 H204"/><path class="t" d="M179 264 H207"/>
+  <path class="f" d="M93 280 H227 M89 286 H231"/>
+  <path class="t" d="M128 292 V340 M192 292 V340" style="stroke-width:2.2"/>
+  <path class="f" d="M92 302 q7 -1 8 -9 M128 302 q-7 -1 -8 -9 M128 302 q7 -1 8 -9 M192 302 q-7 -1 -8 -9 M192 302 q7 -1 8 -9 M228 302 q-7 -1 -8 -9"/>
+  <rect x="104" y="298" width="18" height="20" fill="#fff" stroke="#111" stroke-width="1.5"/><path class="f" d="M113 298 V318"/>
+  <rect x="198" y="298" width="18" height="20" fill="#fff" stroke="#111" stroke-width="1.5"/><path class="f" d="M207 298 V318"/>
+  <path class="t" d="M92 322 H128 M192 322 H228"/><path class="f" d="${bars(97, 124, 322, 340, 5.4)} ${bars(197, 224, 322, 340, 5.4)}"/>
+  <path class="f" d="M150 306 H170 M154 312 V336 H166 V312 Z"/><circle cx="166.5" cy="324" r="1.4" fill="#111"/>
+  <rect x="84" y="340" width="52" height="12" fill="url(#hx)" stroke="#111" stroke-width="1.6"/>
+  <rect x="184" y="340" width="52" height="12" fill="url(#hx)" stroke="#111" stroke-width="1.6"/>
+  <path d="M173 340 q-1 -9 4 -10 l-1 -4 l3 2 l3 -2 l-1 4 q5 2 3 10 Z" fill="#111"/><path class="t" d="M184 339 q6 -1 5 -7"/>
+  <path d="M44 352 Q48 320 45 288 L59 288 Q56 320 60 352 Z" fill="#fff" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/>
+  <path class="f" d="M50 300 q2 8 0 16 M54 322 q-2 8 0 16"/>
+  <path d="${blob(52, 250, 42, 40, 11, 3)}" fill="#fff" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/>
+  ${leaves(52, 250)}${fruit(ORANGES_L)}
+  <path d="M264 352 Q268 322 265 292 L277 292 Q274 322 278 352 Z" fill="#fff" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="${blob(270, 258, 38, 38, 10, 7)}" fill="#fff" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/>
+  ${leaves(270, 258)}${fruit(ORANGES_R)}
+  <path class="t" d="M292 352 L286 262 M304 352 L298 262 ${rungs()}" style="stroke-width:1.9"/>
+  <circle cx="297" cy="286" r="5" fill="#fff" stroke="#111" stroke-width="2.2"/>
+  <path class="b" d="M297 291 Q298 302 297 312 M297 295 Q290 284 285 273 M297 296 L304 304 M297 312 L292 329 M297 312 L302 329" style="stroke-width:2.3"/>
+  <path d="M243 340 h22 l-3 12 h-16 Z" fill="url(#hv)" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+  ${BASKET.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.8" fill="#fff" stroke="#111" stroke-width="1.5"/>`).join('')}`;
+// 3. The setting, in thin lines going out, fading at the edges
+L[2] = `
+  <path class="f" d="M0 234 Q26 202 60 208 Q92 180 122 198 M198 188 Q236 160 268 184 Q286 174 300 182"/>
+  <path class="f" d="M300 182 Q310 186 318 196" stroke-dasharray="3 5"/>
+  <path class="f" d="M40 120 q8 -10 18 -4 q8 -10 20 0 q10 -2 10 8 h-50 q-6 -2 2 -4 M236 122 q5 -5 10 0 q5 -5 10 0 M262 138 q4 -4 8 0 q4 -4 8 0"/>
+  <path class="f" d="M20 300 Q25 230 21 162 M25 300 Q30 232 26 164"/>
+  <path class="f" d="M23 162 q-12 -12 -22 0 M23 162 q-6 -18 -18 -20 M23 162 q4 -20 16 -22 M23 162 q14 -12 26 -2 M23 162 q12 2 18 14 M23 162 q-8 4 -12 16"/>
+  <circle class="f" cx="8" cy="325" r="3.6"/><path class="f" d="M8 329 L9 340 L5 351 M9 340 L13 351 M8 332 L3 338 M8 332 L14 337"/>
+  <circle class="f" cx="34" cy="327" r="3.6"/><path class="f" d="M34 331 L34 341 L31 351 M34 341 L38 351 M34 334 L29 339 M34 334 L40 338"/>
+  <ellipse cx="54" cy="356" rx="30" ry="4.5" fill="url(#hd)"/><ellipse cx="274" cy="357" rx="28" ry="4.5" fill="url(#hd)"/>
+  <path class="f" d="M0 352 h14 M64 353 h18 M238 354 h4 M308 352 h12"/>
+  <path class="f" d="M136 354 Q128 380 108 404 M184 354 Q194 380 216 404"/>
+  <path class="f" d="M148 366 q8 -3 16 0 M150 380 q10 -3 22 0 M140 396 q14 -4 30 0" stroke-dasharray="6 5"/>
+  <path class="f" d="M8 364 l3 -8 l2 8 M88 366 l3 -7 l3 7 M226 368 l2 -6 l3 6 M300 366 l3 -8 l2 8 M70 384 l2 -6 l3 6 M246 386 l2 -6 l3 6"/>`;
+// 4. Finish: notes and tiny text, and a signature (the watercolor is WASH, below)
+L[3] = `
+  <text x="14" y="424" font-size="12">Sat · 10:42 am</text>
+  <text x="14" y="440" font-size="12">smells like orange blossoms</text>
+  <text x="14" y="456" font-size="12">bees everywhere!</text>
+  <text x="116" y="148" font-size="12" text-anchor="end">oops</text>
+  <text x="112" y="162" font-size="12" text-anchor="end">(kept it)</text>
+  <path class="f" d="M118 150 l8 0"/>
+  <path class="t" d="M226 448 q8 -16 14 0 q6 -14 12 0 q8 -10 20 -2 M226 458 h56"/>`;
+// Watercolor: three colors, loose, a little outside the lines, with paper left white
+const WASH = `<g class="wc">
+  <g filter="url(#wcf)">
+    <path d="M26 142 Q70 104 140 120 L98 198 Q62 190 40 204 Q20 178 26 142 Z" fill="var(--sky)" opacity=".5"/>
+    <path d="M182 118 Q250 100 300 138 Q312 170 296 192 Q262 172 238 198 L178 126 Z" fill="var(--sky)" opacity=".5"/>
+    <ellipse cx="55" cy="252" rx="39" ry="36" fill="var(--leaf)" opacity=".55"/>
+    <ellipse cx="46" cy="268" rx="24" ry="16" fill="var(--leaf)" opacity=".35"/>
+    <ellipse cx="272" cy="260" rx="35" ry="34" fill="var(--leaf)" opacity=".55"/>
+    <ellipse cx="264" cy="276" rx="22" ry="14" fill="var(--leaf)" opacity=".35"/>
+    <path d="M0 358 Q80 350 150 360 Q240 368 320 356 L320 372 Q210 386 110 378 Q40 382 0 372 Z" fill="var(--leaf)" opacity=".3"/>
+    <path d="M102 294 H148 V338 H102 Z M172 294 H218 V338 H172 Z" fill="var(--sky)" opacity=".45"/>
+  </g>
+  <g filter="url(#wcs)">
+    ${[...ORANGES_L, ...ORANGES_R].map(([x, y]) => `<circle cx="${x + .8}" cy="${y + .6}" r="5" fill="var(--orange)" opacity=".9"/>`).join('')}
+    ${BASKET.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="var(--orange)" opacity=".9"/>`).join('')}
+    <rect x="151" y="299" width="19" height="40" fill="var(--orange)" opacity=".8"/>
+    <path d="M197 166 L199 137 L212 139 L210 184 Z" fill="var(--orange)" opacity=".6"/>
+  </g></g>`;
+const sketch = (ks, wash) => W([2, 0, 1, 3].filter(k => ks.includes(k)).map(k => L[k]).join('')) + (wash ? WASH : '');
+const mk = list => list.map(([n, x, y]) => `<g class="mk"><circle cx="${x}" cy="${y}" r="10"/><text x="${x}" y="${y}">${n}</text></g>`).join('');
+
+/* ======================= PAGE 1 ======================= */
+const pigeon = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})" filter="url(#wobble)">
+  <path d="M0 0 Q4 -16 22 -14 Q34 -12 38 0 Q30 10 12 9 Q2 8 0 0 Z" fill="url(#stip)" stroke="#111" stroke-width="2"/>
+  <path d="M30 -10 Q32 -26 42 -24 Q50 -22 46 -12 Q42 -6 34 -6" fill="#fff" stroke="#111" stroke-width="2"/>
+  <path d="M48 -19 l7 2 l-7 2 Z" fill="#111" stroke="#111" stroke-width="1.4"/>
+  <circle cx="43" cy="-18" r="3.4" fill="#fff" stroke="#111" stroke-width="1.4"/><circle cx="44" cy="-18" r="1.6" fill="#111"/>
+  <path d="M0 0 L-12 4 L-2 6 Z" fill="#111"/>
+  <path d="M14 9 l-2 9 M22 9 l1 9 M8 18 h8 M20 18 h7" stroke="#111" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M10 -4 q8 4 18 -2 M8 2 q10 3 20 -1" stroke="#111" stroke-width="1.1" fill="none"/></g>`;
+
+const kitPen = (x, y, tip, label, sub) => `
+  <rect x="${x}" y="${y + 12}" width="15" height="48" rx="3" fill="#fff" stroke="#111" stroke-width="2"/>
+  <rect x="${x}" y="${y}" width="15" height="16" rx="3" fill="#111"/>
+  <path d="M${x + 4} ${y + 60} L${x + 7.5} ${y + 72} L${x + 11} ${y + 60}" fill="#fff" stroke="#111" stroke-width="2"/>
+  <path d="M${x + 7.5} ${y + 72} v${tip + 2}" stroke="#111" stroke-width="${tip}" stroke-linecap="round"/>
+  <text x="${x + 22}" y="${y + 34}" font-size="18" font-weight="bold">${label}</text>
+  <text x="${x + 22}" y="${y + 52}" font-size="13">${sub}</text>`;
+const dab = (x, y, c) => `<circle cx="${x}" cy="${y}" r="11" fill="#fff" stroke="#111" stroke-width="1.8"/>
+  <g class="wc"><circle cx="${x}" cy="${y}" r="9" fill="var(${c})" opacity=".85" filter="url(#wcs)"/></g>`;
+
+$('art1').innerHTML =
+  title('Da Rules', 40, 186, 124, 'var(--orange)', 4) +
+  W(`<path d="M28 200 H580" stroke="#111" stroke-width="3"/>
+     <path d="M40 211 h30 M100 211 h30 M160 211 h30 M220 211 h30 M280 211 h30 M340 211 h30 M400 211 h30 M460 211 h30 M520 211 h30" stroke="#111" stroke-width="2"/>`) +
+  pigeon(420, 82, 1) +
+  `<text x="482" y="52" font-size="14">coo?</text>` +
+  ribbon(612, 156, 160, 32, 'of urban sketching', 15) +
+  `<text x="612" y="104" font-size="16" font-weight="bold">12 rules for drawing</text>
+   <text x="612" y="124" font-size="16" font-weight="bold">out in the world!</text>` +
+  `<text x="408" y="240" font-size="13" text-anchor="middle">the numbers show where each rule happens</text>` +
+  // the sketch in the middle; the numbers match the rules
+  `<svg x="212" y="250" width="392" height="456" viewBox="0 100 320 372" style="overflow:visible">${sketch([0, 1, 2, 3], true)}
+     ${mk([[2, 160, 246], [3, 131, 186], [4, 304, 234], [5, 46, 192], [6, 226, 152], [7, 306, 206], [9, 56, 152], [10, 30, 216], [11, 10, 404], [12, 270, 214]])}</svg>` +
+  // kit: pens, brush, three paint dabs, and a crossed-out pencil
+  `<text class="kc" x="40" y="930" font-size="17">your kit:</text>` +
+  W(kitPen(44, 946, 4, '08', 'close') + kitPen(116, 946, 2.4, '05', 'middle') + kitPen(188, 946, 1.1, '01', 'far') +
+    `<path d="M262 950 L272 1004" stroke="#111" stroke-width="5" stroke-linecap="round"/><path d="M268 1002 Q280 1014 272 1026 Q260 1016 268 1002 Z" fill="#111"/>`) +
+  dab(304, 968, '--orange') + dab(330, 968, '--leaf') + dab(356, 968, '--sky') +
+  `<text x="292" y="1000" font-size="13">brush + 3 colors</text>` +
+  W(`<path d="M150 912 l44 -8 l8 6 l-6 8 l-44 8 Z" fill="url(#hv)" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+     <path d="M146 898 L208 932 M208 898 L146 932" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>`) +
+  `<text x="218" y="922" font-size="15" font-weight="bold">no pencil!</text>`;
+
+/* ======================= PAGE 2 ======================= */
+const finger = d => `<path d="${d}" fill="none" stroke="#111" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#fff" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+const hands = (x, y) => W(`<g transform="translate(${x} ${y})">
+  ${finger('M0 0 L0 68 Q0 82 14 82 L62 82')}
+  <path d="M-8 60 q-16 6 -14 26 q4 20 26 20 h30" fill="#fff" stroke="#111" stroke-width="2.2"/>
+  ${finger('M176 82 L176 14 Q176 0 162 0 L114 0')}
+  <path d="M184 22 q16 -6 14 -26 q-4 -20 -26 -20 h-30" fill="#fff" stroke="#111" stroke-width="2.2"/>
+  <path d="M60 62 L88 24 L116 62 Z M68 62 V84 H108 V62 M82 84 V70 H94 V84" fill="#fff" stroke="#111" stroke-width="2" stroke-linejoin="round"/></g>`);
+
+$('art2').innerHTML =
+  `<text x="44" y="76" font-size="21" font-weight="bold">How to build a sketch from the</text>` +
+  title('Center Out', 40, 172, 88, 'var(--leaf)', 3) +
+  // story moment hunt scroll
+  scroll(46, 222, 476, 176) +
+  ribbon(150, 204, 260, 32, 'Story moment hunt!', 18) +
+  // viewfinder hands
+  hands(580, 226) +
+  `<text x="668" y="356" font-size="14" font-weight="bold" text-anchor="middle">frame it with your fingers</text>` +
+  W(`<path d="M40 440 H776" stroke="#111" stroke-width="1.6" stroke-dasharray="1 7" stroke-linecap="round" transform="translate(0 -6)"/>`) +
+  // the build: three small steps, then the finished sketch big, with watercolor
+  [0, 1, 2].map(i => `<svg x="${36 + i * 166}" y="462" width="146" height="173" viewBox="0 100 320 380" style="overflow:visible">
+      ${i === 0 ? `<path d="M160 104 V470 M10 250 H310" stroke="#999" stroke-width="2.4" stroke-dasharray="8 8" fill="none"/><text x="168" y="124" font-size="26" style="fill:#777">middle</text>` : ''}
+      ${sketch([[0], [0, 1], [0, 1, 2]][i], false)}</svg>`).join('') +
+  `<svg x="534" y="492" width="240" height="285" viewBox="0 100 320 380" style="overflow:visible">${sketch([0, 1, 2, 3], true)}</svg>` +
+  blockArrow(183, 556, 34, 0, 0.58) + blockArrow(349, 556, 34, 0, 0.58) + blockArrow(512, 556, 34, 0, 0.58);
+
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); }
+fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
