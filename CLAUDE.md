@@ -92,6 +92,23 @@ files between folders). Look up IDs with Drive search by title, because folder n
 PSDs and full-resolution PNGs stay in Drive. GitHub rejects files over 100 MB, so only web-size exports
 the book actually displays go in this repo.
 
+## Worksheets: who makes what (Zach's call, Nov 16, 2026)
+**Zach builds his worksheets by hand in Photoshop. Claude builds the scaffolding and the content.**
+He found the code-built sheets "mechanical and too structured": typed text on a grid with hard outlines.
+The boxes, borders and numbered headers are useful for *placing* things, so they now live in a guide layer
+that he turns off before printing.
+- **Layout guides:** `worksheets/templates/*.png`, ten transparent 2550 × 3300 px overlays (Letter at 300 dpi), built by
+  `worksheets/templates/build.js`. Blue boxes mark zones; a dashed magenta line marks the 0.25 in print-safe edge.
+  He loads one as the top layer, draws underneath, and hides it. Add or change a template there when he asks.
+- **The 0.25 in border was only ever a print-bounds marker for him.** It doesn't need to be drawn on the finished page.
+- **Claude's part:** the lesson content and wording, the guide templates, cut-outs and other plain materials
+  (e.g. `u03_chameleon.html`), research on how other teachers lay out worksheets, and print files. Don't deliver a
+  fully styled, code-drawn worksheet as the finished look unless he asks for one.
+- He still wants to study other teachers' and designers' worksheets. When he shares references, pull out the layout
+  patterns and turn the useful ones into new guide templates.
+- The design manual below still holds for type, color, content preservation and print checks. Its border, boxed
+  section and numbered-header rules now describe the **guide layer**, not the finished page.
+
 ## Worksheet design manual (Zach's spec, Nov 10, 2026)
 **Every worksheet, practice sheet, project handout and classroom resource follows `worksheets/DESIGN_MANUAL.md`.**
 Read it before building or restyling a sheet, and run its final checklist before delivering. It replaces the Oct 14

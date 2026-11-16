@@ -3,6 +3,10 @@
 The rules for every worksheet, practice sheet, project handout and classroom resource made for Mr. Lewis.
 Written from Zach's spec of Nov 10, 2026. It replaces the Oct 14 style guide. Where the two disagree, this wins.
 
+> **Update, Nov 16, 2026:** Zach now builds the finished worksheets by hand in Photoshop. The borders, boxes and
+> numbered headers in this manual describe the **guide layer** (`templates/`), which is hidden before printing, not the
+> finished page. Type, color, content-preservation and print rules still apply. See "Worksheets: who makes what" in `../CLAUDE.md`.
+
 Read this before building or restyling a sheet. `README.md` in this folder covers the code (theme file, export script, helpers).
 
 ---
