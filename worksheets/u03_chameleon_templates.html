@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chameleon Templates</title>
+<style>
+  /* Meccha Chameleon figure templates (Nov 18): the same blank figures, rearranged so Zach can bake them into a background.
+     Level 1 = 9 figures, Level 2 = 6, Level 3 = 3, five layouts each. Exported as transparent PNGs by
+     img/chameleon/templates/templates_export.js. */
+  @page { size: letter; margin: 0; }
+  html, body { margin: 0; background: #9a9a9a; }
+  .page { width: 8.5in; height: 11in; margin: 16px auto; position: relative; }
+  .page svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .label { position: absolute; left: 8px; top: 8px; font: bold 14px sans-serif; color: #fff; background: #333; padding: 2px 8px; border-radius: 6px; }
+  body.export .label { display: none; }
+  body.export, body.export .page { background: transparent; margin: 0; }
+  @media screen and (max-width: 840px) { .page { transform: scale(var(--fit, .45)); transform-origin: top left; margin: 0 0 calc(11in * (var(--fit, .45) - 1)); } }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+// Same poses and drawing as u03_chameleon.html (slim version). Each pose sits in a 200 x 280 box, centered near (100, 140).
+const POSES = [
+  ['T-pose',     [100, 40], ['100 84 100 150', '100 92 24 92', '100 92 176 92', '88 160 70 250', '112 160 130 250']],
+  ['Star',       [100, 44], ['100 88 100 150', '100 96 30 36', '100 96 170 36', '92 158 40 246', '108 158 160 246']],
+  ['Running',    [120, 40], ['114 84 98 150', '112 92 166 108 182 58', '112 92 54 96 30 138', '100 156 156 190 150 252', '98 156 44 178 14 152']],
+  ['Sitting',    [66, 56],  ['68 100 70 176', '70 112 132 132', '68 112 34 168', '72 182 152 182 152 256']],
+  ['Crouch',     [100, 78], ['100 122 100 172', '100 130 34 172', '100 130 166 172', '92 182 40 190 44 256', '108 182 160 190 156 256']],
+  ['Climb',      [86, 52],  ['90 96 98 162', '90 104 34 46', '90 104 152 64', '98 168 40 212', '98 168 150 226 146 262']],
+  ['Hands up',   [100, 72], ['100 116 100 176', '100 124 54 32', '100 124 146 32', '90 186 80 258', '110 186 120 258']],
+  ['Wave',       [100, 44], ['100 88 100 154', '100 96 162 48', '100 96 40 142', '90 164 70 252', '110 164 140 248']],
+  ['Kick',       [78, 44],  ['80 88 86 154', '80 96 22 70', '80 96 138 78', '84 164 76 256', '90 160 172 150']]
+];
+const body = ([, head, limbs]) => {
+  const pl = (extra, c) => limbs.map((p, i) => `<polyline points="${p}" fill="none" stroke="${c}" stroke-width="${(i ? 38 : 52) + extra}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
+    `<circle cx="${head[0]}" cy="${head[1]}" r="${28 + extra / 2}" fill="${c}"/>`;
+  return pl(5, '#111') + pl(0, '#fff');
+};
+// Place a pose by its center, with a tilt, a size and an optional mirror flip.
+const place = (pose, cx, cy, s, rot, flip) =>
+  `<g transform="translate(${cx.toFixed(0)} ${cy.toFixed(0)}) rotate(${rot.toFixed(1)}) scale(${flip ? -s : s} ${s}) translate(-100 -140)">${body(pose)}</g>`;
+
+let seed = 1; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const tilt = m => (rnd() * 2 - 1) * m;
+
+const T = [];
+// Level 1: all nine poses on a 3 x 3 grid, shuffled, nudged and tilted.
+for (let t = 1; t <= 5; t++) { seed = 100 + t * 17; const order = shuffle(POSES); let g = '';
+  order.forEach((p, i) => { const c = i % 3, r = Math.floor(i / 3);
+    g += place(p, 136 + c * 272 + tilt(16), 180 + r * 348 + tilt(14), .84, tilt(18), rnd() < .5); });
+  T.push(['L1', t, g]); }
+// Level 2: six poses. Odd layouts are 2 across x 3 down, even ones 3 across x 2 down.
+for (let t = 1; t <= 5; t++) { seed = 300 + t * 23; const order = shuffle(POSES).slice(0, 6); let g = '';
+  order.forEach((p, i) => { if (t % 2) { const c = i % 2, r = Math.floor(i / 2);
+      g += place(p, 222 + c * 372 + tilt(40), 182 + r * 346 + tilt(12), 1.0, tilt(22), rnd() < .5); }
+    else { const c = i % 3, r = Math.floor(i / 3);
+      g += place(p, 140 + c * 268 + tilt(10), 290 + r * 500 + tilt(60), .95, tilt(22), rnd() < .5); } });
+  T.push(['L2', t, g]); }
+// Level 3: three big figures in five different arrangements.
+const L3 = [[[232, 236], [408, 528], [584, 820]], [[262, 228], [554, 528], [262, 828]], [[222, 290], [594, 290], [408, 790]],
+            [[408, 244], [222, 790], [594, 790]], [[170, 400], [408, 690], [646, 400]]];
+L3.forEach((pts, k) => { seed = 500 + k * 31; const order = shuffle(POSES).slice(0, 3); let g = '';
+  pts.forEach(([x, y], i) => { g += place(order[i], x, y, 1.32, tilt(20), rnd() < .5); });
+  T.push(['L3', k + 1, g]); });
+
+const names = { L1: 'Level 1 (9 figures)', L2: 'Level 2 (6 figures)', L3: 'Level 3 (3 figures)' };
+document.getElementById('out').innerHTML = T.map(([l, t, g]) =>
+  `<div class="page" id="${l}_${t}"><svg viewBox="0 0 816 1056">${g}</svg><div class="label">${names[l]} · Template ${t}</div></div>`).join('');
+if (new URLSearchParams(location.search).has('export')) document.body.classList.add('export');
+function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); } fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>
