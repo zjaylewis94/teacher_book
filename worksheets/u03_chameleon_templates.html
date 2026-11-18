@@ -21,7 +21,7 @@
 <body>
 <div id="out"></div>
 <script>
-// Same poses and drawing as u03_chameleon.html (slim version). Each pose sits in a 200 x 280 box, centered near (100, 140).
+// Same poses as u03_chameleon.html (slim version), drawn solid white with no outline. Each pose sits in a 200 x 280 box, centered near (100, 140).
 const POSES = [
   ['T-pose',     [100, 40], ['100 84 100 150', '100 92 24 92', '100 92 176 92', '88 160 70 250', '112 160 130 250']],
   ['Star',       [100, 44], ['100 88 100 150', '100 96 30 36', '100 96 170 36', '92 158 40 246', '108 158 160 246']],
@@ -36,7 +36,7 @@ const POSES = [
 const body = ([, head, limbs]) => {
   const pl = (extra, c) => limbs.map((p, i) => `<polyline points="${p}" fill="none" stroke="${c}" stroke-width="${(i ? 38 : 52) + extra}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
     `<circle cx="${head[0]}" cy="${head[1]}" r="${28 + extra / 2}" fill="${c}"/>`;
-  return pl(5, '#111') + pl(0, '#fff');
+  return pl(0, '#fff');  // Nov 18: plain white, no black outline (Zach's call)
 };
 // Place a pose by its center, with a tilt, a size and an optional mirror flip.
 const place = (pose, cx, cy, s, rot, flip) =>
