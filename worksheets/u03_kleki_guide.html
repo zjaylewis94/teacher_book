@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kleki Guide</title>
+<link rel="stylesheet" href="worksheet.css">
+<script>
+  // Plain = print (black and white, for the copier). ?color = Google Classroom copy.
+  if (new URLSearchParams(location.search).has('color')) document.documentElement.classList.add('digital');
+</script>
+<style>
+  /* Kleki cheat sheet: getting class line art into Kleki, the color layer, shortcuts, saving.
+     Button names and shortcuts were read from Klecks (Kleki's open-source engine), Nov 17, 2026.
+     The pictures are diagrams, not screenshots. Fonts are licensed and kept out of git (fonts/licensed/). */
+  @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
+  @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes-Bold.otf"); font-weight: bold; }
+  @font-face { font-family: "KC Beebo"; src: url("fonts/licensed/KCBeebosloth.otf");
+               unicode-range: U+0020, U+002E, U+0030-0039, U+0041-005A, U+0061-007A; }
+  :root { --hi: #fff; --accent: #111; --tint: #e6e6e6; }
+  :root.digital { --hi: #FCE883; --accent: #1A4876; --tint: #C5E4F3; }
+  .digital body, .digital .page { background: #fff; }
+
+  .frame { border-width: 10pt; border-radius: 18px; padding: 12px 26px 10px;
+           font-family: "Papernotes", "Hand Fallback", sans-serif; text-transform: none; -webkit-text-stroke: 0; }
+  .frame *, .frame .callout .lead, .frame .sec .no, .frame .sec .small { -webkit-text-stroke: 0; }
+  .meta { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1.2px; font-size: 13px; }
+  .title { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; font-size: 60px; }
+  .subtitle { font-family: "KC Beebo", "Papernotes", sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .frame .sec { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 24px; color: #fff;
+         -webkit-text-stroke: 1.4px #111; align-items: center; margin-bottom: 6px; }
+  .sec .no { font-family: "Papernotes", sans-serif; font-weight: bold; font-size: 19px; color: var(--accent); border-color: var(--accent); }
+  .sec .small { font-family: "Papernotes", sans-serif; font-weight: bold; font-size: 13px; color: #111; text-transform: none; letter-spacing: 0; }
+  .callout { background: var(--hi); border-width: 3px; font-size: 15px; }
+  .callout .lead { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 16px; }
+  svg text { font-family: "Papernotes", sans-serif; text-transform: none; }
+  b { font-weight: bold; }
+
+  .rule-row { display: flex; align-items: center; gap: 14px; }
+  .rule-row .title-rule { width: 40%; flex: none; margin: 4px 0 2px; }
+  .rule-row .subtitle { margin: 0; white-space: nowrap; font-size: 17px; }
+  .intro { font-size: 16px; line-height: 1.32; margin: 8px 0 13px; }
+  section { margin-bottom: 14px; }
+
+  /* Steps: text on the left, a diagram on the right */
+  .two { display: grid; grid-template-columns: 1fr 250px; gap: 18px; align-items: center; }
+  .p1 section { margin-bottom: 30px; }
+  .p1 ol.steps li { margin-bottom: 11px; }
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: none; }
+  ol.steps li { display: grid; grid-template-columns: 30px 1fr; gap: 9px; font-size: 15.5px; line-height: 1.26; margin-bottom: 7px; }
+  ol.steps li i { font-style: normal; font-weight: bold; font-size: 15px; width: 27px; height: 27px; border: 2.4px solid #111;
+                  border-radius: 50%; display: grid; place-items: center; background: var(--tint); }
+  .btn { display: inline-block; font-weight: bold; border: 2px solid #111; border-radius: 5px; padding: 0 6px; line-height: 1.25;
+         background: #fff; white-space: nowrap; }
+  .note { font-size: 13.5px; line-height: 1.2; }
+  .dia { width: 100%; height: auto; display: block; }
+
+  /* Shortcuts */
+  .keys { display: grid; grid-template-columns: 1fr 1fr; column-gap: 26px; }
+  .keys h3 { font-family: "KC Painted", "Papernotes", sans-serif; text-transform: uppercase; font-size: 15.5px; margin: 7px 0 4px;
+             border-bottom: 2.4px solid #111; padding-bottom: 1px; }
+  .keys h3:first-child { margin-top: 0; }
+  .k { display: grid; grid-template-columns: 104px 1fr; gap: 8px; align-items: center; font-size: 15px; line-height: 1.2; margin-bottom: 4px; }
+  kbd { font-family: "Papernotes", sans-serif; font-weight: bold; font-size: 14px; border: 2px solid #111; border-bottom-width: 4px;
+        border-radius: 5px; padding: 0 6px; min-width: 15px; display: inline-block; text-align: center; background: #fff; line-height: 1.3; }
+  .k small { font-size: 12.5px; display: block; line-height: 1.1; }
+
+  .fmt { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 6px 0 7px; }
+  .fmt > div { border: 2.4px solid #111; border-radius: 8px; padding: 6px 10px; font-size: 14.5px; line-height: 1.22; }
+  .fmt b.big { font-family: "KC Painted", "Papernotes", sans-serif; font-size: 20px; display: block; }
+  .fix { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; row-gap: 5px; font-size: 14.5px; line-height: 1.2; }
+  .fix b { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1: SET UP YOUR FILE ============ -->
+<div class="page">
+<div class="frame p1">
+
+  <div class="meta">Unit 3 · Digital painting · kleki.com</div>
+  <h1 class="title">Kleki</h1>
+  <div class="rule-row"><div class="title-rule"></div><p class="subtitle">(cheat sheet)</p></div>
+
+  <p class="intro">Kleki is the free paint app we use on the Chromebooks. Digital coloring works like a coloring book printed on
+    clear plastic: the <b>line art sits on top</b>, and your <b>color goes on its own layer underneath</b>, so the lines stay clean.</p>
+
+  <section>
+    <div class="sec"><span class="no">01</span>Get the line art</div>
+    <div class="two">
+      <ol class="steps">
+        <li><i>1</i><span>Open <b>Google Classroom</b> and go to the class <b>Drive folder</b>. Pick one image to color.</span></li>
+        <li><i>2</i><span>Open the image and hit <b>Download</b>. It lands in your Chromebook's <b>Files → Downloads</b>.</span></li>
+        <li><span class="note" style="grid-column: 2"><b>Only use images from the class folder.</b> They are made see-through
+          so color can show from underneath. Images from a Google search won't work the same way.</span></li>
+      </ol>
+      <svg class="dia" viewBox="0 0 250 104">
+        <rect x="6" y="14" width="74" height="76" rx="6" fill="#fff" stroke="#111" stroke-width="2.6"/>
+        <path d="M20 70 q10 -34 23 -16 q8 -20 22 16 z" fill="none" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/>
+        <circle cx="62" cy="32" r="6" fill="none" stroke="#111" stroke-width="2.6"/>
+        <text x="43" y="102" font-size="11.5" text-anchor="middle" font-weight="bold">Class folder</text>
+        <path d="M90 52 h44 m-10 -9 l10 9 l-10 9" fill="none" stroke="#111" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="146" y="22" width="98" height="60" rx="6" fill="var(--tint)" stroke="#111" stroke-width="2.6"/>
+        <path d="M195 32 v26 m-10 -10 l10 10 l10 -10 M177 68 h36" fill="none" stroke="#111" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="195" y="98" font-size="11.5" text-anchor="middle" font-weight="bold">Files → Downloads</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">02</span>Bring it into Kleki</div>
+    <div class="two">
+      <ol class="steps">
+        <li><i>3</i><span>Go to <b>kleki.com</b>. Click the <b>File</b> tab, then <span class="btn">Import</span>. Choose your image
+          from Downloads and open it.</span></li>
+        <li><i>4</i><span>First pop-up: click <span class="btn">As Layer</span>. <span class="note">(As Image would wipe your canvas.)</span></span></li>
+        <li><i>5</i><span>Second pop-up: click <span class="btn">Fit</span>, then <span class="btn">Center</span>, then
+          <span class="btn">Ok</span>.</span></li>
+      </ol>
+      <svg class="dia" viewBox="0 0 250 150">
+        <rect x="4" y="4" width="242" height="62" rx="7" fill="#fff" stroke="#111" stroke-width="2.6"/>
+        <text x="14" y="22" font-size="12.5" font-weight="bold">Import Image</text>
+        <rect x="14" y="32" width="82" height="24" rx="5" fill="var(--tint)" stroke="#111" stroke-width="3.4"/>
+        <text x="55" y="49" font-size="12.5" text-anchor="middle" font-weight="bold">As Layer</text>
+        <rect x="106" y="32" width="78" height="24" rx="5" fill="#fff" stroke="#111" stroke-width="1.6"/>
+        <text x="145" y="49" font-size="12" text-anchor="middle">As Image</text>
+        <rect x="4" y="80" width="242" height="66" rx="7" fill="#fff" stroke="#111" stroke-width="2.6"/>
+        <text x="14" y="98" font-size="12.5" font-weight="bold">Import Image as New Layer</text>
+        <rect x="14" y="108" width="40" height="24" rx="5" fill="#fff" stroke="#111" stroke-width="1.6"/>
+        <text x="34" y="125" font-size="12" text-anchor="middle">1:1</text>
+        <rect x="62" y="108" width="44" height="24" rx="5" fill="var(--tint)" stroke="#111" stroke-width="3.4"/>
+        <text x="84" y="125" font-size="12.5" text-anchor="middle" font-weight="bold">Fit</text>
+        <rect x="114" y="108" width="66" height="24" rx="5" fill="var(--tint)" stroke="#111" stroke-width="3.4"/>
+        <text x="147" y="125" font-size="12.5" text-anchor="middle" font-weight="bold">Center</text>
+        <rect x="196" y="108" width="40" height="24" rx="5" fill="var(--tint)" stroke="#111" stroke-width="3.4"/>
+        <text x="216" y="125" font-size="12.5" text-anchor="middle" font-weight="bold">Ok</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">03</span>Make the color layer</div>
+    <div class="two">
+      <ol class="steps">
+        <li><i>6</i><span>You now have two layers: the white <b>background</b> and your <b>line art</b>. Open the <b>Layers</b> tab
+          and click <span class="btn">+</span> for a new layer. It shows up at the very top.</span></li>
+        <li><i>7</i><span><b>Drag the new layer down</b> so it sits <b>under the line art</b> and above the background.</span></li>
+        <li><i>8</i><span>Optional: click <b>Rename</b> and pick <b>Colors</b>, so you never mix the layers up.</span></li>
+      </ol>
+      <svg class="dia" viewBox="0 0 250 150">
+        <text x="55" y="12" font-size="11.5" text-anchor="middle" font-weight="bold">After step 6</text>
+        <text x="195" y="12" font-size="11.5" text-anchor="middle" font-weight="bold">After step 7</text>
+        <g font-size="11.5" text-anchor="middle">
+          <rect x="6" y="20" width="98" height="30" rx="5" fill="var(--tint)" stroke="#111" stroke-width="2.6" stroke-dasharray="6 4"/>
+          <text x="55" y="39" font-weight="bold">New (empty)</text>
+          <rect x="6" y="56" width="98" height="30" rx="5" fill="#fff" stroke="#111" stroke-width="2.6"/>
+          <text x="55" y="75">Line art</text>
+          <rect x="6" y="92" width="98" height="30" rx="5" fill="#fff" stroke="#111" stroke-width="2.6"/>
+          <text x="55" y="111">Background</text>
+          <rect x="146" y="20" width="98" height="30" rx="5" fill="#fff" stroke="#111" stroke-width="2.6"/>
+          <text x="195" y="39">Line art</text>
+          <rect x="146" y="56" width="98" height="30" rx="5" fill="var(--tint)" stroke="#111" stroke-width="4"/>
+          <text x="195" y="75" font-weight="bold">COLOR goes here</text>
+          <rect x="146" y="92" width="98" height="30" rx="5" fill="#fff" stroke="#111" stroke-width="2.6"/>
+          <text x="195" y="111">Background</text>
+        </g>
+        <path d="M110 35 q16 0 16 18 t16 18 m-9 -8 l9 8 l-11 4" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="125" y="142" font-size="11.5" text-anchor="middle">Top of the list = front of the picture.</text>
+      </svg>
+    </div>
+  </section>
+
+  <div class="callout"><span class="lead">Golden rule:</span>
+    Color <b>only on the color layer</b>. Before every stroke, look at the Layers tab and check that the color layer is the one
+    highlighted. If you paint on the line art layer, your color will cover the lines.</div>
+
+</div>
+</div>
+
+<!-- ============ PAGE 2: SHORTCUTS + SAVING ============ -->
+<div class="page">
+<div class="frame">
+
+  <div class="meta">Unit 3 · Digital painting · kleki.com</div>
+
+  <section style="margin-top:6px">
+    <div class="sec"><span class="no">04</span>Keyboard shortcuts <span class="small">&nbsp;click the canvas first, then press the key</span></div>
+    <div class="keys">
+      <div>
+        <h3>Tools</h3>
+        <div class="k"><span><kbd>B</kbd></span><span>Brush</span></div>
+        <div class="k"><span><kbd>E</kbd></span><span>Eraser</span></div>
+        <div class="k"><span><kbd>G</kbd></span><span>Paint Bucket <small>Press G again for Gradient.</small></span></div>
+        <div class="k"><span><kbd>L</kbd></span><span>Select <small>Lasso, box and more.</small></span></div>
+        <div class="k"><span><kbd>U</kbd></span><span>Shape</span></div>
+        <div class="k"><span><kbd>T</kbd></span><span>Text</span></div>
+        <h3>Color + brush</h3>
+        <div class="k"><span>hold <kbd>Alt</kbd></span><span>Eyedropper <small>Hold it and click a color to pick it up.</small></span></div>
+        <div class="k"><span><kbd>X</kbd></span><span>Swap your two colors</span></div>
+        <div class="k"><span><kbd>[</kbd> <kbd>]</kbd></span><span>Brush smaller / bigger</span></div>
+      </div>
+      <div>
+        <h3>Fix it</h3>
+        <div class="k"><span><kbd>Ctrl</kbd> <kbd>Z</kbd></span><span>Undo</span></div>
+        <div class="k"><span><kbd>Ctrl</kbd> <kbd>Y</kbd></span><span>Redo</span></div>
+        <div class="k"><span><kbd>Backspace</kbd></span><span>Clear the whole layer</span></div>
+        <h3>Move around</h3>
+        <div class="k"><span>hold <kbd>Space</kbd></span><span>Hand: drag to slide the canvas</span></div>
+        <div class="k"><span>hold <kbd>Z</kbd></span><span>Zoom: drag left or right</span></div>
+        <div class="k"><span><kbd>+</kbd> <kbd>-</kbd></span><span>Zoom in / out</span></div>
+        <div class="k"><span>hold <kbd>R</kbd></span><span>Rotate the canvas</span></div>
+        <h3>Save</h3>
+        <div class="k"><span><kbd>Ctrl</kbd> <kbd>S</kbd></span><span>Save to your Chromebook</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px"><span class="lead">Careful:</span>
+      <kbd>Enter</kbd> fills the <b>whole layer</b> with your color. If the screen suddenly turns one color, press
+      <kbd>Ctrl</kbd> <kbd>Z</kbd>.</div>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">05</span>Paint bucket tips</div>
+    <ol class="steps">
+      <li><i>A</i><span>Be on the <b>color layer</b>, then click inside a shape to fill it.</span></li>
+      <li><i>B</i><span>Set <b>Sample</b> to <b>All</b>. That lets the bucket see the line art and stop at the lines, even
+        though the lines live on another layer.</span></li>
+      <li><i>C</i><span>Color leaked everywhere? The lines have a <b>gap</b>. Undo, then paint that shape in with the brush.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec"><span class="no">06</span>Save your work</div>
+    <p class="intro" style="margin:0 0 4px"><b>Kleki does not save by itself.</b> Close the tab and your work is gone. Save
+      before the bell: <b>File</b> tab → pick a <b>File Format</b> → <span class="btn">Save</span>. It goes to Downloads.</p>
+    <div class="fmt">
+      <div><b class="big">PNG</b><b>The finished picture.</b> One flat image, no layers. This is the one you turn in.</div>
+      <div><b class="big">PSD</b><b>The working file.</b> Keeps every layer, so you can keep painting tomorrow.</div>
+    </div>
+    <p class="note" style="margin:0"><b>Opening a PSD again:</b> File → Import → choose the PSD → click <span class="btn">As Image</span>
+      and leave <b>Flatten image</b> unchecked. (As Layer squashes it into one layer.)</p>
+  </section>
+
+  <section style="margin-bottom:0">
+    <div class="sec"><span class="no">07</span>Something looks wrong?</div>
+    <div class="fix">
+      <div><b>My color is covering the lines.</b>You're on the line art layer, or the color layer is above it. Undo, then drag the color layer under.</div>
+      <div><b>I'm painting but nothing shows.</b>The color layer slid under the white background. Drag it above the background.</div>
+      <div><b>The bucket filled the whole page.</b>Undo. Check Sample is on All, and look for a gap in the lines.</div>
+      <div><b>A shortcut isn't working.</b>Click the canvas once, then try again. Typing in a box turns shortcuts off.</div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+</body>
+</html>
