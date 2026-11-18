@@ -70,6 +70,11 @@ Read `worksheets/README.md` before making a new one, and extend the theme rather
 First sheet (Sep 30, 2026): Tunnel Book. The front is Zach's hand-drawn how-to, the back is "Building your scene"
 (FG/MG/BG, depth tricks, scene ideas, planning boxes).
 
+## Daily bulletin (added Nov 4, 2026)
+`bulletin/` drives the "TODAY IS ____" projector deck in Zach's Drive (Art slide + AVID slide), refreshed every school
+morning by a scheduled Claude task from the **Bulletin Plan** Sheet. Read `bulletin/README.md` before changing it.
+The deck and Sheet stay in Drive; this repo holds only the script and the doodle backgrounds.
+
 ## Reference material (Google Drive)
 `The Library/Educator/teacher_book/` (reorganized Sep 28, 2026; each file lives in one place, so don't copy
 files between folders). Look up IDs with Drive search by title, because folder names are stable.

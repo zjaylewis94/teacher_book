@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#fff}svg{display:block}</style>
+<script src="node_modules/roughjs/bundled/rough.js"></script>
+</head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<script>
+// Params from the query string: accent colours, paper, seed
+const q = new URLSearchParams(location.search);
+const A = (q.get('a') || '#ED0A3F,#FF8833,#FBE870').split(',');
+const PAPER = q.get('paper') || '#FFF8E7';
+const TEX = q.get('tex') || '#E9DFC6';
+let seed = +(q.get('seed') || 7);
+function rnd(){ seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+const svg = document.getElementById('s');
+const rc = rough.svg(svg);
+const NS = 'http://www.w3.org/2000/svg';
+const add = n => (svg.appendChild(n), n);
+const g = (tx, ty, rot, sc) => { const e = document.createElementNS(NS,'g'); e.setAttribute('transform',`translate(${tx},${ty}) rotate(${rot||0}) scale(${sc||1})`); return add(e); };
+const INK = '#1b1b1b';
+
+// paper
+const bg = document.createElementNS(NS,'rect'); bg.setAttribute('width',1920); bg.setAttribute('height',1080); bg.setAttribute('fill',PAPER); add(bg);
+
+// --- doodle library (drawn around 0,0, about 100px) ---
+const D = {
+  star(p,c){ const pts=[]; for(let i=0;i<10;i++){const r=i%2?22:50, a=-Math.PI/2+i*Math.PI/5; pts.push([Math.cos(a)*r,Math.sin(a)*r]);}
+    p.appendChild(rc.polygon(pts,{fill:c,fillStyle:'solid',stroke:INK,strokeWidth:4,roughness:1.6,seed:Math.floor(rnd()*1e4)})); },
+  pencil(p,c){ const o={stroke:INK,strokeWidth:4,roughness:1.3,seed:Math.floor(rnd()*1e4)};
+    p.appendChild(rc.rectangle(-70,-14,110,28,{...o,fill:c,fillStyle:'solid'}));
+    p.appendChild(rc.rectangle(-88,-14,18,28,{...o,fill:'#F7468A',fillStyle:'solid'}));
+    p.appendChild(rc.polygon([[40,-14],[78,0],[40,14]],{...o,fill:'#F3D9A4',fillStyle:'solid'}));
+    p.appendChild(rc.polygon([[66,-4],[78,0],[66,4]],{...o,fill:INK,fillStyle:'solid'}));
+    p.appendChild(rc.line(-70,0,40,0,{...o,strokeWidth:2})); },
+  brush(p,c){ const o={stroke:INK,strokeWidth:4,roughness:1.2,seed:Math.floor(rnd()*1e4)};
+    p.appendChild(rc.rectangle(-95,-7,90,14,{...o,fill:'#C88A4D',fillStyle:'solid'}));
+    p.appendChild(rc.rectangle(-8,-11,26,22,{...o,fill:'#BDBDBD',fillStyle:'solid'}));
+    p.appendChild(rc.path('M18 -11 C 48 -14, 70 -4, 86 0 C 70 4, 48 14, 18 11 Z',{...o,fill:c,fillStyle:'solid'})); },
+  splat(p,c){ let d=''; const n=11; for(let i=0;i<=n;i++){const a=i/n*Math.PI*2, r=(i%2?30:48)+rnd()*10; d+=(i?'L':'M')+(Math.cos(a)*r).toFixed(1)+' '+(Math.sin(a)*r).toFixed(1)+' ';}
+    p.appendChild(rc.path(d+'Z',{fill:c,fillStyle:'solid',stroke:INK,strokeWidth:4,roughness:2.2,seed:Math.floor(rnd()*1e4)}));
+    for(let i=0;i<3;i++){const a=rnd()*6.28,r=62+rnd()*14; p.appendChild(rc.circle(Math.cos(a)*r,Math.sin(a)*r,10+rnd()*8,{fill:c,fillStyle:'solid',stroke:INK,strokeWidth:3,roughness:1}));} },
+  drop(p,c){ p.appendChild(rc.path('M0 -48 C 18 -18, 34 2, 34 18 C 34 38, 18 50, 0 50 C -18 50, -34 38, -34 18 C -34 2, -18 -18, 0 -48 Z',{fill:c,fillStyle:'solid',stroke:INK,strokeWidth:4,roughness:1.3,seed:Math.floor(rnd()*1e4)}));
+    p.appendChild(rc.arc(-12,20,26,34,Math.PI*0.6,Math.PI*1.1,false,{stroke:'#ffffff',strokeWidth:4,roughness:1})); },
+  palette(p,c){ const o={stroke:INK,strokeWidth:4,roughness:1.4,seed:Math.floor(rnd()*1e4)};
+    p.appendChild(rc.path('M-60 0 C -60 -40, -20 -55, 15 -50 C 55 -45, 70 -15, 60 10 C 52 30, 25 22, 18 36 C 10 52, -20 55, -40 40 C -55 30, -60 18, -60 0 Z',{...o,fill:'#F3D9A4',fillStyle:'solid'}));
+    const cs=[A[0],A[1]||c,A[2]||c,'#0066FF']; [[-35,-20],[-5,-32],[28,-26],[-38,14]].forEach((pt,i)=>p.appendChild(rc.circle(pt[0],pt[1],18,{...o,strokeWidth:3,fill:cs[i%cs.length],fillStyle:'solid'})));
+    p.appendChild(rc.circle(30,8,14,{...o,strokeWidth:3,fill:PAPER,fillStyle:'solid'})); },
+  squiggle(p,c){ p.appendChild(rc.path('M-70 0 C -55 -30, -40 30, -25 0 S 5 -30, 20 0 S 50 30, 65 0',{stroke:c,strokeWidth:9,roughness:1,seed:Math.floor(rnd()*1e4)})); },
+  spiral(p,c){ let d='M0 0 '; for(let t=0;t<14;t+=0.25){const r=t*3.6; d+=`L${(Math.cos(t)*r).toFixed(1)} ${(Math.sin(t)*r).toFixed(1)} `;} p.appendChild(rc.path(d,{stroke:c,strokeWidth:7,roughness:0.8,seed:Math.floor(rnd()*1e4)})); },
+  bolt(p,c){ p.appendChild(rc.polygon([[-10,-50],[22,-50],[6,-10],[30,-10],[-16,52],[-4,6],[-26,6]],{fill:c,fillStyle:'solid',stroke:INK,strokeWidth:4,roughness:1.3,seed:Math.floor(rnd()*1e4)})); },
+  sparkle(p,c){ p.appendChild(rc.path('M0 -34 Q 5 -5, 34 0 Q 5 5, 0 34 Q -5 5, -34 0 Q -5 -5, 0 -34 Z',{fill:c,fillStyle:'solid',stroke:INK,strokeWidth:3,roughness:1,seed:Math.floor(rnd()*1e4)})); },
+  eye(p,c){ const o={stroke:INK,strokeWidth:4,roughness:1.2,seed:Math.floor(rnd()*1e4)};
+    p.appendChild(rc.path('M-56 0 Q 0 -44, 56 0 Q 0 44, -56 0 Z',{...o,fill:'#ffffff',fillStyle:'solid'}));
+    p.appendChild(rc.circle(0,0,40,{...o,fill:c,fillStyle:'solid'})); p.appendChild(rc.circle(0,0,16,{...o,fill:INK,fillStyle:'solid'})); },
+};
+const kinds = Object.keys(D);
+
+// faint texture: tiny doodle outlines scattered across the page
+const tex = document.createElementNS(NS,'g'); tex.setAttribute('opacity','1'); add(tex);
+for (let i=0;i<55;i++){
+  const x=60+rnd()*1800, y=60+rnd()*960, k=['star','sparkle','spiral','squiggle','drop'][Math.floor(rnd()*5)];
+  const e=document.createElementNS(NS,'g'); e.setAttribute('transform',`translate(${x},${y}) rotate(${rnd()*360}) scale(${0.35+rnd()*0.3})`); tex.appendChild(e);
+  // draw then recolour everything to the texture colour, no fill
+  D[k](e,TEX); e.querySelectorAll('path').forEach(pth=>{ pth.setAttribute('stroke',TEX); if(pth.getAttribute('fill') && pth.getAttribute('fill')!=='none') pth.setAttribute('fill',TEX); });
+}
+
+// marker frame: 0.25in inset (48px), 10pt stroke (~27px), rounded corners
+const fr=document.createElementNS(NS,'rect'); [['x',59],['y',59],['width',1802],['height',962],['rx',56],['fill','none'],['stroke',INK],['stroke-width',24]].forEach(a=>fr.setAttribute(a[0],a[1])); add(fr);
+add(rc.rectangle(59,59,1802,962,{stroke:INK,strokeWidth:3,roughness:1.4,seed:5})).setAttribute('opacity','0.0');
+
+// bold doodles flanking the title (title band ~ y 70..290) and the bottom corners
+const spots = [
+  [195,175,1.7],[370,250,1.15],[150,330,0.9],
+  [1725,175,1.7],[1550,250,1.15],[1770,330,0.9],
+  [165,935,1.0],[1755,935,1.0],
+];
+spots.forEach((s,i)=>{ const k=kinds[Math.floor(rnd()*kinds.length)]; const e=g(s[0],s[1],(rnd()-0.5)*50,s[2]); D[k](e,A[i%A.length]); });
+document.title='ready';
+</script></body></html>
