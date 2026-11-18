@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Meccha Chameleon</title>
 <style>
-  /* Unit 3 Tier 2: 2D Mecha Chameleon. Page 1 = blank figures to cut out. Pages 2-7 = flat-color backgrounds to hide them on.
+  /* Unit 3 Tier 2: 2D Mecha Chameleon. Page 1 = blank figures to cut out. Pages 2-7 = flat-color backgrounds (Level 1), 8-13 textured (Level 2), 14-19 busy (Level 3).
      Plain on purpose: these are materials, not a styled worksheet. Fonts are licensed and kept out of git (fonts/licensed/). */
   @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
   @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
@@ -39,6 +39,8 @@
   <linearGradient id="sheen" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>
   <linearGradient id="undershelf" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
   <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F9D56E"/><stop offset=".3" stop-color="#F7A944"/><stop offset=".55" stop-color="#EE7B45"/><stop offset=".78" stop-color="#D45A5A"/><stop offset="1" stop-color="#8E4A7E"/></linearGradient>
+  <radialGradient id="ball" cx=".38" cy=".34" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
+  <linearGradient id="night" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0B1430"/><stop offset=".6" stop-color="#22305E"/><stop offset="1" stop-color="#4B3F72"/></linearGradient>
   <radialGradient id="glow"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset="1" stop-color="#FFF6C8" stop-opacity="0"/></radialGradient>
 </defs></svg>
 <div id="bgs"></div>
@@ -56,11 +58,11 @@ const POSES = [
   ['Wave',       [100, 44], ['100 88 100 154', '100 96 162 48', '100 96 40 142', '90 164 70 252', '110 164 140 248']],
   ['Kick',       [78, 44],  ['80 88 86 154', '80 96 22 70', '80 96 138 78', '84 164 76 256', '90 160 172 150']]
 ];
-// Chunky mannequins, like the game's blank white hiders: big head, thick torso, stubby limbs.
+// Mannequins like the game's blank white hiders. Nov 18: slimmed to halfway between the first thin version and the chunky one.
 // limbs[0] is the torso. The black pass is 5 units wider than the white one, so the cut line stays thin.
 const fig = ([name, head, limbs], ox, oy, s) => {
-  const pl = (extra, c) => limbs.map((p, i) => `<polyline points="${p}" fill="none" stroke="${c}" stroke-width="${(i ? 46 : 66) + extra}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
-    `<circle cx="${head[0]}" cy="${head[1]}" r="${31 + extra / 2}" fill="${c}"/>`;
+  const pl = (extra, c) => limbs.map((p, i) => `<polyline points="${p}" fill="none" stroke="${c}" stroke-width="${(i ? 38 : 52) + extra}" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
+    `<circle cx="${head[0]}" cy="${head[1]}" r="${28 + extra / 2}" fill="${c}"/>`;
   return `<g transform="translate(${ox} ${oy}) scale(${s})">${pl(5, '#111')}${pl(0, '#fff')}</g>`;
 };
 document.getElementById('poses').innerHTML = POSES.map((p, i) => fig(p, 34 + (i % 3) * 262, 128 + Math.floor(i / 3) * 306, 1.02)).join('');
@@ -126,8 +128,46 @@ const BG2 = {
       for (let i = 0; i < 14; i++) { const x = rnd() * 816, h = 40 + rnd() * 50 + k * 20, by = y + 20 + rnd() * 60; s += `<path d="M${x.toFixed(0)} ${(by - h).toFixed(0)} l${(h * .28).toFixed(0)} ${h.toFixed(0)} h${(-h * .56).toFixed(0)} Z" fill="${['#4A2F5A', '#33224A', '#1E1430'][k]}"/>`; } });
     return s + over('rough', .3) + over('grain', .3); }
 };
+// ---- Level 3: busy, many-colored, many-edged. Every figure has to cross several shapes, so it can't hide in one flat patch ----
+const BG3 = {
+  'River rocks': () => { let s = `<rect width="816" height="1056" fill="#B8A684"/>`; const c = ['#8C8A86', '#6F6A63', '#A39A8C', '#5E6670', '#9C6B4E', '#C9BFAE', '#4F4A45', '#7A8A8C'];
+    for (let i = 0; i < 560; i++) { const x = rnd() * 840 - 12, y = rnd() * 1080 - 12, rx = 20 + rnd() * 34, ry = rx * (.55 + rnd() * .35), a = (rnd() * 180).toFixed(0);
+      s += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${a})"><ellipse cx="2" cy="5" rx="${rx.toFixed(0)}" ry="${ry.toFixed(0)}" fill="#000" opacity=".3"/><ellipse rx="${rx.toFixed(0)}" ry="${ry.toFixed(0)}" fill="${pick(c)}"/><ellipse rx="${rx.toFixed(0)}" ry="${ry.toFixed(0)}" fill="url(#ball)" opacity=".8"/></g>`; }
+    return s + over('rough', .32) + over('grain', .3); },
+  'Autumn leaves': () => { let s = `<rect width="816" height="1056" fill="#4A2E1A"/>`; const c = ['#D9481E', '#E8862A', '#F2B632', '#B5301F', '#8E3B1E', '#C9A13A', '#E36B2C', '#7A5A2A'];
+    const leaf = l => `M0 0 C${l * .2} ${-l * .32} ${l * .55} ${-l * .42} ${l} 0 C${l * .55} ${l * .42} ${l * .2} ${l * .32} 0 0 Z`;
+    for (let i = 0; i < 420; i++) { const x = rnd() * 860 - 20, y = rnd() * 1100 - 20, a = rnd() * 360, l = 60 + rnd() * 70, f = pick(c);
+      s += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${a.toFixed(0)})"><path d="${leaf(l)}" fill="#000" opacity=".28" transform="translate(4 6)"/><path d="${leaf(l)}" fill="${f}"/>
+        <path d="M0 0 C${l * .4} ${l * .02} ${l * .7} 0 ${l} 0" stroke="#5A2A12" stroke-width="2" fill="none" opacity=".7"/>${[.3, .5, .7].map(t => `<path d="M${l * t} 0 l${l * .14} ${-l * .16} M${l * t} 0 l${l * .14} ${l * .16}" stroke="#5A2A12" stroke-width="1.3" opacity=".5" fill="none"/>`).join('')}</g>`; }
+    return s + over('grain', .3); },
+  'Stained glass': () => { const c = ['#B3202A', '#1E5AA8', '#E8B021', '#2E8B57', '#6B3FA0', '#E06A1B', '#5FB3D9', '#F2E3A6', '#8C1C4B', '#1F7A7A'];
+    const cols = 7, rows = 9, P = []; for (let r = 0; r <= rows; r++) { P.push([]); for (let k = 0; k <= cols; k++) { const edge = r === 0 || r === rows || k === 0 || k === cols;
+      P[r].push([k * 816 / cols + (edge && (k === 0 || k === cols) ? 0 : (rnd() - .5) * 70), r * 1056 / rows + (edge && (r === 0 || r === rows) ? 0 : (rnd() - .5) * 70)]); } }
+    let s = `<rect width="816" height="1056" fill="#222"/>`; const tri = (a, b, d) => `<path d="M${a.map(n => n.toFixed(0))} L${b.map(n => n.toFixed(0))} L${d.map(n => n.toFixed(0))} Z" fill="${pick(c)}" stroke="#1A1A1A" stroke-width="8" stroke-linejoin="round"/>`;
+    for (let r = 0; r < rows; r++) for (let k = 0; k < cols; k++) { const a = P[r][k], b = P[r][k + 1], d = P[r + 1][k + 1], e = P[r + 1][k];
+      s += rnd() < .5 ? tri(a, b, d) + tri(a, d, e) : tri(a, b, e) + tri(b, d, e); }
+    return s + `<circle cx="300" cy="300" r="520" fill="url(#glow)" opacity=".35"/>` + over('rough', .35) + over('grain', .25); },
+  'Plaid': () => { let s = `<rect width="816" height="1056" fill="#B3202A"/>`;
+    const band = [['#1C2A4A', 64], ['#2E6B3A', 22], ['#1C2A4A', 64], ['#F2C230', 8], ['#B3202A', 72], ['#F4EFE2', 6], ['#B3202A', 40]];
+    const run = (vert) => { let t = -30, i = 0; while (t < (vert ? 816 : 1056)) { const [col, w] = band[i % band.length]; if (col !== '#B3202A')
+      s += vert ? `<rect x="${t}" width="${w}" height="1056" fill="${col}" opacity=".62"/>` : `<rect y="${t}" width="816" height="${w}" fill="${col}" opacity=".62"/>`; t += w; i++; } };
+    run(true); run(false); return s + `<rect width="816" height="1056" filter="url(#woodgrain)" style="mix-blend-mode:multiply" opacity=".18"/>` + over('grain', .35); },
+  'Gumball machine': () => { let s = `<rect width="816" height="1056" fill="#3A2A2A"/>`; const c = ['#E8323C', '#F5A623', '#F8E048', '#3FB54A', '#2D8FE0', '#8E4BC8', '#F07AB5', '#FFFFFF', '#21C4C4'];
+    for (let i = 0; i < 520; i++) { const x = rnd() * 860 - 20, y = rnd() * 1100 - 20, r = 24 + rnd() * 12;
+      s += `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(0)}" fill="${pick(c)}"/><circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(0)}" fill="url(#ball)"/><circle cx="${(x - r * .35).toFixed(0)}" cy="${(y - r * .38).toFixed(0)}" r="${(r * .18).toFixed(1)}" fill="#fff" opacity=".85"/>`; }
+    return s + `<rect width="816" height="1056" fill="url(#sheen)" opacity=".6"/>` + over('grain', .2); },
+  'City at night': () => { let s = `<rect width="816" height="1056" fill="url(#night)"/>`;
+    for (let i = 0; i < 90; i++) s += `<circle cx="${(rnd() * 816).toFixed(0)}" cy="${(rnd() * 260).toFixed(0)}" r="${(1 + rnd() * 1.8).toFixed(1)}" fill="#FFF8DC" opacity="${(.4 + rnd() * .6).toFixed(2)}"/>`;
+    s += `<circle cx="650" cy="110" r="90" fill="url(#glow)"/><circle cx="650" cy="110" r="46" fill="#F6F0D2"/>`;
+    [['#2C3358', 150, .35], ['#1E2442', 330, .55], ['#121628', 520, .8]].forEach(([col, top, lit]) => { let x = -10;
+      while (x < 816) { const w = 70 + rnd() * 90, y = top + rnd() * 200; s += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${(1056 - y).toFixed(0)}" fill="${col}"/>`;
+        for (let wy = y + 16; wy < 1040; wy += 26) for (let wx = x + 10; wx < x + w - 16; wx += 20) if (rnd() < lit) s += `<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="11" height="15" fill="${pick(['#FFD66B', '#FFE9A8', '#FFB347', '#9FD3FF'])}" opacity="${(.55 + rnd() * .45).toFixed(2)}"/>`;
+        x += w + 4; } });
+    return s + over('grain', .25); }
+};
 const pg = (n, lvl, f) => `<div class="page"><svg viewBox="0 0 816 1056" preserveAspectRatio="none">${f()}</svg><div class="tag">${n} · Level ${lvl}</div></div>`;
-document.getElementById('bgs').innerHTML = Object.entries(BG).map(([n, f]) => pg(n, 1, f)).join('') + Object.entries(BG2).map(([n, f]) => pg(n, 2, f)).join('');
+document.getElementById('bgs').innerHTML = Object.entries(BG).map(([n, f]) => pg(n, 1, f)).join('') + Object.entries(BG2).map(([n, f]) => pg(n, 2, f)).join('') +
+  Object.entries(BG3).map(([n, f]) => pg(n, 3, f)).join('');
 function fit() { document.documentElement.style.setProperty('--fit', Math.min(1, innerWidth / 816)); } fit(); addEventListener('resize', fit);
 </script>
 </body>
