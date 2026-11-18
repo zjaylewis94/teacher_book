@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Meccha Chameleon</title>
 <style>
-  /* Unit 3 Tier 2: 2D Mecha Chameleon. Page 1 = blank figures to cut out. Pages 2-7 = flat-color backgrounds (Level 1), 8-13 textured (Level 2), 14-19 busy (Level 3).
+  /* Unit 3 Tier 2: 2D Mecha Chameleon. Page 1 = blank figures to cut out. Pages 2-7 = flat-color backgrounds (Level 1), 8-13 textured (Level 2), 14-23 busy (Level 3).
      Plain on purpose: these are materials, not a styled worksheet. Fonts are licensed and kept out of git (fonts/licensed/). */
   @font-face { font-family: "KC Painted"; src: url("fonts/licensed/KCPaintedHand.otf"); }
   @font-face { font-family: "Papernotes"; src: url("fonts/licensed/Papernotes.otf"); }
@@ -41,6 +41,7 @@
   <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F9D56E"/><stop offset=".3" stop-color="#F7A944"/><stop offset=".55" stop-color="#EE7B45"/><stop offset=".78" stop-color="#D45A5A"/><stop offset="1" stop-color="#8E4A7E"/></linearGradient>
   <radialGradient id="ball" cx=".38" cy=".34" r=".7"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></radialGradient>
   <linearGradient id="night" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0B1430"/><stop offset=".6" stop-color="#22305E"/><stop offset="1" stop-color="#4B3F72"/></linearGradient>
+  <filter id="dye" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="70" xChannelSelector="R" yChannelSelector="G"/></filter>
   <radialGradient id="glow"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset="1" stop-color="#FFF6C8" stop-opacity="0"/></radialGradient>
 </defs></svg>
 <div id="bgs"></div>
@@ -163,7 +164,27 @@ const BG3 = {
       while (x < 816) { const w = 70 + rnd() * 90, y = top + rnd() * 200; s += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${(1056 - y).toFixed(0)}" fill="${col}"/>`;
         for (let wy = y + 16; wy < 1040; wy += 26) for (let wx = x + 10; wx < x + w - 16; wx += 20) if (rnd() < lit) s += `<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="11" height="15" fill="${pick(['#FFD66B', '#FFE9A8', '#FFB347', '#9FD3FF'])}" opacity="${(.55 + rnd() * .45).toFixed(2)}"/>`;
         x += w + 4; } });
-    return s + over('grain', .25); }
+    return s + over('grain', .25); },
+  'Mosaic tiles': () => { let s = `<rect width="816" height="1056" fill="#D8D2C4"/>`; const pal = [['#1E5AA8', '#2D7FC1', '#5FB3D9', '#9AD1E8'], ['#E8B021', '#F2C94C', '#E06A1B', '#F7E08A'], ['#2E8B57', '#57A773', '#8CC97A', '#1F6B4A'], ['#B3202A', '#D9481E', '#8C1C4B', '#F28C7A']];
+    for (let y = 0; y < 1056; y += 34) for (let x = 0; x < 816; x += 34) { const z = Math.sin(x / 120) + Math.cos(y / 140) + Math.sin((x + y) / 210); const g = pal[Math.max(0, Math.min(3, Math.floor((z + 3) / 1.5)))];
+      s += `<rect x="${(x + 3 + rnd() * 3).toFixed(0)}" y="${(y + 3 + rnd() * 3).toFixed(0)}" width="27" height="27" rx="3" fill="${pick(g)}" transform="rotate(${(rnd() * 8 - 4).toFixed(1)} ${x + 17} ${y + 17})"/>`; }
+    return s + over('rough', .3) + over('grain', .25); },
+  'Tie-dye': () => { const c = ['#E8323C', '#F5A623', '#F8E048', '#3FB54A', '#2D8FE0', '#8E4BC8', '#F07AB5']; let g = '';
+    const cx = 408, cy = 528; for (let k = 0; k < 30; k++) { const r1 = k * 24, r2 = r1 + 25; for (let j = 0; j < 22; j++) { const a1 = (j / 22) * 2 * Math.PI + k * .26, a2 = a1 + 2 * Math.PI / 22 + .01;
+      const P = (r, a) => `${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)}`;
+      g += `<path d="M${P(r1, a1)} L${P(r2, a1)} A${r2} ${r2} 0 0 1 ${P(r2, a2)} L${P(r1, a2)} A${r1} ${r1} 0 0 0 ${P(r1, a1)} Z" fill="${c[(j + k) % c.length]}"/>`; } }
+    return `<rect width="816" height="1056" fill="#8E4BC8"/><g filter="url(#dye)">${g}</g>` + over('rough', .25) + over('grain', .25); },
+  'Sprinkles': () => { let s = `<rect width="816" height="1056" fill="#F4A6C1"/>`; const c = ['#E8323C', '#F5A623', '#F8E048', '#3FB54A', '#2D8FE0', '#8E4BC8', '#FFFFFF', '#21C4C4', '#5A3A2A'];
+    for (let i = 0; i < 1400; i++) { const x = rnd() * 816, y = rnd() * 1056, a = rnd() * 180, l = 22 + rnd() * 14;
+      s += `<rect x="${(x - l / 2).toFixed(0)}" y="${(y - 4).toFixed(0)}" width="${l.toFixed(0)}" height="8" rx="4" fill="${pick(c)}" transform="rotate(${a.toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
+    return s + over('rough', .2) + over('grain', .2); },
+  'Koi pond': () => { let s = `<rect width="816" height="1056" fill="#1F4E4F"/>`;
+    for (let i = 0; i < 40; i++) s += `<ellipse cx="${(rnd() * 816).toFixed(0)}" cy="${(rnd() * 1056).toFixed(0)}" rx="${(80 + rnd() * 120).toFixed(0)}" ry="${(30 + rnd() * 50).toFixed(0)}" fill="${pick(['#2B6A63', '#173C3E', '#3D7D6E'])}" opacity=".7" filter="url(#soft)"/>`;
+    for (let i = 0; i < 44; i++) { const x = rnd() * 816, y = rnd() * 1056, a = rnd() * 360, l = 110 + rnd() * 60, f = pick(['#F2762E', '#F5F1E6', '#E8B021', '#D9481E']);
+      s += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${a.toFixed(0)})"><ellipse rx="${l / 2}" ry="${l / 6}" fill="${f}"/><path d="M${l / 2 - 6} 0 l${l / 4} ${-l / 6} q${-l / 12} ${l / 6} 0 ${l / 3} Z" fill="${f}"/><ellipse cx="${-l / 8}" cy="${-l / 30}" rx="${l / 7}" ry="${l / 14}" fill="${pick(['#D9481E', '#1A1A1A', '#F5F1E6'])}" opacity=".85"/><circle cx="${-l / 2.6}" cy="${-l / 18}" r="3" fill="#111"/></g>`; }
+    for (let i = 0; i < 34; i++) { const x = rnd() * 816, y = rnd() * 1056, r = 36 + rnd() * 34, a = rnd() * 6.28;
+      s += `<path d="M${x.toFixed(0)} ${y.toFixed(0)} L${(x + r * Math.cos(a + .5)).toFixed(0)} ${(y + r * Math.sin(a + .5)).toFixed(0)} A${r.toFixed(0)} ${r.toFixed(0)} 0 1 1 ${(x + r * Math.cos(a)).toFixed(0)} ${(y + r * Math.sin(a)).toFixed(0)} Z" fill="${pick(['#4C9A52', '#6DB56A', '#3A7D44'])}"/><circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${(r * .55).toFixed(0)}" fill="none" stroke="#2E6B3A" stroke-width="2" opacity=".5"/>`; }
+    return s + over('grain', .22); }
 };
 const pg = (n, lvl, f) => `<div class="page"><svg viewBox="0 0 816 1056" preserveAspectRatio="none">${f()}</svg><div class="tag">${n} · Level ${lvl}</div></div>`;
 document.getElementById('bgs').innerHTML = Object.entries(BG).map(([n, f]) => pg(n, 1, f)).join('') + Object.entries(BG2).map(([n, f]) => pg(n, 2, f)).join('') +
