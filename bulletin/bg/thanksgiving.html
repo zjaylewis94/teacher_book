@@ -78,9 +78,6 @@ for (let i=0;i<55;i++){
   D[k](e,TEX); e.querySelectorAll('path').forEach(pth=>{ pth.setAttribute('stroke',TEX); if(pth.getAttribute('fill') && pth.getAttribute('fill')!=='none') pth.setAttribute('fill',TEX); });
 }
 
-// marker frame
-const fr=document.createElementNS(NS,'rect'); [['x',59],['y',59],['width',1802],['height',962],['rx',56],['fill','none'],['stroke',INK],['stroke-width',24]].forEach(a=>fr.setAttribute(a[0],a[1])); add(fr);
-
 // bold doodles flanking the title and in the bottom corners
 const put=(k,x,y,r,s,c)=>D[k](g(x,y,r,s),c);
 put('turkey',240,225,-4,1.2);
