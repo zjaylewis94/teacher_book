@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}svg{display:block}</style>
+<script src="node_modules/roughjs/bundled/rough.js"></script></head><body>
+<svg id="s" xmlns="http://www.w3.org/2000/svg" width="700" height="340" viewBox="0 0 700 340"></svg>
+<script>
+const NS='http://www.w3.org/2000/svg', svg=document.getElementById('s'), rc=rough.svg(svg);
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const W=700,H=340,R=56,IN=7;
+const defs=el('defs',{}); svg.appendChild(defs);
+const cp=el('clipPath',{id:'c'}); cp.appendChild(el('rect',{x:IN,y:IN,width:W-2*IN,height:H-2*IN,rx:R})); defs.appendChild(cp);
+const pat=el('pattern',{id:'chk',width:68,height:68,patternUnits:'userSpaceOnUse'});
+pat.appendChild(el('rect',{width:68,height:68,fill:'#000','fill-opacity':0.5}));
+pat.appendChild(el('rect',{width:34,height:34,fill:'#000','fill-opacity':0.16}));
+pat.appendChild(el('rect',{x:34,y:34,width:34,height:34,fill:'#000','fill-opacity':0.16}));
+defs.appendChild(pat);
+const g=el('g',{'clip-path':'url(#c)'}); svg.appendChild(g);
+g.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'url(#chk)'}));
+// gold stripe top and bottom
+g.appendChild(el('rect',{x:0,y:IN,width:W,height:16,fill:'#FFCC01'}));
+g.appendChild(el('rect',{x:0,y:H-IN-16,width:W,height:16,fill:'#FFCC01'}));
+let seed=9; const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+function star(cx,cy,r,rot){const p=[];for(let i=0;i<10;i++){const rr=i%2?r*0.42:r,a=-Math.PI/2+rot+i*Math.PI/5;p.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr]);}
+  svg.appendChild(rc.polygon(p,{fill:'#FFCC01',fillStyle:'solid',stroke:'#1b1b1b',strokeWidth:4,roughness:1.1,seed:Math.floor(rnd()*1e4)}));}
+star(52,170,34,-0.15); star(648,170,34,0.15);
+star(96,82,16,0.3); star(604,82,16,-0.3); star(96,262,16,-0.2); star(604,262,16,0.2);
+svg.appendChild(el('rect',{x:IN,y:IN,width:W-2*IN,height:H-2*IN,rx:R,fill:'none',stroke:'#1b1b1b','stroke-width':10}));
+document.title='ready';
+</script></body></html>
