@@ -11,20 +11,14 @@ const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAt
 const W=860,H=420,R=60,IN=8;
 const defs=el('defs',{}); svg.appendChild(defs);
 const cp=el('clipPath',{id:'c'}); cp.appendChild(el('rect',{x:IN,y:IN,width:W-2*IN,height:H-2*IN,rx:R})); defs.appendChild(cp);
-const S=60; const pat=el('pattern',{id:'chk',width:S,height:S,patternUnits:'userSpaceOnUse'});
-pat.appendChild(el('rect',{width:S,height:S,fill:'#000','fill-opacity':0.5}));
-pat.appendChild(el('rect',{width:S/2,height:S/2,fill:'#000','fill-opacity':0.16}));
-pat.appendChild(el('rect',{x:S/2,y:S/2,width:S/2,height:S/2,fill:'#000','fill-opacity':0.16}));
-defs.appendChild(pat);
 const g=el('g',{'clip-path':'url(#c)'}); svg.appendChild(g);
-g.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'url(#chk)'}));
+g.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'#000','fill-opacity':0.5}));
 const pts=(cx,cy,r,ir)=>{let p=[];for(let i=0;i<10;i++){const rr=i%2?ir:r,a=-Math.PI/2+i*Math.PI/5;p.push((cx+Math.cos(a)*rr).toFixed(1)+','+(cy+Math.sin(a)*rr).toFixed(1));}return p.join(' ');};
-const stars=el('g',{opacity:0.55}); g.appendChild(stars);
+const stars=el('g',{opacity:0.6}); g.appendChild(stars);
 const dx=124, dy=110;
 for(let row=0;row<5;row++){ const y=-10+row*dy; const off=row%2?dx/2:0;
   for(let x=-40+off;x<W+60;x+=dx){
-    stars.appendChild(el('polygon',{points:pts(x,y,40,16.5),fill:'#FFCC01'}));
-    stars.appendChild(el('polygon',{points:pts(x+2,y+3,21,8.6),fill:'#3a3a3a'}));
+    stars.appendChild(el('path',{d:'M'+pts(x,y,40,16.5)+'Z M'+pts(x,y,21,8.6)+'Z','fill-rule':'evenodd',fill:'#FFCC01'}));
   }}
 svg.appendChild(el('rect',{x:IN,y:IN,width:W-2*IN,height:H-2*IN,rx:R,fill:'none',stroke:'#1b1b1b','stroke-width':12}));
 document.title='ready';
